@@ -2,6 +2,7 @@ package com.example.ecommerce.model;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.*;
 
 @Getter
@@ -21,14 +22,17 @@ public class User {
     @Column(name = "last_name", nullable = false)
     private String lastname;
 
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "username", nullable = false)
+    @Column(name = "username", nullable = false, unique = true)
     private String username;
 
     @Column(name = "password", nullable = false)
     private String password;
+
+    @Column(name = "active")
+    private boolean active;
 
     @Column(name = "address")
     private String address;
@@ -39,7 +43,7 @@ public class User {
     @Column(name = "answer")
     private String answer;
 
-    @Column(name = "phone", nullable = false)
+    @Column(name = "phone")
     private String phone;
 
 //    @Enumerated(EnumType.STRING)

@@ -1,34 +1,49 @@
 package com.example.ecommerce.controller;
 
+import com.example.ecommerce.dto.user.UserResponse;
 import com.example.ecommerce.model.User;
-import com.example.ecommerce.service.UserService;
+import com.example.ecommerce.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
-    UserService userService;
+    private final UserServiceImpl userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserServiceImpl userService) {
         this.userService = userService;
     }
 
-    @GetMapping("/getAllUsers")
-    public List<User> getAllUsers(){
-        return userService.getAllUsers();
+    @GetMapping("/getUserById/{userId}")
+    public ResponseEntity<UserResponse> getUserById(@PathVariable Long userId){
+        UserResponse response = userService.getUserById(userId);
+        if (response != null)
+            return new ResponseEntity<>(response, HttpStatus.FOUND);
+        else
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping("/addUser")
-    public User addUser(User user){
-        return userService.addUser(user);
+    @GetMapping("/getUserByUsername")
+    public ResponseEntity<UserResponse> getUserByUsername(@RequestParam String username){
+        UserResponse response = userService.getUserByUsername(username);
+        if (response != null)
+            return new ResponseEntity<>(response, HttpStatus.FOUND);
+        else
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/getAllUsers")
+    public ResponseEntity<List<UserResponse>> getAllUsers(){
+        List<UserResponse> users = userService.getAllUsers();
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
 }

@@ -1,28 +1,15 @@
 package com.example.ecommerce.service;
 
-import com.example.ecommerce.model.User;
-import com.example.ecommerce.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.example.ecommerce.dto.user.UserResponse;
 
 import java.util.List;
 
-@Service
-public class UserService {
+public interface UserService {
 
-    UserRepository userRepository;
+    List<UserResponse> getAllUsers();
 
-    @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    UserResponse getUserByUsername(String username);
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
-
-    public User addUser(User user){
-        return userRepository.save(user);
-    }
+    UserResponse getUserById(Long userId);
 
 }
