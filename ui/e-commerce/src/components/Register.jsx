@@ -5,6 +5,8 @@ function Register() {
   const [lastName, setLastName] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -13,17 +15,18 @@ function Register() {
       lastName: lastName,
       username: username,
       password: password,
+      email: email,
     };
     try {
-      const response = await fetch("/api/register", {
+      const response = await fetch("/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify(user)
       });
-      //const data = await response.json();
-      const data = await JSON.stringify(user);
+      const data = await response.json();
+      //const data = await JSON.stringify(user);
       console.log(user);
       console.log(data);
     } catch (error) {
@@ -55,6 +58,14 @@ function Register() {
           type="text"
           value={username}
           onChange={(event) => setUsername(event.target.value)}
+        />
+      </label>
+      <label>
+        Email:
+        <input
+          type="text"
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
         />
       </label>
       <label>
