@@ -1,13 +1,14 @@
 package com.example.ecommerce.service;
 
+import com.example.ecommerce.dto.user.AuthResponse;
 import com.example.ecommerce.dto.user.UserCreateRequest;
 import com.example.ecommerce.dto.user.UserLoginRequest;
 import com.example.ecommerce.dto.user.UserResponse;
 
 public interface AuthenticationService {
 
-    UserResponse register(UserCreateRequest request);
+    AuthResponse register(UserCreateRequest request);
 
-    String login(UserLoginRequest request);
+    AuthResponse login(UserLoginRequest request);
 
 }

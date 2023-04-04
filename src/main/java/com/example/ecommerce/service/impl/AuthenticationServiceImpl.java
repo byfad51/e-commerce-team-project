@@ -1,5 +1,6 @@
 package com.example.ecommerce.service.impl;
 
+import com.example.ecommerce.dto.user.AuthResponse;
 import com.example.ecommerce.dto.user.UserCreateRequest;
 import com.example.ecommerce.dto.user.UserLoginRequest;
 import com.example.ecommerce.dto.user.UserResponse;
@@ -15,6 +16,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -34,7 +37,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public UserResponse register(UserCreateRequest request){
+    public AuthResponse register(UserCreateRequest request){
 
         if(userRepository.findByUsername(request.getUsername()).isEmpty()
                 && userRepository.findByEmail(request.getEmail()).isEmpty()) {
@@ -51,7 +54,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             user.setQuestion(request.getQuestion());
             user.setAnswer(request.getAnswer());
             user.setAddress(request.getAddress());
-            UserResponse response = new UserResponse(user);
+            AuthResponse response = new AuthResponse();
+            response.setMessage("Successfully registered!");
+            response.setUserId(user.getId());
             userRepository.save(user);
             return response;
         }
@@ -65,7 +70,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public String login(UserLoginRequest request){
+    public AuthResponse login(UserLoginRequest request){
 
         if(userService.getUserByUsername(request.getUsername()) == null)
             throw new UserNotFoundException(request.getUsername() + " not found");
@@ -77,7 +82,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         SecurityContextHolder.getContext().setAuthentication(auth);
         String jwtToken = jwtTokenProvider.generateJwtToken(auth);
 
-        return "Bearer " + jwtToken;
+
+        Optional<User> user = userRepository.findByUsername(request.getUsername());
+        System.out.println("here");
+        AuthResponse response = new AuthResponse();
+        response.setMessage("Bearer " + jwtToken);
+        response.setUserId(user.get().getId());
+
+        return response;
 
     }
 }

@@ -1,5 +1,6 @@
 package com.example.ecommerce.controller;
 
+import com.example.ecommerce.dto.user.AuthResponse;
 import com.example.ecommerce.dto.user.UserCreateRequest;
 import com.example.ecommerce.dto.user.UserLoginRequest;
 import com.example.ecommerce.dto.user.UserResponse;
@@ -24,10 +25,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@Valid @RequestBody UserLoginRequest request){
-
-        String token = authenticationService.login(request);
-        return new ResponseEntity<>(token, HttpStatus.OK);
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody UserLoginRequest request){
+        return new ResponseEntity<>(authenticationService.login(request), HttpStatus.OK);
     }
 
     @PostMapping("/register")
@@ -37,7 +36,7 @@ public class AuthenticationController {
             return new ResponseEntity<>(errors.getFieldError().getDefaultMessage(), HttpStatus.EXPECTATION_FAILED);
         }
 
-        UserResponse response = authenticationService.register(request);
+        AuthResponse response = authenticationService.register(request);
         if (response == null){
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
