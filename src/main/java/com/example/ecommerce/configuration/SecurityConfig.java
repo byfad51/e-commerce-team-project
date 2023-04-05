@@ -81,7 +81,7 @@ public class SecurityConfig{
 
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("*");
+        config.addAllowedOriginPattern("*");
         config.addAllowedHeader("*");
         config.addAllowedMethod("OPTIONS");
         config.addAllowedMethod("HEAD");
@@ -90,6 +90,7 @@ public class SecurityConfig{
         config.addAllowedMethod("POST");
         config.addAllowedMethod("DELETE");
         config.addAllowedMethod("PATCH");
+        source.registerCorsConfiguration("/**", config);
 
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
