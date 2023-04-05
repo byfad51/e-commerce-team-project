@@ -1,45 +1,31 @@
 import React, {useState} from "react";
-//import {FormControl, InputLabel, Input, Button, FormHelperText} from "@mui/material"
 import { useNavigate } from "react-router-dom";
 import { Form, Button, Container } from 'react-bootstrap';
 
 
 
-function Register () {
+function Login () {
 
     const navigate = useNavigate();
-
-    const [firstname, setFirstname] = useState("")
-    const [lastname, setLastname] = useState("")
+    
+   
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
-    const [email, setEmail] = useState("")
-
-    const handleFirstname = (value) => {
-        setFirstname(value)
-    }
-    const handleLastname = (value) => {
-        setLastname(value)
-    }
+    const [authorized, setAuthorized] = useState("")
+  
     const handleUsername = (value) => {
         setUsername(value)
     }
     const handlePassword = (value) => {
         setPassword(value)
     }
-    const handleEmail = (value) => {
-        setEmail(value)
-    }
+
 
     const sendRequest = (path) => {
         const requestBody = {
             username: username,
             password: password,
-            email: email,
-            firstname: firstname,
-            lastname: lastname,
           };
-
           console.log(requestBody);
 
         fetch("http://localhost:8080/auth/" + path, {
@@ -50,15 +36,16 @@ function Register () {
           body: JSON.stringify({
             username: username,
             password: password,
-            email: email,
-            firstname: firstname,
-            lastname: lastname,
+        
           }),
         })
         
         .then((res) => {
             if (!res.ok) {
               throw new Error("Error " + res.status + ": " + res.statusText);
+            }
+            if (res.ok) {
+              setAuthorized(true)
             }
             console.log(res);
             return res.text();
@@ -73,27 +60,22 @@ function Register () {
       };      
 
     const handleRegister = () => {
-        sendRequest("register")
         
+        navigate("/register")
        // history.go("/auth")
     }
     const handleLogin = () => {
-        navigate("/login")
+        sendRequest("login")
+        
+        if(authorized === true){
+          navigate("/")
+        }
         
     }
 
     return(
       <Container className="d-flex justify-content-center">
       <Form>
-      <Form.Group className="mb-3">
-        <Form.Label>First Name</Form.Label>
-        <Form.Control type="text" onChange={(event) => handleFirstname(event.target.value)} />
-      </Form.Group>
-    
-      <Form.Group className="mb-3">
-        <Form.Label>Last Name</Form.Label>
-        <Form.Control type="text" onChange={(event) => handleLastname(event.target.value)} />
-      </Form.Group>
     
       <Form.Group className="mb-3">
         <Form.Label>Username</Form.Label>
@@ -105,16 +87,11 @@ function Register () {
         <Form.Control type="password" onChange={(event) => handlePassword(event.target.value)} />
       </Form.Group>
     
-      <Form.Group className="mb-3">
-        <Form.Label>Email</Form.Label>
-        <Form.Control type="email" onChange={(event) => handleEmail(event.target.value)} />
-      </Form.Group>
-    
-      <Button variant="primary" onClick={handleRegister}>Register</Button>
-      <Form.Text className="text-muted mb-3">Already registered? <Button variant="link" onClick={handleLogin}>Login</Button></Form.Text>
+      <Button variant="dark" onClick={handleLogin}>Login</Button>
+      <Form.Text className="text-muted mb-3">Already registered? <Button variant="link" onClick={handleRegister}>Register</Button></Form.Text>
     </Form>
     </Container>
     )
 }
 
-export default Register;
+export default Login;
