@@ -46,6 +46,7 @@ function Login () {
             }
             if (res.ok) {
               setAuthorized(true)
+              navigate("/")
             }
             console.log(res);
             return res.text();
@@ -67,9 +68,6 @@ function Login () {
     const handleLogin = () => {
         sendRequest("login")
         
-        if(authorized === true){
-          navigate("/")
-        }
         
     }
 

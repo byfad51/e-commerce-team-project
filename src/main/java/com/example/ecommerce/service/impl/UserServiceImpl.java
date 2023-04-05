@@ -1,7 +1,6 @@
 package com.example.ecommerce.service.impl;
 
 import com.example.ecommerce.dto.user.UserResponse;
-import com.example.ecommerce.exception.UserNotFoundException;
 import com.example.ecommerce.model.User;
 import com.example.ecommerce.repository.UserRepository;
 import com.example.ecommerce.service.UserService;
