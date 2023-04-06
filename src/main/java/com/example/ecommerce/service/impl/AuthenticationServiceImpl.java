@@ -55,9 +55,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             user.setAnswer(request.getAnswer());
             user.setAddress(request.getAddress());
             AuthResponse response = new AuthResponse();
+            userRepository.save(user);
             response.setMessage("Successfully registered!");
             response.setUserId(user.getId());
-            userRepository.save(user);
+
             return response;
         }
         else if(userRepository.findByUsername(request.getUsername()).isPresent())
