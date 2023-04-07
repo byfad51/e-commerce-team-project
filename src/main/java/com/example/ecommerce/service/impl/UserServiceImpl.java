@@ -31,6 +31,19 @@ public class UserServiceImpl implements UserService {
             return new UserResponse(user);
         else return null;
     }
+    public User getUserByEmail(String email) {
+        User user = userRepository.findByEmail(email).orElse(null);
+        if(user!=null)
+            return user;
+        else return null;
+    }
+
+    @Override
+    public void updateUser(User user) {
+        userRepository.save(user);
+
+    }
+
 
     public UserResponse getUserById(Long userId) {
         User user = userRepository.findById(userId).orElse(null);
