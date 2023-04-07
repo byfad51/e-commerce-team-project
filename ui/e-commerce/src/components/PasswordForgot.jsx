@@ -2,13 +2,16 @@ import React, {useState} from 'react'
 import { Form, Button } from 'react-bootstrap';
 import {   Grid, Segment } from 'semantic-ui-react'
 import {useNavigate} from "react-router-dom";
-import alert from "bootstrap/js/src/alert";
-//import {useNavigate} from "react-router-dom";
+
 
 function PasswordForgot () {
     document.title = 'Password Forgot';
     const navigate = useNavigate();
     const [email, setEmail] = useState("")
+    const [answer, setAnswer] = useState("")
+    const [password, setPassword] = useState("")
+      let [isThereEmail, setisThereEmail] = useState("")
+
     const handleEmail = (value) => {
         setEmail(value)
     }
@@ -23,13 +26,49 @@ function PasswordForgot () {
         // history.go("/auth")
     }
     const handleCheck = () => {
-       /* sendRequest("login")
-
-        if(authorized === true){
-            navigate("/")
-        }*/
-
    
+        if(email === ""){
+           alert("Enter an email")
+        }else{
+          //  setisThereEmail(true)
+          const requestBody = {
+            email:email
+          };
+          console.log(requestBody);
+
+          fetch("http://localhost:8080/passreset/getUserByEmail", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+          },
+          body: JSON.stringify({
+            email: email
+          }),
+        }).then((res) => {
+           /* if (!res.) {
+              throw new Error("Error " + res.status + ": " + res.statusText);
+
+            }
+            if (res.ok) {
+              setAuthorized(true)
+                navigate("/")
+            }*/
+            setisThereEmail(true)
+            console.log(res);
+           // return res.text();
+          });
+         /* .then((data) => {
+            const result = JSON.parse(data);
+            localStorage.setItem("tokenKey", result.message);
+            localStorage.setItem("currentUser", result.userId);
+            localStorage.setItem("userName", username);
+
+          })
+          .catch((err) => {
+              alert("ERROR - TRY AGAIN -" + err.message)
+              console.log(err)
+          });*/
+        }
     }
 
 
@@ -43,14 +82,10 @@ function PasswordForgot () {
                         <Form.Label>Email</Form.Label>
                         <Form.Control type="text"  placeholder="name@example.com" onChange={(event) => handleEmail(event.target.value)} />
                     </Form.Group>
-
-
-                    <Button variant="dark" onClick={handleCheck}>CHECK</Button>
-                    <br/>
-
+                    <Button variant="dark" onClick={handleCheck}>CHECK</Button><br/>
                 </Form>
-
-
+                
+                {isThereEmail ?  <Form.Label>Doğru</Form.Label>:  <Form.Label>Yanlış</Form.Label>}
             </Grid.Column>
             <Grid.Column> </Grid.Column><Grid.Column> </Grid.Column>
             <Grid.Column verticalAlign='middle'>
