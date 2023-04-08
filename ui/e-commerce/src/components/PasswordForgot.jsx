@@ -32,31 +32,31 @@ function PasswordForgot () {
         }else{
           //  setisThereEmail(true)
           const requestBody = {
-            email:email
+            email:email,
           };
           console.log(requestBody);
 
-          fetch("http://localhost:8080/passreset/getUserByEmail", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json; charset=utf-8",
-          },
-          body: JSON.stringify({
-            email: email
-          }),
-        }).then((res) => {
-           /* if (!res.) {
-              throw new Error("Error " + res.status + ": " + res.statusText);
+          fetch("http://localhost:8080/passreset/getUserByEmail?email=" + email, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json; charset=utf-8",
+  },
+  body: JSON.stringify({
+    email: email
+  }),
+}).then((res) => {
+   setisThereEmail(true)
+   console.log(res);
+   return res.json(); // use json() method to parse the response
+})
+.then((data) =>{
+  console.log(data)
+})
+.catch((err) => {
+  alert("ERROR - TRY AGAIN -" + err.message)
+  console.log(err)
+});
 
-            }
-            if (res.ok) {
-              setAuthorized(true)
-                navigate("/")
-            }*/
-            setisThereEmail(true)
-            console.log(res);
-           // return res.text();
-          });
          /* .then((data) => {
             const result = JSON.parse(data);
             localStorage.setItem("tokenKey", result.message);
@@ -80,7 +80,7 @@ function PasswordForgot () {
                 <Form>
                     <Form.Group className="mb-3">
                         <Form.Label>Email</Form.Label>
-                        <Form.Control type="text"  placeholder="name@example.com" onChange={(event) => handleEmail(event.target.value)} />
+                        <Form.Control type="email"  placeholder="name@example.com" onChange={(event) => handleEmail(event.target.value)} />
                     </Form.Group>
                     <Button variant="dark" onClick={handleCheck}>CHECK</Button><br/>
                 </Form>

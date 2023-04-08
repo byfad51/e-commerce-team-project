@@ -92,7 +92,7 @@ function Login () {
                         <Form>
                             <Form.Group className="mb-3">
                                 <Form.Label>Username</Form.Label>
-                                <Form.Control type="text"  placeholder="mcan123" onChange={(event) => handleUsername(event.target.value)} />
+                                <Form.Control type="email"  placeholder="mcan123" onChange={(event) => handleUsername(event.target.value)} />
                             </Form.Group>
 
                             <Form.Group className="mb-3">
