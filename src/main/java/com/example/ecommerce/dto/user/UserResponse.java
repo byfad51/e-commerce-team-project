@@ -1,5 +1,4 @@
 package com.example.ecommerce.dto.user;
-
 import com.example.ecommerce.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
