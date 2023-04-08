@@ -95,6 +95,7 @@
       justify-content: center;
       background-color: #fff;
       transition: all 0.2s ease-out;
+      z-index: 999;
     }
   
     .nav-menu.active {
