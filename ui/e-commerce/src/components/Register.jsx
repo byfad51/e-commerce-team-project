@@ -24,10 +24,10 @@ function Register () {
     const handleUsername = (value) => {setUsername(value) }
     const handlePassword = (value) => {setPassword(value)}
     const handleEmail = (value) => {setEmail(value) }
-    const handlePhone = (value) => {setEmail(value) }
-    const handleAddress = (value) => {setEmail(value)} 
-    const handleQuestion = (value) => {setEmail(value)}
-    const handleAnswer = (value) => {setEmail(value)}
+    const handlePhone = (value) => {setPhone(value) }
+    const handleAddress = (value) => {setAddress(value)} 
+    const handleQuestion = (value) => {setQuestion(value)}
+    const handleAnswer = (value) => {setAnswer(value)}
 
 
     const sendRequest = (path) => {
@@ -121,7 +121,7 @@ function Register () {
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Phone</Form.Label>
-        <Form.Control type="number" placeholder="Ex: 05559990011" onChange={(event) => handlePhone(event.target.value)} />
+        <Form.Control type="text" placeholder="Ex: 05559990011" onChange={(event) => handlePhone(event.target.value)} />
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Address</Form.Label>
