@@ -1,0 +1,152 @@
+.NavbarItems{
+    background-color: white;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+}
+
+.navbar-logo{
+    color:rgb(0, 0, 0);
+    justify-self: start;
+    margin-left: 20px;
+    cursor:pointer;
+}
+.navbar-container {
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+.fa-react{
+    margin-left: 0.5rem;
+    font-size:1.6rem ;
+}
+
+.nav-menu{
+    display: flex;
+    grid-template-columns: repeat(5, auto);
+    grid-gap: 10px;
+    list-style: none;
+    text-align: center;
+    width: 70vw;
+    justify-content: end;
+    margin-right: 2rem;
+}
+
+.nav-links{
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    
+}
+
+.nav-links:hover{
+    background-color:#1b1c21;
+    color: #fff;
+    border-radius: 4px;
+    transition: all 0.2s ease-out;
+}
+
+.fa-bars{
+    color: rgb(162, 40, 40);
+}
+
+.nav-links-mobile{
+    display: none;
+}
+
+.menu-icon{
+    display: none;
+}
+
+
+.cart-icon {
+    margin-right: 0.5em;
+  }
+  
+  .cart-text {
+    font-weight: bold;
+  }
+  
+  .cart-button {
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    color: #333;
+  }
+  
+  .cart-button:hover {
+    color: #666;
+  }
+
+
+@media screen and (max-width: 540px) {
+    .nav-menu{
+      position: fixed;
+      top: 80px;
+      left: -100%;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background-color: #fff;
+      transition: all 0.2s ease-out;
+      z-index: 999;
+    }
+  
+    .nav-menu.active {
+      left: 0;
+    }
+
+
+    .cart-button {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px; 
+      }
+
+
+    .menu-icon {
+      display: block;
+      position: absolute;
+      top: 0;
+      right: 0;
+      transform: translate(-100%, 60%);
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: #000;
+    }
+  
+    .navbar-logo {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: translate(25%, 50%);
+    }
+  }
+  .Button {
+    border-radius: 4px;
+    background-color: #000000;
+    white-space: nowrap;
+    padding: 10px 22px;
+    color: #ffffff;
+    font-size: 16px;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .Button:hover {
+    transition: all 0.2s ease-in-out;
+    background: #ffffff;
+    color: #000000;
+  }
+
+
+
+  
