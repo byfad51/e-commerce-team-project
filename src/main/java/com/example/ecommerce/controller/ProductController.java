@@ -1,17 +1,20 @@
 package com.example.ecommerce.controller;
 
+import com.example.ecommerce.dto.product.ProductCreateRequest;
 import com.example.ecommerce.dto.product.ProductResponse;
+import com.example.ecommerce.model.Product;
+import com.example.ecommerce.service.ProductService;
 import com.example.ecommerce.service.impl.ProductServiceImpl;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 @RestController
 @RequestMapping("/products")
 public class ProductController {
-    private final ProductServiceImpl productService;
+    private final ProductService productService;
 
    @Autowired
    public ProductController(ProductServiceImpl productService) {
@@ -32,28 +35,24 @@ public class ProductController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/getProductByProductname")
-    public ResponseEntity<ProductResponse> getProductByProductname(@RequestParam String productname){
-        ProductResponse response = productService.getProductByProductname(productname);
+    @GetMapping("/getProductByProductName")
+    public ResponseEntity<ProductResponse> getProductByProductName(@RequestParam String productName){
+        ProductResponse response = productService.getProductByProductName(productName);
         if (response != null)
             return new ResponseEntity<>(response, HttpStatus.FOUND);
         else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    // CREATE method
+    @PostMapping("/addProduct")
+    public ResponseEntity<String> addProduct(@Valid @RequestBody ProductCreateRequest request){
+       if(productService.addProduct(request)!=null){
+           return new ResponseEntity<>(productService.addProduct(request),HttpStatus.CREATED);
 
-  /*  @PostMapping
-    public Product addProduct(@RequestBody Product product) {
-        return productService.addProduct(product);
+       }
+       else
+           return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
-    @PutMapping("/{id}")
-    public Product updateProduct(@PathVariable Long id, @RequestBody Product product) {
-        return productService.updateProduct(id, product);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteProduct(@PathVariable Long id) {
-        productService.deleteProduct(id);
-    }*/
 }
