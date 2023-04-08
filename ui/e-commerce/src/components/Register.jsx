@@ -1,12 +1,12 @@
 import React, {useState} from "react";
 //import {FormControl, InputLabel, Input, Button, FormHelperText} from "@mui/material"
 import { useNavigate } from "react-router-dom";
-import { Form, Button, Container } from 'react-bootstrap';
-
+import { Form, Button} from 'react-bootstrap';
+import {   Grid, Segment } from 'semantic-ui-react'
 
 
 function Register () {
-
+    document.title = 'Register';
     const navigate = useNavigate();
 
     const [firstname, setFirstname] = useState("")
@@ -40,6 +40,7 @@ function Register () {
             lastname: lastname,
           };
 
+
           console.log(requestBody);
 
         fetch("http://localhost:8080/auth/" + path, {
@@ -58,9 +59,11 @@ function Register () {
         
         .then((res) => {
             if (!res.ok) {
+
               throw new Error("Error " + res.status + ": " + res.statusText);
             }
             console.log(res);
+
             return res.text();
           })
           .then((data) => {
@@ -68,8 +71,14 @@ function Register () {
             localStorage.setItem("tokenKey", result.message);
             localStorage.setItem("currentUser", result.userId);
             localStorage.setItem("userName", username);
+              alert("Registired")
+              navigate("/login")
           })
-          .catch((err) => console.log(err));
+          .catch((err) =>{
+              console.log(err)
+              alert(err)
+          } );
+
       };      
 
     const handleRegister = () => {
@@ -83,37 +92,44 @@ function Register () {
     }
 
     return(
-      <Container className="d-flex justify-content-center">
+        <Segment>
+            <Grid columns={3} relaxed='very' stackable>
+                <Grid.Column> </Grid.Column>
+                <Grid.Column>
       <Form>
       <Form.Group className="mb-3">
         <Form.Label>First Name</Form.Label>
-        <Form.Control type="text" onChange={(event) => handleFirstname(event.target.value)} />
+        <Form.Control type="text" placeholder="Ali" onChange={(event) => handleFirstname(event.target.value)} />
       </Form.Group>
-    
       <Form.Group className="mb-3">
         <Form.Label>Last Name</Form.Label>
-        <Form.Control type="text" onChange={(event) => handleLastname(event.target.value)} />
+        <Form.Control type="text" placeholder="Zengin" onChange={(event) => handleLastname(event.target.value)} />
       </Form.Group>
-    
       <Form.Group className="mb-3">
         <Form.Label>Username</Form.Label>
-        <Form.Control type="text" onChange={(event) => handleUsername(event.target.value)} />
+        <Form.Control type="text" placeholder="ali123" onChange={(event) => handleUsername(event.target.value)} />
       </Form.Group>
-    
       <Form.Group className="mb-3">
         <Form.Label>Password</Form.Label>
-        <Form.Control type="password" onChange={(event) => handlePassword(event.target.value)} />
+        <Form.Control type="password"  onChange={(event) => handlePassword(event.target.value)} />
       </Form.Group>
-    
       <Form.Group className="mb-3">
         <Form.Label>Email</Form.Label>
-        <Form.Control type="email" onChange={(event) => handleEmail(event.target.value)} />
+        <Form.Control type="email" placeholder="name@example.com" onChange={(event) => handleEmail(event.target.value)} />
       </Form.Group>
-    
-      <Button variant="primary" onClick={handleRegister}>Register</Button>
-      <Form.Text className="text-muted mb-3">Already registered? <Button variant="link" onClick={handleLogin}>Login</Button></Form.Text>
+      <Button variant="dark" onClick={handleRegister}>Register</Button>
+      <Form.Text className="text-muted mb-3">
+
+          <br/>
+         <center> <Button variant="outline-danger" style={{color:"darkred"}}  onClick={handleLogin}>Already registered?</Button></center>
+      </Form.Text>
     </Form>
-    </Container>
+                </Grid.Column>
+                <Grid.Column>   </Grid.Column>
+            </Grid>
+
+
+        </Segment>
     )
 }
 
