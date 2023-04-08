@@ -1,8 +1,7 @@
 import React, {useState} from "react";
 //import {FormControl, InputLabel, Input, Button, FormHelperText} from "@mui/material"
 import { useNavigate } from "react-router-dom";
-import {  Container } from 'react-bootstrap';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button} from 'react-bootstrap';
 import {   Grid, Segment } from 'semantic-ui-react'
 
 
@@ -122,7 +121,7 @@ function Register () {
       <Form.Text className="text-muted mb-3">
 
           <br/>
-         <center> <Button variant="link" style={{color:"darkred"}} variant="outline-danger" onClick={handleLogin}>Already registered?</Button></center>
+         <center> <Button variant="outline-danger" style={{color:"darkred"}}  onClick={handleLogin}>Already registered?</Button></center>
       </Form.Text>
     </Form>
                 </Grid.Column>

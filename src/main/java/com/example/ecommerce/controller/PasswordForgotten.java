@@ -23,12 +23,12 @@ public class PasswordForgotten {
     public ResponseEntity<User> getUserByEmail(@RequestParam String email) {
         User user = userService.getUserByEmail(email);
         if (user != null)
-            return new ResponseEntity<>(user, HttpStatus.FOUND);
+            return new ResponseEntity<>(user, HttpStatus.OK);
         else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping("/getQuestionByEmail")
+  /*  @PostMapping("/getQuestionByEmail")
     public ResponseEntity<String> getQuestionByEmail(@RequestParam String email) {
         User user = userService.getUserByEmail(email);
         if (user != null)
@@ -44,7 +44,7 @@ public class PasswordForgotten {
             return new ResponseEntity<>(user.getAnswer(), HttpStatus.FOUND);
         else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
+    }*/
 
     @PostMapping("/changePasswordByAnswer")
     public ResponseEntity changePasswordByAnswer(@RequestParam String email,@RequestParam String answer, @RequestParam String password) {
@@ -54,7 +54,7 @@ public class PasswordForgotten {
                 try {
                    user.setPassword(passwordEncoder.encode(password));
                    userService.updateUser(user );
-                    return new ResponseEntity<>(HttpStatus.ACCEPTED);
+                    return new ResponseEntity<>(HttpStatus.OK);
 
                 } catch (Exception e) {
                     return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
