@@ -85,7 +85,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 
         Optional<User> user = userRepository.findByUsername(request.getUsername());
-        System.out.println("here");
+
         AuthResponse response = new AuthResponse();
         response.setMessage("Bearer " + jwtToken);
         response.setUserId(user.get().getId());
