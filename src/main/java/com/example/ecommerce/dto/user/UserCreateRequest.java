@@ -30,12 +30,16 @@ public class UserCreateRequest {
     @NotBlank(message = "Email cannot be empty")
     private String email;
 
+    @NotBlank
+    @NotNull
+    private String question;
+
+    @NotNull
+    @NotBlank
+    private String answer;
+
     private String phone;
 
     private String address;
-
-    private String question;
-
-    private String answer;
 
 }
