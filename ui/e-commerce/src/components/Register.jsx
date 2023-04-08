@@ -14,22 +14,21 @@ function Register () {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [email, setEmail] = useState("")
+    const [question, setQuestion] = useState("");
+    const [answer, setAnswer] = useState("");
+    const [phone, setPhone] = useState("");
+    const [address, setAddress] = useState("");
 
-    const handleFirstname = (value) => {
-        setFirstname(value)
-    }
-    const handleLastname = (value) => {
-        setLastname(value)
-    }
-    const handleUsername = (value) => {
-        setUsername(value)
-    }
-    const handlePassword = (value) => {
-        setPassword(value)
-    }
-    const handleEmail = (value) => {
-        setEmail(value)
-    }
+    const handleFirstname = (value) => {setFirstname(value) }
+    const handleLastname = (value) => {setLastname(value)}
+    const handleUsername = (value) => {setUsername(value) }
+    const handlePassword = (value) => {setPassword(value)}
+    const handleEmail = (value) => {setEmail(value) }
+    const handlePhone = (value) => {setEmail(value) }
+    const handleAddress = (value) => {setEmail(value)} 
+    const handleQuestion = (value) => {setEmail(value)}
+    const handleAnswer = (value) => {setEmail(value)}
+
 
     const sendRequest = (path) => {
         const requestBody = {
@@ -38,9 +37,11 @@ function Register () {
             email: email,
             firstname: firstname,
             lastname: lastname,
+            phone: phone,
+            address: address,
+            question: question,
+            answer: answer
           };
-
-
           console.log(requestBody);
 
         fetch("http://localhost:8080/auth/" + path, {
@@ -54,6 +55,10 @@ function Register () {
             email: email,
             firstname: firstname,
             lastname: lastname,
+            phone: phone,
+            address: address,
+            question: question,
+            answer: answer
           }),
         })
         
@@ -83,12 +88,9 @@ function Register () {
 
     const handleRegister = () => {
         sendRequest("register")
-        
-       // history.go("/auth")
     }
     const handleLogin = () => {
         navigate("/login")
-        
     }
 
     return(
@@ -99,15 +101,15 @@ function Register () {
       <Form>
       <Form.Group className="mb-3">
         <Form.Label>First Name</Form.Label>
-        <Form.Control type="text" placeholder="Ali" onChange={(event) => handleFirstname(event.target.value)} />
+        <Form.Control type="text" placeholder="Enter your first name" onChange={(event) => handleFirstname(event.target.value)} />
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Last Name</Form.Label>
-        <Form.Control type="text" placeholder="Zengin" onChange={(event) => handleLastname(event.target.value)} />
+        <Form.Control type="text" placeholder="Enter your last name" onChange={(event) => handleLastname(event.target.value)} />
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Username</Form.Label>
-        <Form.Control type="text" placeholder="ali123" onChange={(event) => handleUsername(event.target.value)} />
+        <Form.Control type="text" placeholder="Enter your username" onChange={(event) => handleUsername(event.target.value)} />
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Password</Form.Label>
@@ -116,6 +118,27 @@ function Register () {
       <Form.Group className="mb-3">
         <Form.Label>Email</Form.Label>
         <Form.Control type="email" placeholder="name@example.com" onChange={(event) => handleEmail(event.target.value)} />
+      </Form.Group>
+      <Form.Group className="mb-3">
+        <Form.Label>Phone</Form.Label>
+        <Form.Control type="number" placeholder="Ex: 05559990011" onChange={(event) => handlePhone(event.target.value)} />
+      </Form.Group>
+      <Form.Group className="mb-3">
+        <Form.Label>Address</Form.Label>
+        <Form.Control type="text" placeholder="Address" onChange={(event) => handleAddress(event.target.value)} />
+      </Form.Group>
+      <Form.Group className="mb-3">
+      <Form.Label>Question</Form.Label>
+      <Form.Select onChange={(event) => handleQuestion(event.target.value)}>
+        <option value="">Choose a question...</option>
+        <option value="question1">1 kilo of iron or 1 kilo of heavy cotton?</option>
+        <option value="question2">2 kilo of iron or 2 kilo of heavy cotton?</option>
+        <option value="question3">3 kilo of iron or 3 kilo of heavy cotton?</option>
+      </Form.Select>
+    </Form.Group>
+      <Form.Group className="mb-3">
+        <Form.Label>Answer</Form.Label>
+        <Form.Control type="text" placeholder="Answer" onChange={(event) => handleAnswer(event.target.value)} />
       </Form.Group>
       <Button variant="dark" onClick={handleRegister}>Register</Button>
       <Form.Text className="text-muted mb-3">
