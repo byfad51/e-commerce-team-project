@@ -105,7 +105,6 @@ function PasswordForgot () {
         })
         .catch(error => {
           alert("error")
-          setisThereEmail(false)
           console.error('There was a problem with the fetch operation:', error);
         });
         
