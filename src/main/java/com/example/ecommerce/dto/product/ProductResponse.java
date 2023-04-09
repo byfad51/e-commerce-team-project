@@ -23,6 +23,7 @@ public class ProductResponse {
 
     public ProductResponse(Product product) {
         this.productName = product.getProductName();
+        this.authorName=product.getAuthorName();
         this.description = product.getDescription();
         this.price = product.getPrice();
        this.stock=product.getStock();
