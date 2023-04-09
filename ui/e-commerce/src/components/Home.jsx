@@ -11,9 +11,7 @@ function Home() {
     <div>
       <Navbar />
       <div style={{ display: 'flex' }}>
-        <Mya />
-        <div style={{ flexGrow: 1 }}>
-        </div>
+       
       </div>
     </div>
     
