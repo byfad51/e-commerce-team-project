@@ -115,7 +115,7 @@ function Login () {
     }
 
     return(
-        <Segment><div>{authorized ? navigate("/"):null}</div>
+        <Segment><center><label><h1>LOGIN</h1></label></center><div>{authorized ? navigate("/"):null}</div>
         <Grid columns={3} relaxed='very' stackable>
             <Grid.Column> </Grid.Column>
             <Grid.Column>

@@ -97,7 +97,7 @@ function Register () {
     }
 
     return(
-        <Segment>
+        <Segment><center><label><h1>REGISTER FOR FREE</h1></label></center>
             <Grid columns={3} relaxed='very' stackable>
                 <Grid.Column> </Grid.Column>
                 <Grid.Column>
