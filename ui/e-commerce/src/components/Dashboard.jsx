@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import {Carousel, Button, Container} from 'react-bootstrap';
 import Navbar from "./Navbar";
+import Mya from './Mya';
 
 function Home() {
   const navigate = useNavigate();
@@ -9,6 +10,9 @@ function Home() {
   return(
     <div>
       <Navbar />
+      <div style={{ display: 'flex' }}>
+       <Mya/>
+      </div>
     </div>
     
   );
