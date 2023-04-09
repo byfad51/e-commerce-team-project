@@ -1,35 +1,55 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
 import { FiUser } from 'react-icons/fi';
-import './Mya.css'
-
+import AddProduct from './AddProduct';
+import DeleteProduct from './DeleteProduct';
+import UpdateProduct from './UpdateProduct';
+import './Mya.css';
 
 const Mya = () => {
-    const [menuItems] = useState([
-        { title: 'Add Product', path: '/#' },
-        { title: 'List of all perfumes', path: '/#' },
-        { title: 'List of all users', path: '/#' },
-        { title: 'List of all orders', path: '/#' },
-    ]);
+  const [activeOption, setActiveOption] = useState('Add Product');
 
+  const handleOptionClick = (option) => {
+    setActiveOption(option);
+  };
 
-    useEffect(() => {
-        // State yönetimi
-    }, []);
-    const username = localStorage.getItem("username");
-    const authorized = localStorage.getItem("authorized");
-    return (
-        <div className="sidebar">
-            <h3><FiUser className="outlined-user-icon" />{authorized ? "Hi, non role": "Welcome sir, "+username} </h3>
-            <ul>
-                {menuItems.map((item, index) => (
-                    <li key={index}>
-                        <Link to={item.path}>{item.title}</Link>
-                    </li>
-                ))}
-            </ul>
-        </div>
-    );
+  const renderOption = () => {
+    switch (activeOption) {
+      case 'Add Product':
+        return <AddProduct />;
+      case 'Delete Product':
+        return <DeleteProduct />;
+      case 'Update Product':
+        return <UpdateProduct />;
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="sidebar">
+      <h3>
+        <FiUser className="outlined-user-icon" /> My Account
+      </h3>
+      <ul>
+        <li>
+          <button onClick={() => handleOptionClick('Add Product')}>
+            Add Product
+          </button>
+        </li>
+        <li>
+          <button onClick={() => handleOptionClick('Delete Product')}>
+            Delete Product
+          </button>
+        </li>
+        <li>
+          <button onClick={() => handleOptionClick('Update Product')}>
+            Update Product
+          </button>
+        </li>
+      </ul>
+      <div className="content">{renderOption()}</div>
+    </div>
+  );
 };
 
 export default Mya;
