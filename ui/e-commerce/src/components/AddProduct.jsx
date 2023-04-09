@@ -2,8 +2,8 @@ import React, {useState} from "react";
 //import {FormControl, InputLabel, Input, Button, FormHelperText} from "@mui/material"
 import { useNavigate } from "react-router-dom";
 import { Form, Button} from 'react-bootstrap';
-import {   Grid, Segment } from 'semantic-ui-react'
-
+import {   Grid, Segment, TextArea } from 'semantic-ui-react'
+import "./design.css"
 
 function AddProduct () {
     document.title = 'Register';
@@ -92,11 +92,15 @@ function AddProduct () {
         sendRequest("products/addProduct")
     }
     return(
+      <div className="div-mar">
         <Segment>
+          <div className="title"><h1>Add Product</h1></div>
             <Grid columns={3} relaxed='very' stackable>
                 <Grid.Column> </Grid.Column>
                 <Grid.Column>
+                  
       <Form>
+      <div className="form-row">
       <Form.Group className="mb-3">
         <Form.Label>Book Name</Form.Label>
         <Form.Control type="text" placeholder="Book Name" onChange={(event) => handleProductName(event.target.value)} />
@@ -106,9 +110,15 @@ function AddProduct () {
         <Form.Control type="text" placeholder="Author Name" onChange={(event) => handleAuthorName(event.target.value)} />
       </Form.Group>
       <Form.Group className="mb-3">
-        <Form.Label>Description</Form.Label>
-        <Form.Control type="text" placeholder="Enter your username" onChange={(event) => handleDescription(event.target.value)} />
+        <Form.Label>Image Url</Form.Label>
+        <Form.Control type="text" placeholder="Url" onChange={(event) => handleImageUrl(event.target.value)} />
       </Form.Group>
+      <Form.Group className="mb-3">
+        <Form.Label>ISBN</Form.Label>
+        <Form.Control type="text" placeholder="Url" onChange={(event) => handleISBN(event.target.value)} />
+      </Form.Group>
+      </div>
+      <div className="form-row">
       <Form.Group className="mb-3">
         <Form.Label>Price</Form.Label>
         <Form.Control type="number"  onChange={(event) => handlePrice(event.target.value)} />
@@ -119,8 +129,15 @@ function AddProduct () {
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Publisher</Form.Label>
-        <Form.Control type="text" placeholder="Ex: Orhan Pamuk" onChange={(event) => handlePublisher(event.target.value)} />
+        <Form.Control rows type="text" placeholder="Ex: Orhan Pamuk" onChange={(event) => handlePublisher(event.target.value)} />
       </Form.Group>
+      
+      <Form.Group className="mb-3">
+        <Form.Label>Description</Form.Label><br></br>
+        <TextArea placeholder="" onChange={(event) => handleDescription(event.target.value)} style={{ minWidth: 200 }} />
+      </Form.Group>
+      </div>
+      <div className="form-row">
       <Form.Group className="mb-3">
         <Form.Label>Stock</Form.Label>
         <Form.Control type="number" placeholder="Ex: 20" onChange={(event) => handleStock(event.target.value)} />
@@ -138,15 +155,10 @@ function AddProduct () {
         <Form.Label>Publish Date</Form.Label>
         <Form.Control type="text" placeholder="Answer" onChange={(event) => handlePublishedDate(event.target.value)} />
       </Form.Group>
-      <Form.Group className="mb-3">
-        <Form.Label>Image Url</Form.Label>
-        <Form.Control type="text" placeholder="Url" onChange={(event) => handleImageUrl(event.target.value)} />
-      </Form.Group>
-      <Form.Group className="mb-3">
-        <Form.Label>ISBN</Form.Label>
-        <Form.Control type="text" placeholder="Url" onChange={(event) => handleISBN(event.target.value)} />
-      </Form.Group>
-      <Button variant="dark" onClick={handleAddProduct}>Add</Button>
+      </div>
+     
+      <center>
+      <Button variant="dark"  onClick={handleAddProduct}>Add</Button></center>
       <Form.Text className="text-muted mb-3">
 
           <br/>
@@ -158,6 +170,7 @@ function AddProduct () {
 
 
         </Segment>
+        </div>
     )
 }
 
