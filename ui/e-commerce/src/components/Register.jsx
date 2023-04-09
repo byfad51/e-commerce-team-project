@@ -29,6 +29,9 @@ function Register () {
     const handleQuestion = (value) => {setQuestion(value)}
     const handleAnswer = (value) => {setAnswer(value)}
 
+    /*  if (localStorage.getItem("authorized")) { /// NŞA, giriş yapılmışsa ana sayfaya atar
+       navigate('/')
+   }*/
 
     const sendRequest = (path) => {
         const requestBody = {
@@ -75,7 +78,7 @@ function Register () {
             const result = JSON.parse(data);
             localStorage.setItem("tokenKey", result.message);
             localStorage.setItem("currentUser", result.userId);
-            localStorage.setItem("userName", username);
+            localStorage.setItem("username", username);
               alert("Registired")
               navigate("/login")
           })
@@ -94,7 +97,7 @@ function Register () {
     }
 
     return(
-        <Segment>
+        <Segment><center><label><h1>REGISTER FOR FREE</h1></label></center>
             <Grid columns={3} relaxed='very' stackable>
                 <Grid.Column> </Grid.Column>
                 <Grid.Column>
@@ -121,7 +124,7 @@ function Register () {
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Phone</Form.Label>
-        <Form.Control type="text" placeholder="Ex: 05559990011" onChange={(event) => handlePhone(event.target.value)} />
+        <Form.Control type="number" placeholder="Ex: 05559990011" onChange={(event) => handlePhone(event.target.value)} />
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Address</Form.Label>
@@ -131,9 +134,9 @@ function Register () {
       <Form.Label>Question</Form.Label>
       <Form.Select onChange={(event) => handleQuestion(event.target.value)}>
         <option value="">Choose a question...</option>
-        <option value="question1">1 kilo of iron or 1 kilo of heavy cotton?</option>
-        <option value="question2">2 kilo of iron or 2 kilo of heavy cotton?</option>
-        <option value="question3">3 kilo of iron or 3 kilo of heavy cotton?</option>
+        <option value="What's you favourite color?">What's you favourite color?</option>
+        <option value="What was your best teacher's name at high school?">What was your best teacher's name at high school?</option>
+        <option value="What's the meaning of live?">What's the meaning of live?</option>
       </Form.Select>
     </Form.Group>
       <Form.Group className="mb-3">
