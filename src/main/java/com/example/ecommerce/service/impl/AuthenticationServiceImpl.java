@@ -58,10 +58,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             userRepository.save(user);
             response.setMessage("Successfully registered!");
             response.setUserId(user.getId());
-<<<<<<< HEAD
-=======
 
->>>>>>> gulcan
             return response;
         }
         else if(userRepository.findByUsername(request.getUsername()).isPresent())
@@ -88,7 +85,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 
         Optional<User> user = userRepository.findByUsername(request.getUsername());
-        System.out.println("here");
+
         AuthResponse response = new AuthResponse();
         response.setMessage("Bearer " + jwtToken);
         response.setUserId(user.get().getId());

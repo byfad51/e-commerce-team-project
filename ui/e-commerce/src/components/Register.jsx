@@ -121,7 +121,7 @@ function Register () {
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Phone</Form.Label>
-        <Form.Control type="number" placeholder="Ex: 05559990011" onChange={(event) => handlePhone(event.target.value)} />
+        <Form.Control type="text" placeholder="Ex: 05559990011" onChange={(event) => handlePhone(event.target.value)} />
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Address</Form.Label>
