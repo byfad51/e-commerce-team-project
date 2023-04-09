@@ -51,7 +51,7 @@ function AddProduct () {
           };
           console.log(requestBody);
 
-        fetch("http://localhost:8080/auth/" + path, {
+        fetch("http://localhost:8080/" + path, {
           method: "POST",
           headers: {
             "Content-Type": "application/json; charset=utf-8",
@@ -89,7 +89,7 @@ function AddProduct () {
       };      
 
     const handleAddProduct = () => {
-        sendRequest("register")
+        sendRequest("products/addProduct")
     }
     return(
         <Segment>
