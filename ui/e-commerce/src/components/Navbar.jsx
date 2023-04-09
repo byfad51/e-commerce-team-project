@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import {MenuItems} from "./MenuItems"
+import React, { useState, useEffect  } from 'react';
 import "./Navbar.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faBars, faTimes,faShoppingCart  } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from "react-router-dom";
 
 function Navbar() {
   const [isSeller, setIsSeller] = useState(false);
   const [isCustomer, setIsCustomer] = useState(false);
-  
+  const navigate = useNavigate();
   const handleLogin = (role) => {
     if (role === 'seller') {
       setIsSeller(true);
@@ -17,38 +17,69 @@ function Navbar() {
       setIsSeller(false);
     }
   }
-  
+
+  /* const handleLogout = () => {
+     localStorage.setItem("authorized",false)
+     localStorage.setItem("username","")
+     navigate("/")
+
+     useEffect(() => {
+       const timeout = setTimeout(() => {
+         navigate('/');
+       }, 2000);
+
+       return () => clearTimeout(timeout);
+     }, [navigate]);
+   }*/
+
   const [clicked, setClicked] = useState(false);
-  
+
   const handleClick = () => {
     setClicked(!clicked);
   }
-
+  const username = localStorage.getItem("username");
+  const authorized = localStorage.getItem("authorized");
   return (
-    <div className="navbar-container">
-      <nav className="NavbarItems">
-        <div>
-          <h1 className="navbar-logo">EE</h1>
-          <div className="menu-icon" onClick={handleClick}>
-            <FontAwesomeIcon icon={clicked ? faTimes : faBars} className="menu-icon" />
+      <div className="navbar-container">
+        <nav className="NavbarItems">
+          <div>
+            <h1 className="navbar-logo">EE</h1>
+            <div className="menu-icon" onClick={handleClick}>
+              <FontAwesomeIcon icon={clicked ? faTimes : faBars} className="menu-icon" />
+            </div>
           </div>
-        </div>
-        <ul className={clicked ? "nav-menu active" : "nav-menu"}>
-          {MenuItems.map((item,index)=>{
-            return(
-              <li key={index}>
-                <a className={item.cName} href={item.url}>
-                  {item.title}
-                </a>
-              </li>
-            )
-          })}
-          <button className="cart-button">
-            <FontAwesomeIcon icon={faShoppingCart} className="cart-icon" />
-          </button>
-        </ul>
-      </nav>
-    </div>
+          <ul className={clicked ? "nav-menu active" : "nav-menu"}>
+
+            <li key={0}>
+              <a className={"nav-links"} href={"/"}>
+                {"Home"}
+              </a>
+            </li>
+            <li key={1}>
+              <a className={"nav-links"} href={"#"}>
+                {"Products"}
+              </a>
+            </li>
+            <li key={2}>
+              {authorized ? <a className={"nav-links"} href={"./login"}>
+                {"Login"}
+              </a> :  <a className={"nav-links"}  href={"./logout"}>
+                {"Logout"}
+              </a>}
+            </li>
+            <li key={3}>
+              <a className={"nav-links-mobile"} href={"#"}>
+                {"-"}
+              </a>
+            </li>
+
+
+            <button className="cart-button">
+              <FontAwesomeIcon icon={faShoppingCart} className="cart-icon" />
+            </button>
+          </ul>
+        </nav>
+      </div>
   )
 }
 

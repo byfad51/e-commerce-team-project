@@ -29,6 +29,9 @@ function Register () {
     const handleQuestion = (value) => {setQuestion(value)}
     const handleAnswer = (value) => {setAnswer(value)}
 
+    /*  if (localStorage.getItem("authorized")) { /// NŞA, giriş yapılmışsa ana sayfaya atar
+       navigate('/')
+   }*/
 
     const sendRequest = (path) => {
         const requestBody = {
@@ -75,7 +78,7 @@ function Register () {
             const result = JSON.parse(data);
             localStorage.setItem("tokenKey", result.message);
             localStorage.setItem("currentUser", result.userId);
-            localStorage.setItem("userName", username);
+            localStorage.setItem("username", username);
               alert("Registired")
               navigate("/login")
           })
