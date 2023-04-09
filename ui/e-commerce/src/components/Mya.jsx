@@ -24,14 +24,17 @@ const Mya = () => {
         return null;
     }
   };
+  const username = localStorage.getItem("username");
+  const authorized = localStorage.getItem("authorized");
 
   return (
     <div className="sidebar">
-      <h3>
-        <FiUser className="outlined-user-icon" /> My Account
-      </h3>
       <ul>
         <li>
+      <h3>
+        <FiUser className="outlined-user-icon" />{authorized ? "Hi, non role": "Welcome sir, "+username}
+      </h3> </li>
+          <li>
           <button onClick={() => handleOptionClick('Add Product')}>
             Add Product
           </button>
