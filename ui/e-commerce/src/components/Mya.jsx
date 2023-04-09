@@ -27,9 +27,11 @@ const Mya = () => {
 
   return (
     <div className="sidebar">
+       <div>
       <h3>
         <FiUser className="outlined-user-icon" /> My Account
       </h3>
+     
       <ul>
         <li>
           <button onClick={() => handleOptionClick('Add Product')}>
@@ -47,6 +49,7 @@ const Mya = () => {
           </button>
         </li>
       </ul>
+      </div>
       <div className="content">{renderOption()}</div>
     </div>
   );
