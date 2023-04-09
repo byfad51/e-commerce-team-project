@@ -61,13 +61,21 @@ function Navbar() {
               </a>
             </li>
             <li key={2}>
+              <a className={"nav-links"} href={"./Dashboard"}>
+                {"Dashboard"}
+              </a>
+            </li>
+
+
+            <li key={3}>
               {authorized ? <a className={"nav-links"} href={"./login"}>
                 {"Login"}
               </a> :  <a className={"nav-links"}  href={"./logout"}>
                 {"Logout"}
               </a>}
             </li>
-            <li key={3}>
+            
+            <li key={4}>
               <a className={"nav-links-mobile"} href={"#"}>
                 {"-"}
               </a>
