@@ -24,10 +24,10 @@ function Register () {
     const handleUsername = (value) => {setUsername(value) }
     const handlePassword = (value) => {setPassword(value)}
     const handleEmail = (value) => {setEmail(value) }
-    const handlePhone = (value) => {setEmail(value) }
-    const handleAddress = (value) => {setEmail(value)} 
-    const handleQuestion = (value) => {setEmail(value)}
-    const handleAnswer = (value) => {setEmail(value)}
+    const handlePhone = (value) => {setPhone(value) }
+    const handleAddress = (value) => {setAddress(value)} 
+    const handleQuestion = (value) => {setQuestion(value)}
+    const handleAnswer = (value) => {setAnswer(value)}
 
 
     const sendRequest = (path) => {
