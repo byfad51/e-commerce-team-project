@@ -3,9 +3,9 @@ import { FiUser } from 'react-icons/fi';
 import AddProduct from './AddProduct';
 import DeleteProduct from './DeleteProduct';
 import UpdateProduct from './UpdateProduct';
-import './Mya.css';
+import './MyAccount.css';
 
-const Mya = () => {
+const MyAccount= () => {
   const [activeOption, setActiveOption] = useState('Add Product');
 
   const handleOptionClick = (option) => {
@@ -55,4 +55,4 @@ const Mya = () => {
   );
 };
 
-export default Mya;
+export default MyAccount;
