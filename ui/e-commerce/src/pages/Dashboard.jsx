@@ -1,13 +1,13 @@
 import React from 'react'
 import Navbar from '../components/Navbar'
-import Mya from '../components/Mya'
+import MyAccount from '../components/MyAccount'
 
 function Dashboard () {
   return(
     <div>
       <Navbar />
       <div style={{ display: 'flex' }}>
-        <Mya />
+        <MyAccount />
       </div>
     </div>
 
