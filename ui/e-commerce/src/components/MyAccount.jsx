@@ -3,9 +3,9 @@ import { FiUser } from 'react-icons/fi';
 import AddProduct from './AddProduct';
 import DeleteProduct from './DeleteProduct';
 import UpdateProduct from './UpdateProduct';
-import './Mya.css';
+import './MyAccount.css';
 
-const Mya = () => {
+const MyAccount= () => {
   const [activeOption, setActiveOption] = useState('Add Product');
 
   const handleOptionClick = (option) => {
@@ -24,14 +24,17 @@ const Mya = () => {
         return null;
     }
   };
+  const username = localStorage.getItem("username");
+  const authorized = localStorage.getItem("authorized");
 
   return (
     <div className="sidebar">
-      <h3>
-        <FiUser className="outlined-user-icon" /> My Account
-      </h3>
       <ul>
         <li>
+      <h3>
+        <FiUser className="outlined-user-icon" />{authorized ? "Hi, non role": "Welcome sir, "+username}
+      </h3> </li>
+          <li>
           <button onClick={() => handleOptionClick('Add Product')}>
             Add Product
           </button>
@@ -52,4 +55,4 @@ const Mya = () => {
   );
 };
 
-export default Mya;
+export default MyAccount;

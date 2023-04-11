@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
-import { Form, Button } from 'react-bootstrap';
-import {   Grid, Segment } from 'semantic-ui-react'
+import {Form, Button, FormControl} from 'react-bootstrap';
+import {Grid, Segment, TextArea} from 'semantic-ui-react'
 import {useNavigate} from "react-router-dom";
 
 
@@ -112,7 +112,7 @@ function PasswordForgot () {
   }
 
    // const navigate = useNavigate();
-    return (<Segment>
+    return (<Segment><center><label><h1>Password Forgotten</h1></label></center>
         <Grid columns={3} relaxed='very' stackable>
             <Grid.Column> </Grid.Column>
             <Grid.Column>
@@ -140,7 +140,7 @@ function PasswordForgot () {
                 </Form>:  <Form.Label>Enter an email registered before.</Form.Label>}
             </Grid.Column>
             <Grid.Column> </Grid.Column><Grid.Column> </Grid.Column>
-            <Grid.Column verticalAlign='middle'>
+            <Grid.Column  verticalAlign='middle'>
                 <center>                    <Form.Text className="text-muted mb-3"> <Button variant="link" style={{color:"cadetblue"}} onClick={handleLogin}>You know the password?</Button></Form.Text>
 <br/>
                     <Form.Text className="text-muted mb-3"> <Button variant="outline-danger" style={{color:"darkred"}} onClick={handleRegister}>Register for Free</Button></Form.Text>

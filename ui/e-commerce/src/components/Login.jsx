@@ -1,7 +1,7 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, Button } from 'react-bootstrap';
-import { Divider,  Grid, Segment } from 'semantic-ui-react'
+import {Grid, Segment } from 'semantic-ui-react'
 
 
 function Login () {
@@ -19,6 +19,30 @@ function Login () {
     const handlePassword = (value) => {
         setPassword(value)
     }
+  /*  useEffect(() => {
+        const timeout = setTimeout(() => {
+            navigate('/');
+        }, 2000);
+
+        return () => clearTimeout(timeout);
+    }, [navigate]);*/
+    function myMethod() {
+
+    }
+
+
+
+  /*  if (localStorage.getItem("authorized")) { /// NŞA, giriş yapılmışsa ana sayfaya atar
+        navigate('/')
+    }*/
+
+   /* useEffect(() => {
+        if(localStorage.getItem("authorized") != true){
+            stop()
+        }
+        navigate('/')
+    },[navigate]   )*/
+
 
 
     const sendRequest = (path) => {
@@ -47,6 +71,8 @@ function Login () {
             }
             if (res.ok) {
               setAuthorized(true)
+                localStorage.setItem("username", username);
+                localStorage.setItem("authorized", authorized);
                 navigate("/")
             }
 
@@ -54,10 +80,13 @@ function Login () {
             return res.text();
           })
           .then((data) => {
-            const result = JSON.parse(data);
-            localStorage.setItem("tokenKey", result.message);
-            localStorage.setItem("currentUser", result.userId);
-            localStorage.setItem("userName", username);
+              if(authorized){
+                  const result = JSON.parse(data);
+                  localStorage.setItem("tokenKey", result.message);
+                  localStorage.setItem("currentUser", result.userId);
+
+              }
+
 
           })
           .catch((err) => {
@@ -85,7 +114,8 @@ function Login () {
 
     }
 
-    return(<Segment>
+    return(
+        <Segment><center><label><h1>LOGIN</h1></label></center><div>{authorized ? navigate("/"):null}</div>
         <Grid columns={3} relaxed='very' stackable>
             <Grid.Column> </Grid.Column>
             <Grid.Column>
