@@ -27,6 +27,7 @@ public class Product {
     private String authorName;
 
     @Column(name = "description")
+    @Lob
     private String description;
 
     @Column(name = "price")
