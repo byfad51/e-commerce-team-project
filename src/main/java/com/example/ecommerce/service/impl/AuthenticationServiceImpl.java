@@ -89,7 +89,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         AuthResponse response = new AuthResponse();
         response.setMessage("Bearer " + jwtToken);
         response.setUserId(user.get().getId());
-
+        response.setRole(user.get().getRole());
         return response;
 
     }

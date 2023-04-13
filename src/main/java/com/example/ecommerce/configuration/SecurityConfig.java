@@ -48,7 +48,7 @@ public class SecurityConfig{
                 .requestMatchers("/users/**").hasAnyRole("ADMIN","USER")
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/passreset/**").permitAll()
-                .requestMatchers("/products/**").permitAll()
+                .requestMatchers("/products/**").hasRole("ADMIN")
                 .anyRequest().authenticated();
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

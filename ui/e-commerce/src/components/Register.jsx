@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 //import {FormControl, InputLabel, Input, Button, FormHelperText} from "@mui/material"
 import { useNavigate } from "react-router-dom";
 import { Form, Button} from 'react-bootstrap';
@@ -8,7 +8,16 @@ import {   Grid, Segment } from 'semantic-ui-react'
 function Register () {
     document.title = 'Register';
     const navigate = useNavigate();
+    useEffect(() => {
 
+        const timeout = setTimeout(() => {
+            if(localStorage.getItem("authorized")==="true") {
+                navigate('/');
+            }
+        }, 1000);
+
+        return () => clearTimeout(timeout);
+    }, [navigate]);
     const [firstname, setFirstname] = useState("")
     const [lastname, setLastname] = useState("")
     const [username, setUsername] = useState("")

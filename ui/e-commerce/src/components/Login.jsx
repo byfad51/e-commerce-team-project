@@ -12,140 +12,126 @@ function Login () {
     const [password, setPassword] = useState("")
     const [authorized, setAuthorized] = useState("")
 
-
     const handleUsername = (value) => {
         setUsername(value)
     }
     const handlePassword = (value) => {
         setPassword(value)
     }
-  /*  useEffect(() => {
-        const timeout = setTimeout(() => {
-            navigate('/');
-        }, 2000);
+
+console.log(localStorage.getItem("authorized"))
+    useEffect(() => {
+
+            const timeout = setTimeout(() => {
+                if(localStorage.getItem("authorized")==="true") {
+                    navigate('/');
+                }
+        }, 1000);
 
         return () => clearTimeout(timeout);
-    }, [navigate]);*/
-    function myMethod() {
-
-    }
+    }, [navigate]);
 
 
 
-  /*  if (localStorage.getItem("authorized")) { /// NŞA, giriş yapılmışsa ana sayfaya atar
-        navigate('/')
-    }*/
-
-   /* useEffect(() => {
-        if(localStorage.getItem("authorized") != true){
-            stop()
-        }
-        navigate('/')
-    },[navigate]   )*/
-
-
-
-    const sendRequest = (path) => {
+    const sendRequest = async (path) => {
         const requestBody = {
             username: username,
             password: password,
-          };
-          console.log(requestBody);
+        };
+        console.log(requestBody);
 
-        fetch("http://localhost:8080/auth/" + path, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json; charset=utf-8",
-          },
-          body: JSON.stringify({
-            username: username,
-            password: password,
-        
-          }),
+        await fetch("http://localhost:8080/auth/" + path, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json; charset=utf-8",
+            },
+            body: JSON.stringify({
+                username: username,
+                password: password,
+
+            }),
         })
-        
-        .then((res) => {
-            if (!res.ok) {
-              throw new Error("Error " + res.status + ": " + res.statusText);
 
-            }
-            if (res.ok) {
-              setAuthorized(true)
-                localStorage.setItem("username", username);
-                localStorage.setItem("authorized", authorized);
-                navigate("/")
-            }
+            .then(async (res) => {
+                if (!res.ok) {
+                    throw new Error("Error " + res.status + ": " + res.statusText);
 
-            console.log(res);
-            return res.text();
-          })
-          .then((data) => {
-              if(authorized){
-                  const result = JSON.parse(data);
-                  localStorage.setItem("tokenKey", result.message);
-                  localStorage.setItem("currentUser", result.userId);
+                }
+                if (res.ok) {
+                    //setAuthorized("true")
+                    setAuthorized(true)
+                    const result = await res.json();
+                    console.log(result);
+                    localStorage.setItem("tokenKey", result.message);
+                    localStorage.setItem("currentUser", result.userId);
+                    localStorage.setItem("username", username);
+                    localStorage.setItem("authorized", "true");
+                    localStorage.setItem("role", result.role);
 
-              }
+                    navigate("/")
+                }
 
+            })
+            .catch((err) => {
+                alert("ERROR - TRY AGAIN -" + err.message)
+                console.log(err)
+            });
 
-          })
-          .catch((err) => {
-              alert("ERROR - TRY AGAIN -" + err.message)
-              console.log(err)
-          });
-      };      
+    };
 
     const handleRegister = () => {
-        
-        navigate("/register")
-       // history.go("/auth")
+        localStorage.setItem("whichPage", 2)
+        navigate("/")
+        // history.go("/auth")
     }
     const handleForgotPassword = () => {
 
         navigate("/passwordforgot")
         // history.go("/auth")
     }
-    const handleLogin = () => {
-        sendRequest("login")
-        
-        if(authorized === true){
-          navigate("/")
+    const handleLogin = async () => {
+        await sendRequest("login")
+
+        if (authorized === "true") {
+            localStorage.setItem("whichPage", 1)
+            navigate("/")
+
         }
 
     }
 
     return(
         <Segment><center><label><h1>LOGIN</h1></label></center><div>{authorized ? navigate("/"):null}</div>
-        <Grid columns={3} relaxed='very' stackable>
-            <Grid.Column> </Grid.Column>
-            <Grid.Column>
-                        <Form>
-                            <Form.Group className="mb-3">
-                                <Form.Label>Username</Form.Label>
-                                <Form.Control type="email"  placeholder="mcan123" onChange={(event) => handleUsername(event.target.value)} />
-                            </Form.Group>
+            <Grid columns={3} relaxed='very' stackable>
+                <Grid.Column> </Grid.Column>
+                <Grid.Column>
+                    <Form>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Username</Form.Label>
+                            <Form.Control type="email"  placeholder="mcan123" onChange={(event) => handleUsername(event.target.value)} />
+                        </Form.Group>
 
-                            <Form.Group className="mb-3">
-                                <Form.Label>Password</Form.Label>
-                                <Form.Control type="password"  onChange={(event) => handlePassword(event.target.value)} />
-                            </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control type="password"  onChange={(event) => handlePassword(event.target.value)} />
+                        </Form.Group>
 
-                            <Button variant="dark" onClick={handleLogin}>Login</Button>
-                            <Form.Text className="text-muted mb-3"> <Button variant="link" style={{color:"cadetblue"}} onClick={handleForgotPassword}>Password Forgotten?</Button></Form.Text>
-                            <br/>
+                        <Button variant="dark" onClick={handleLogin}>Login</Button>
+                        <Form.Text className="text-muted mb-3"> <Button variant="link" style={{color:"cadetblue"}} onClick={handleForgotPassword}>Password Forgotten?</Button></Form.Text>
+                        <br/>
 
-                        </Form>
-
-
-            </Grid.Column>
-            <Grid.Column> </Grid.Column><Grid.Column> </Grid.Column>
-            <Grid.Column verticalAlign='middle'>
-              <center> <Form.Text className="text-muted mb-3"> <Button variant="outline-danger" style={{color:"darkred"}} onClick={handleRegister}>Register for Free</Button></Form.Text>
-              </center>   </Grid.Column> <Grid.Column> </Grid.Column><Grid.Column> </Grid.Column>
-        </Grid>
+                    </Form>
 
 
-    </Segment>
+                </Grid.Column>
+                <Grid.Column> </Grid.Column><Grid.Column> </Grid.Column>
+                <Grid.Column verticalAlign='middle'>
+                    <center> <Form.Text className="text-muted mb-3"> <Button variant="outline-danger" style={{color:"darkred"}} onClick={handleRegister}>Register for Free</Button></Form.Text>
+                    </center>   </Grid.Column> <Grid.Column> </Grid.Column><Grid.Column> </Grid.Column>
+            </Grid>
+
+
+        </Segment>
     )
 }
 

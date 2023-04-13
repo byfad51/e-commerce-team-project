@@ -4,8 +4,8 @@ import Navbar from "./Navbar";
 
 function Home() {
   const navigate = useNavigate();
-
-
+  console.log(localStorage.getItem("authorized"))
+console.log(localStorage.getItem("role"))
   return(
     <div>
       <Navbar />
@@ -15,3 +15,4 @@ function Home() {
   }
   
   export default Home;
+
