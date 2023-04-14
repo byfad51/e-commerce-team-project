@@ -1,15 +1,15 @@
 import { useNavigate } from 'react-router-dom';
-import {Carousel, Button, Container} from 'react-bootstrap';
-import Navbar from "./Navbar";
+import { Container} from 'react-bootstrap';
+import Navbar from "../components/Navbar";
 
 function Home() {
   const navigate = useNavigate();
   console.log(localStorage.getItem("authorized"))
 console.log(localStorage.getItem("role"))
   return(
-    <div>
+      <Container>
       <Navbar />
-    </div>
+        </Container>
     
   );
   }

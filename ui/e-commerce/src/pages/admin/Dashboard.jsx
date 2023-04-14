@@ -1,8 +1,8 @@
 import React, {useEffect} from 'react'
-import Navbar from '../components/Navbar'
-import MyAccount from '../components/MyAccount'
+import Navbar from '../../components/Navbar'
+import MyAccount from './MyAccount'
 import { useNavigate } from "react-router-dom";
-
+import { Container,Segment } from 'semantic-ui-react'
 function Dashboard () {
     const navigate = useNavigate();
     useEffect(() => {
@@ -16,13 +16,16 @@ function Dashboard () {
         return () => clearTimeout(timeout);
     }, [navigate]);
   return(
-    <div>
-      <Navbar />
-      <div style={{ display: 'flex' }}>
-        <MyAccount />
-      </div>
-    </div>
+      <Container>
 
+
+          <Navbar />
+          <Segment>
+              <div style={{ display: 'flex' }}>
+                  <MyAccount />
+              </div>
+          </Segment>
+      </Container>
   )
 
 }

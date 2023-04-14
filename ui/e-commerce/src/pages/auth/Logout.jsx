@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Button } from 'semantic-ui-react'
 
 function Logout() {
   const navigate = useNavigate();
@@ -8,16 +9,18 @@ function Logout() {
   useEffect(() => {
     const timeout = setTimeout(() => {
       navigate('/');
-    }, 2000);
+    }, 750);
 
     return () => clearTimeout(timeout);
   }, [navigate]);
 
   return (
-  
-   <div>
-    <label htmlFor="">{" You logged out and are going to home in 2 seconds. If it it not working, click to go home- "}</label> <a href={"./"}>{"Home"}</a>
- </div>
+
+      <div>
+        <center>   <Button basic loading>
+          Loading
+        </Button><br/>  <label htmlFor="">{"Wait or click to go to home- "}</label> <br/><a href={"./"}>{"Home"}</a>
+        </center> </div>
   );
 }
 

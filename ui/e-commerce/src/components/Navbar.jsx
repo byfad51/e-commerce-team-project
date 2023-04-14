@@ -1,5 +1,5 @@
 import React, { useState, useEffect  } from 'react';
-import "./Navbar.css"
+import "../design/Navbar.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faBars, faTimes,faShoppingCart  } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from "react-router-dom";

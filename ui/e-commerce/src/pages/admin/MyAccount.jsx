@@ -3,7 +3,7 @@ import { FiUser } from 'react-icons/fi';
 import AddProduct from './AddProduct';
 import DeleteProduct from './DeleteProduct';
 import UpdateProduct from './UpdateProduct';
-import './MyAccount.css';
+import '../../design/MyAccount.css';
 
 const MyAccount= () => {
   const [activeOption, setActiveOption] = useState('Add Product');
@@ -26,32 +26,32 @@ const MyAccount= () => {
   };
   const username = localStorage.getItem("username");
   const authorized = localStorage.getItem("authorized");
-
+///  margin-left: 150px;
   return (
-    <div className="sidebar">
-      <ul>
-        <li>
-      <h3>
-        <FiUser className="outlined-user-icon" />{authorized ? "Hi, non role": "Welcome sir, "+username}
-      </h3> </li>
+      <div className="sidebar">
+        <ul>
           <li>
-          <button onClick={() => handleOptionClick('Add Product')}>
-            Add Product
-          </button>
-        </li>
-        <li>
-          <button onClick={() => handleOptionClick('Delete Product')}>
-            Delete Product
-          </button>
-        </li>
-        <li>
-          <button onClick={() => handleOptionClick('Update Product')}>
-            Update Product
-          </button>
-        </li>
-      </ul>
-      <div className="content">{renderOption()}</div>
-    </div>
+            <h3>
+              <FiUser className="outlined-user-icon" />{authorized!=="true" ? "Hi, non role": <a href ='#'>{username}</a>}
+            </h3> </li>
+          <li>
+            <button onClick={() => handleOptionClick('Add Product')}>
+              Add Product
+            </button>
+          </li>
+          <li>
+            <button onClick={() => handleOptionClick('Delete Product')}>
+              Delete Product
+            </button>
+          </li>
+          <li>
+            <button onClick={() => handleOptionClick('Update Product')}>
+              Update Product
+            </button>
+          </li>
+        </ul>
+        <div className="content">{renderOption()}</div>
+      </div>
   );
 };
 

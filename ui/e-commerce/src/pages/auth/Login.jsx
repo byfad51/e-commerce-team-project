@@ -80,20 +80,16 @@ console.log(localStorage.getItem("authorized"))
     };
 
     const handleRegister = () => {
-        localStorage.setItem("whichPage", 2)
-        navigate("/")
-        // history.go("/auth")
+    navigate("/register")
     }
     const handleForgotPassword = () => {
-
         navigate("/passwordforgot")
-        // history.go("/auth")
     }
     const handleLogin = async () => {
         await sendRequest("login")
 
         if (authorized === "true") {
-            localStorage.setItem("whichPage", 1)
+
             navigate("/")
 
         }
