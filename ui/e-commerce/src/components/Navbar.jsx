@@ -56,7 +56,7 @@ function Navbar() {
               </a>
             </li>
             <li key={1}>
-              <a className={"nav-links"} href={"#"}>
+              <a className={"nav-links"} href={"/products"}>
                 {"Products"}
               </a>
             </li>

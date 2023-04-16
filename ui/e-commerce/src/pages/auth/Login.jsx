@@ -26,7 +26,7 @@ console.log(localStorage.getItem("authorized"))
                 if(localStorage.getItem("authorized")==="true") {
                     navigate('/');
                 }
-        }, 1000);
+        }, 10);
 
         return () => clearTimeout(timeout);
     }, [navigate]);

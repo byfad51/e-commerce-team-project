@@ -160,8 +160,16 @@ function AddProduct () {
                     <Form.Control rows type="text" placeholder="mcan123" onChange={(event) => handlePublisher(event.target.value)} />
                     <br/>
                     <Form.Label>Publish Date</Form.Label>
-                    <Form.Control type="text" placeholder="" onChange={(event) => handlePublishedDate(event.target.value)} />
-                    </Form.Group></Row> <br/>
+    <Form.Select onSubmit={publishedDate===""? setPublishedDate(2023):null} onChange={(event) => handlePublishedDate(event.target.value)} >
+        {Array.from({ length: 124 }, (_, i) => 2023 - i).map((year) => (
+            <option key={year} value={year}>
+                {year}
+            </option>
+        ))}
+    </Form.Select>                    </Form.Group>
+
+
+</Row> <br/>
                     <Form.Label>Price *</Form.Label>
                     <Form.Control type="number"  placeholder="25" onChange={(event) => handlePrice(event.target.value)} />
             <br/>
