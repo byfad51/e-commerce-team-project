@@ -3,13 +3,12 @@ package com.example.ecommerce.service.impl;
 import com.example.ecommerce.dto.user.AuthResponse;
 import com.example.ecommerce.dto.user.UserCreateRequest;
 import com.example.ecommerce.dto.user.UserLoginRequest;
-import com.example.ecommerce.dto.user.UserResponse;
+import com.example.ecommerce.exception.InvalidCredentialsException;
 import com.example.ecommerce.exception.UserNotFoundException;
 import com.example.ecommerce.model.User;
 import com.example.ecommerce.repository.UserRepository;
 import com.example.ecommerce.security.JwtTokenProvider;
 import com.example.ecommerce.service.AuthenticationService;
-import com.example.ecommerce.service.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,14 +21,12 @@ import java.util.Optional;
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
 
-    private final UserService userService;
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
 
-    public AuthenticationServiceImpl(UserService userService, UserRepository userRepository, AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, PasswordEncoder passwordEncoder) {
-        this.userService = userService;
+    public AuthenticationServiceImpl(UserRepository userRepository, AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
@@ -73,8 +70,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public AuthResponse login(UserLoginRequest request){
 
-        if(userService.getUserByUsername(request.getUsername()) == null)
-            throw new UserNotFoundException(request.getUsername() + " not found");
+        Optional<User> user = userRepository.findByUsername(request.getUsername());
+
+        if(user.isEmpty())
+            throw new InvalidCredentialsException("User not found");
+
+        if(!passwordEncoder.matches(request.getPassword(),user.get().getPassword()))
+            throw new InvalidCredentialsException("Incorrect password");
 
         UsernamePasswordAuthenticationToken authToken =
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword());
@@ -82,9 +84,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Authentication auth =  authenticationManager.authenticate(authToken);
         SecurityContextHolder.getContext().setAuthentication(auth);
         String jwtToken = jwtTokenProvider.generateJwtToken(auth);
-
-
-        Optional<User> user = userRepository.findByUsername(request.getUsername());
 
         AuthResponse response = new AuthResponse();
         response.setMessage("Bearer " + jwtToken);
