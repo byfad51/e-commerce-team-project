@@ -16,7 +16,7 @@ public class ProductCreateRequest {
 
     @NotNull
     @NotBlank(message = "Description cannot be empty")
-    @Size( max = 1500, message = "Description long cannot over 300 characters long")
+    @Size(max = 5000, message = "Description long cannot over 5000 characters long")
     @Lob
     private String description;
 
