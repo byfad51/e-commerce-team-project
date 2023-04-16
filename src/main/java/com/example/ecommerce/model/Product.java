@@ -2,12 +2,11 @@ package com.example.ecommerce.model;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Getter
 @Setter
@@ -28,6 +27,7 @@ public class Product {
 
     @Column(name = "description")
     @Lob
+    @Size(max = 5000)
     private String description;
 
     @Column(name = "price")

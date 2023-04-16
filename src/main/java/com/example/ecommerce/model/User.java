@@ -2,6 +2,7 @@ package com.example.ecommerce.model;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.*;
 
 @Getter
@@ -22,6 +23,7 @@ public class User {
     private String lastname;
 
     @Column(name = "email", nullable = false)
+    @Email
     private String email;
 
     @Column(name = "username", nullable = false, unique = true)
