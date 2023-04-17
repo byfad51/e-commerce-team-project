@@ -7,5 +7,5 @@ public class AuthResponse {
 
     private String message;
     private Long userId;
-
+    private String role;
 }

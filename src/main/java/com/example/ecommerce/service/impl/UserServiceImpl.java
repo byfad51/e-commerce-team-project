@@ -31,17 +31,14 @@ public class UserServiceImpl implements UserService {
             return new UserResponse(user);
         else return null;
     }
+
     public User getUserByEmail(String email) {
-        User user = userRepository.findByEmail(email).orElse(null);
-        if(user!=null)
-            return user;
-        else return null;
+        return userRepository.findByEmail(email).orElse(null);
     }
 
     @Override
     public void updateUser(User user) {
         userRepository.save(user);
-
     }
 
 
