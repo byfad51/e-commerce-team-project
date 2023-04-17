@@ -27,30 +27,57 @@ function Register () {
     const [answer, setAnswer] = useState("");
     const [phone, setPhone] = useState("");
     const [address, setAddress] = useState("");
+    const [buttonBlockUsername, setButtonBlockUsername] = useState(false);
+    const [buttonBlockEmail, setButtonBlockEmail] = useState(false);
 
-    const [message, setmessage] = useState("s");
+    const [message, setmessage] = useState("");
     const [messageColor, setMessageColor] = useState("green");
     const handleFirstname = (value) => {setFirstname(value) }
     const handleLastname = (value) => {setLastname(value)}
-    const handleUsername = async (value) => {
-        setUsername(value)
+    const isUserExists = async () => {
         await fetch('http://localhost:8080/users/getUserByUsername?username=' + username)
             .then(response => {
                 setmessage(response.statusMessage)
-                if (!response.ok) {
-
-
+                if (response.status===302) {
+                    setmessage("Username exists.")
+                    setMessageColor("red")
+                    setButtonBlockUsername(true)
+                }else{
+                    setmessage("")
+                    setButtonBlockUsername(false)
+                  //  isEmailExists()
                     throw new Error(`${response.status}: ${response.statusText}`);
                 }
                 return response.json();
             })
-            .then(data => {
-                console.log(data);
+            .catch(error => {
+                console.error(error.message);
+            });
+
+    }
+    const isEmailExists = async () => {
+        await fetch('http://localhost:8080/users/getUserByEmail?email=' + email)
+            .then(response => {
+                setmessage(response.statusMessage)
+                if (response.status===302) {
+                    setmessage("Email exists.")
+                    setMessageColor("red")
+                    setButtonBlockEmail(true)
+                    throw new Error(`${response.status}: ${response.statusText}`);
+                }else{
+                    setmessage("")
+                    setButtonBlockEmail(false)
+
+                 //   isUserExists()
+                }
+
             })
             .catch(error => {
-                console.error(error);
-            });
+               console.error(error.message);
+            })
+
     }
+    const handleUsername =  (value) => {setUsername(value) }
     const handlePassword = (value) => {setPassword(value)}
     const handleEmail = (value) => {setEmail(value) }
     const handlePhone = (value) => {setPhone(value) }
@@ -93,33 +120,47 @@ function Register () {
             answer: answer
           }),
         })
-        
-        .then((res) => {
+            .then((res) => {
+          //  const result = res.json()
+
             if (!res.ok) {
+                if(res.status === 409){
+                    setmessage("User exists")
+                    setMessageColor("red")
+                }else{
+                    res.text().then(value => setmessage(value))
 
-              throw new Error("Error " + res.status + ": " + res.statusText);
+                }
+                console.log(res.status);
+                console.log(res.statusMessage);
+                throw new Error("Error " + res.status + ": " + res.statusText);
+            }else{
+                setmessage("Registered. You are going to login.")
+                setMessageColor("green")
+
+                    const timeout = setTimeout(() => {
+                        navigate('/login');
+                    }, 2500);
+
+                    return () => clearTimeout(timeout);
+
             }
-            console.log(res);
 
-            return res.text();
-          })
-          .then((data) => {
-            const result = JSON.parse(data);
-            localStorage.setItem("tokenKey", result.message);
-            localStorage.setItem("currentUser", result.userId);
-            localStorage.setItem("username", username);
-              alert("Registired")
-              navigate("/login")
           })
           .catch((err) =>{
-              console.log(err)
-              alert(err)
+              console.log(err.message);
           } );
 
       };      
 
     const handleRegister = () => {
-        sendRequest("register")
+        if(firstname===""||lastname===""||username===""||password===""||email===""||question===""||answer===""){
+            setmessage("Fill all blanks!")
+            setMessageColor("red")
+        }else{
+            sendRequest("register")
+        }
+
     }
     const handleLogin = () => {
         navigate("/login")
@@ -140,16 +181,16 @@ function Register () {
         <Form.Control type="text" placeholder="Enter your last name" onChange={(event) => handleLastname(event.target.value)} />
       </Form.Group>
       <Form.Group className="mb-3">
-        <Form.Label>Username (*)</Form.Label>
-        <Form.Control type="text" onBlur={()=>setmessage("zzzZZASDADS")} placeholder="Enter your username" onChange={(event) => handleUsername(event.target.value)} />
+        <Form.Label>Username (*) {buttonBlockUsername?<font color={"red"}>Username exists</font>:null}</Form.Label>
+        <Form.Control type="text"  onBlur={()=>isUserExists()} placeholder="Enter your username" onChange={(event) => handleUsername(event.target.value)} />
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Password (*)</Form.Label>
         <Form.Control type="password"  onChange={(event) => handlePassword(event.target.value)} />
       </Form.Group>
       <Form.Group className="mb-3">
-        <Form.Label>Email (*)</Form.Label>
-        <Form.Control type="email" placeholder="name@example.com" onChange={(event) => handleEmail(event.target.value)} />
+        <Form.Label>Email (*) {buttonBlockEmail?<font color={"red"}>Email exists</font>:null}</Form.Label>
+        <Form.Control type="email"  onBlur={()=>isEmailExists()} placeholder="name@example.com" onChange={(event) => handleEmail(event.target.value)} />
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Phone</Form.Label>
@@ -172,7 +213,7 @@ function Register () {
         <Form.Label>Answer (*)</Form.Label>
         <Form.Control type="text" placeholder="Answer" onChange={(event) => handleAnswer(event.target.value)} />
       </Form.Group>
-      <Button variant="dark" onClick={handleRegister}>Register</Button>
+      <Button disabled={buttonBlockUsername || buttonBlockEmail} variant="dark" onClick={handleRegister}>Register</Button>
       <Form.Text className="text-muted mb-3">
 
           <br/>
