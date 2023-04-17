@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, Button } from 'react-bootstrap';
-import {Grid, Segment } from 'semantic-ui-react'
+import {Grid, Message, Segment} from 'semantic-ui-react'
 
 
 function Login () {
@@ -12,11 +12,25 @@ function Login () {
     const [password, setPassword] = useState("")
     const [authorized, setAuthorized] = useState("")
 
+    const [message, setmessage] = useState("");
+    const [messageColor, setMessageColor] = useState("green");
     const handleUsername = (value) => {
         setUsername(value)
+        if(username===""|| password===""){
+            setmessage("Enter username and password.")
+            setMessageColor("green")
+        }else{
+            setmessage("")
+        }
     }
     const handlePassword = (value) => {
         setPassword(value)
+        if(username===""|| password===""){
+            setmessage("Enter username and password.")
+            setMessageColor("green")
+        }else{
+            setmessage("")
+        }
     }
 
 console.log(localStorage.getItem("authorized"))
@@ -53,15 +67,24 @@ console.log(localStorage.getItem("authorized"))
         })
 
             .then(async (res) => {
-                if (!res.ok) {
-                    throw new Error("Error " + res.status + ": " + res.statusText);
 
-                }
+                const result = await res.json();
+
+               if (!res.ok) {
+                   //console.log(res.status)
+                   setmessage(result.message)
+                   setMessageColor("red")
+                   //console.log()
+                   throw new Error(`${res.status}: ${res.statusText}`);
+               }
+
+                //console.log("hataaaa")
+          //     console.log("Error " + res.status + ": " + res.statusText)
                 if (res.ok) {
                     //setAuthorized("true")
                     setAuthorized(true)
-                    const result = await res.json();
-                    console.log(result);
+
+                 //   console.log(result.status);
                     localStorage.setItem("tokenKey", result.message);
                     localStorage.setItem("currentUser", result.userId);
                     localStorage.setItem("username", username);
@@ -73,8 +96,8 @@ console.log(localStorage.getItem("authorized"))
 
             })
             .catch((err) => {
-                alert("ERROR - TRY AGAIN -" + err.message)
-                console.log(err)
+               // console.error(err.title);
+
             });
 
     };
@@ -86,7 +109,19 @@ console.log(localStorage.getItem("authorized"))
         navigate("/passwordforgot")
     }
     const handleLogin = async () => {
-        await sendRequest("login")
+        if(username===""|| password===""){
+            setmessage("Enter username and password.")
+            setMessageColor("green")
+        }else{
+            if(password.length <5){
+                setmessage("The password needs to be longer.")
+                setMessageColor("red")
+            }else{
+                await sendRequest("login")
+            }
+
+        }
+
 
         if (authorized === "true") {
 
@@ -115,7 +150,7 @@ console.log(localStorage.getItem("authorized"))
                         <Button variant="dark" onClick={handleLogin}>Login</Button>
                         <Form.Text className="text-muted mb-3"> <Button variant="link" style={{color:"cadetblue"}} onClick={handleForgotPassword}>Password Forgotten?</Button></Form.Text>
                         <br/>
-
+                        {message !=="" ? <Message color={messageColor}>{message}</Message> : null}
                     </Form>
 
 

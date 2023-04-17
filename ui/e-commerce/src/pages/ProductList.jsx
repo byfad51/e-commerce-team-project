@@ -89,8 +89,7 @@ function ProductList() {
                 </Card>
         </>
     )
-
-  //  console.log(data)
+    console.log(data)
     return (<Container>
 
             <Navbar />

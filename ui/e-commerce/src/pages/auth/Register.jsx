@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 //import {FormControl, InputLabel, Input, Button, FormHelperText} from "@mui/material"
 import { useNavigate } from "react-router-dom";
 import { Form, Button} from 'react-bootstrap';
-import {   Grid, Segment } from 'semantic-ui-react'
+import {Grid, Message, Segment} from 'semantic-ui-react'
 
 
 function Register () {
@@ -28,9 +28,29 @@ function Register () {
     const [phone, setPhone] = useState("");
     const [address, setAddress] = useState("");
 
+    const [message, setmessage] = useState("s");
+    const [messageColor, setMessageColor] = useState("green");
     const handleFirstname = (value) => {setFirstname(value) }
     const handleLastname = (value) => {setLastname(value)}
-    const handleUsername = (value) => {setUsername(value) }
+    const handleUsername = async (value) => {
+        setUsername(value)
+        await fetch('http://localhost:8080/users/getUserByUsername?username=' + username)
+            .then(response => {
+                setmessage(response.statusMessage)
+                if (!response.ok) {
+
+
+                    throw new Error(`${response.status}: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
     const handlePassword = (value) => {setPassword(value)}
     const handleEmail = (value) => {setEmail(value) }
     const handlePhone = (value) => {setPhone(value) }
@@ -112,23 +132,23 @@ function Register () {
                 <Grid.Column>
       <Form>
       <Form.Group className="mb-3">
-        <Form.Label>First Name</Form.Label>
+        <Form.Label>First Name (*)</Form.Label>
         <Form.Control type="text" placeholder="Enter your first name" onChange={(event) => handleFirstname(event.target.value)} />
       </Form.Group>
       <Form.Group className="mb-3">
-        <Form.Label>Last Name</Form.Label>
+        <Form.Label>Last Name (*)</Form.Label>
         <Form.Control type="text" placeholder="Enter your last name" onChange={(event) => handleLastname(event.target.value)} />
       </Form.Group>
       <Form.Group className="mb-3">
-        <Form.Label>Username</Form.Label>
-        <Form.Control type="text" placeholder="Enter your username" onChange={(event) => handleUsername(event.target.value)} />
+        <Form.Label>Username (*)</Form.Label>
+        <Form.Control type="text" onBlur={()=>setmessage("zzzZZASDADS")} placeholder="Enter your username" onChange={(event) => handleUsername(event.target.value)} />
       </Form.Group>
       <Form.Group className="mb-3">
-        <Form.Label>Password</Form.Label>
+        <Form.Label>Password (*)</Form.Label>
         <Form.Control type="password"  onChange={(event) => handlePassword(event.target.value)} />
       </Form.Group>
       <Form.Group className="mb-3">
-        <Form.Label>Email</Form.Label>
+        <Form.Label>Email (*)</Form.Label>
         <Form.Control type="email" placeholder="name@example.com" onChange={(event) => handleEmail(event.target.value)} />
       </Form.Group>
       <Form.Group className="mb-3">
@@ -140,7 +160,7 @@ function Register () {
         <Form.Control type="text" placeholder="Address" onChange={(event) => handleAddress(event.target.value)} />
       </Form.Group>
       <Form.Group className="mb-3">
-      <Form.Label>Question</Form.Label>
+      <Form.Label>Question (*)</Form.Label>
       <Form.Select onChange={(event) => handleQuestion(event.target.value)}>
         <option value="">Choose a question...</option>
         <option value="What's you favourite color?">What's you favourite color?</option>
@@ -149,7 +169,7 @@ function Register () {
       </Form.Select>
     </Form.Group>
       <Form.Group className="mb-3">
-        <Form.Label>Answer</Form.Label>
+        <Form.Label>Answer (*)</Form.Label>
         <Form.Control type="text" placeholder="Answer" onChange={(event) => handleAnswer(event.target.value)} />
       </Form.Group>
       <Button variant="dark" onClick={handleRegister}>Register</Button>
@@ -158,7 +178,9 @@ function Register () {
           <br/>
          <center> <Button variant="outline-danger" style={{color:"darkred"}}  onClick={handleLogin}>Already registered?</Button></center>
       </Form.Text>
-    </Form>
+          {message !=="" ? <Message color={messageColor}>{message}</Message> : null}
+
+      </Form>
                 </Grid.Column>
                 <Grid.Column>   </Grid.Column>
             </Grid>
