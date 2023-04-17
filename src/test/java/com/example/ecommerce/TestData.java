@@ -1,6 +1,8 @@
 package com.example.ecommerce;
 
 import com.example.ecommerce.model.User;
+import com.example.ecommerce.model.Product;
+
 
 public class TestData {
 
@@ -14,6 +16,14 @@ public class TestData {
         user.setFirstname("Test");
         user.setPassword("password");
         return user;
+    }
+
+    public static Product testProduct(){
+
+        Product product =new Product();
+        product.setProductName("testProduct");
+        product.setStock(124);
+        return product;
     }
 
 }
