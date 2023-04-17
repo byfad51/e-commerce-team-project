@@ -45,7 +45,7 @@ function Register () {
                 }else{
                     setmessage("")
                     setButtonBlockUsername(false)
-                    //  isEmailExists()
+                  //  isEmailExists()
                     throw new Error(`${response.status}: ${response.statusText}`);
                 }
                 return response.json();
@@ -68,12 +68,12 @@ function Register () {
                     setmessage("")
                     setButtonBlockEmail(false)
 
-                    //   isUserExists()
+                 //   isUserExists()
                 }
 
             })
             .catch(error => {
-                console.error(error.message);
+               console.error(error.message);
             })
 
     }
@@ -81,7 +81,7 @@ function Register () {
     const handlePassword = (value) => {setPassword(value)}
     const handleEmail = (value) => {setEmail(value) }
     const handlePhone = (value) => {setPhone(value) }
-    const handleAddress = (value) => {setAddress(value)}
+    const handleAddress = (value) => {setAddress(value)} 
     const handleQuestion = (value) => {setQuestion(value)}
     const handleAnswer = (value) => {setAnswer(value)}
 
@@ -100,43 +100,43 @@ function Register () {
             address: address,
             question: question,
             answer: answer
-        };
-        console.log(requestBody);
+          };
+          console.log(requestBody);
 
         fetch("http://localhost:8080/auth/" + path, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json; charset=utf-8",
-            },
-            body: JSON.stringify({
-                username: username,
-                password: password,
-                email: email,
-                firstname: firstname,
-                lastname: lastname,
-                phone: phone,
-                address: address,
-                question: question,
-                answer: answer
-            }),
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+          },
+          body: JSON.stringify({
+            username: username,
+            password: password,
+            email: email,
+            firstname: firstname,
+            lastname: lastname,
+            phone: phone,
+            address: address,
+            question: question,
+            answer: answer
+          }),
         })
             .then((res) => {
-                //  const result = res.json()
+          //  const result = res.json()
 
-                if (!res.ok) {
-                    if(res.status === 409){
-                        setmessage("User exists")
-                        setMessageColor("red")
-                    }else{
-                        res.text().then(value => setmessage(value))
-
-                    }
-                    console.log(res.status);
-                    console.log(res.statusMessage);
-                    throw new Error("Error " + res.status + ": " + res.statusText);
+            if (!res.ok) {
+                if(res.status === 409){
+                    setmessage("User exists")
+                    setMessageColor("red")
                 }else{
-                    setmessage("Registered. You are going to login.")
-                    setMessageColor("green")
+                    res.text().then(value => setmessage(value))
+
+                }
+                console.log(res.status);
+                console.log(res.statusMessage);
+                throw new Error("Error " + res.status + ": " + res.statusText);
+            }else{
+                setmessage("Registered. You are going to login.")
+                setMessageColor("green")
 
                     const timeout = setTimeout(() => {
                         navigate('/login');
@@ -144,14 +144,14 @@ function Register () {
 
                     return () => clearTimeout(timeout);
 
-                }
+            }
 
-            })
-            .catch((err) =>{
-                console.log(err.message);
-            } );
+          })
+          .catch((err) =>{
+              console.log(err.message);
+          } );
 
-    };
+      };      
 
     const handleRegister = () => {
         if(firstname===""||lastname===""||username===""||password===""||email===""||question===""||answer===""){
@@ -171,57 +171,57 @@ function Register () {
             <Grid columns={3} relaxed='very' stackable>
                 <Grid.Column> </Grid.Column>
                 <Grid.Column>
-                    <Form>
-                        <Form.Group className="mb-3">
-                            <Form.Label>First Name (*)</Form.Label>
-                            <Form.Control type="text" placeholder="Enter your first name" onChange={(event) => handleFirstname(event.target.value)} />
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Last Name (*)</Form.Label>
-                            <Form.Control type="text" placeholder="Enter your last name" onChange={(event) => handleLastname(event.target.value)} />
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Username (*) {buttonBlockUsername?<font color={"red"}>Username exists</font>:null}</Form.Label>
-                            <Form.Control type="text"  onBlur={()=>isUserExists()} placeholder="Enter your username" onChange={(event) => handleUsername(event.target.value)} />
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Password (*)</Form.Label>
-                            <Form.Control type="password"  onChange={(event) => handlePassword(event.target.value)} />
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Email (*) {buttonBlockEmail?<font color={"red"}>Email exists</font>:null}</Form.Label>
-                            <Form.Control type="email"  onBlur={()=>isEmailExists()} placeholder="name@example.com" onChange={(event) => handleEmail(event.target.value)} />
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Phone</Form.Label>
-                            <Form.Control type="number" placeholder="Ex: 05559990011" onChange={(event) => handlePhone(event.target.value)} />
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Address</Form.Label>
-                            <Form.Control type="text" placeholder="Address" onChange={(event) => handleAddress(event.target.value)} />
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Question (*)</Form.Label>
-                            <Form.Select onChange={(event) => handleQuestion(event.target.value)}>
-                                <option value="">Choose a question...</option>
-                                <option value="What's you favourite color?">What's you favourite color?</option>
-                                <option value="What was your best teacher's name at high school?">What was your best teacher's name at high school?</option>
-                                <option value="What's the meaning of live?">What's the meaning of live?</option>
-                            </Form.Select>
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                            <Form.Label>Answer (*)</Form.Label>
-                            <Form.Control type="text" placeholder="Answer" onChange={(event) => handleAnswer(event.target.value)} />
-                        </Form.Group>
-                        <Button disabled={buttonBlockUsername || buttonBlockEmail} variant="dark" onClick={handleRegister}>Register</Button>
-                        <Form.Text className="text-muted mb-3">
+      <Form>
+      <Form.Group className="mb-3">
+        <Form.Label>First Name (*)</Form.Label>
+        <Form.Control type="text" placeholder="Enter your first name" onChange={(event) => handleFirstname(event.target.value)} />
+      </Form.Group>
+      <Form.Group className="mb-3">
+        <Form.Label>Last Name (*)</Form.Label>
+        <Form.Control type="text" placeholder="Enter your last name" onChange={(event) => handleLastname(event.target.value)} />
+      </Form.Group>
+      <Form.Group className="mb-3">
+        <Form.Label>Username (*) {buttonBlockUsername?<font color={"red"}>Username exists</font>:null}</Form.Label>
+        <Form.Control type="text"  onBlur={()=>isUserExists()} placeholder="Enter your username" onChange={(event) => handleUsername(event.target.value)} />
+      </Form.Group>
+      <Form.Group className="mb-3">
+        <Form.Label>Password (*)</Form.Label>
+        <Form.Control type="password"  onChange={(event) => handlePassword(event.target.value)} />
+      </Form.Group>
+      <Form.Group className="mb-3">
+        <Form.Label>Email (*) {buttonBlockEmail?<font color={"red"}>Email exists</font>:null}</Form.Label>
+        <Form.Control type="email"  onBlur={()=>isEmailExists()} placeholder="name@example.com" onChange={(event) => handleEmail(event.target.value)} />
+      </Form.Group>
+      <Form.Group className="mb-3">
+        <Form.Label>Phone</Form.Label>
+        <Form.Control type="number" placeholder="Ex: 05559990011" onChange={(event) => handlePhone(event.target.value)} />
+      </Form.Group>
+      <Form.Group className="mb-3">
+        <Form.Label>Address</Form.Label>
+        <Form.Control type="text" placeholder="Address" onChange={(event) => handleAddress(event.target.value)} />
+      </Form.Group>
+      <Form.Group className="mb-3">
+      <Form.Label>Question (*)</Form.Label>
+      <Form.Select onChange={(event) => handleQuestion(event.target.value)}>
+        <option value="">Choose a question...</option>
+        <option value="What's you favourite color?">What's you favourite color?</option>
+        <option value="What was your best teacher's name at high school?">What was your best teacher's name at high school?</option>
+        <option value="What's the meaning of live?">What's the meaning of live?</option>
+      </Form.Select>
+    </Form.Group>
+      <Form.Group className="mb-3">
+        <Form.Label>Answer (*)</Form.Label>
+        <Form.Control type="text" placeholder="Answer" onChange={(event) => handleAnswer(event.target.value)} />
+      </Form.Group>
+      <Button disabled={buttonBlockUsername || buttonBlockEmail} variant="dark" onClick={handleRegister}>Register</Button>
+      <Form.Text className="text-muted mb-3">
 
-                            <br/>
-                            <center> <Button variant="outline-danger" style={{color:"darkred"}}  onClick={handleLogin}>Already registered?</Button></center>
-                        </Form.Text>
-                        {message !=="" ? <Message color={messageColor}>{message}</Message> : null}
+          <br/>
+         <center> <Button variant="outline-danger" style={{color:"darkred"}}  onClick={handleLogin}>Already registered?</Button></center>
+      </Form.Text>
+          {message !=="" ? <Message color={messageColor}>{message}</Message> : null}
 
-                    </Form>
+      </Form>
                 </Grid.Column>
                 <Grid.Column>   </Grid.Column>
             </Grid>

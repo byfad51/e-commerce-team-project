@@ -5,9 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
-
 import java.time.LocalDateTime;
-
 @Getter
 @Setter
 @NoArgsConstructor

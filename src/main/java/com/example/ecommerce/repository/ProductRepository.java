@@ -9,7 +9,6 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, Long> {
    // List<Product> findByCategory(String category);
    Optional<Product> findByProductName(String productName);
-
    List<Product> findByAuthorName(String authorName);
    Optional<Product>findByProductNameAndAuthorName(String productName,String authorName);
    // @Query("SELECT p FROM Product p WHERE p.name LIKE %:keyword%")
