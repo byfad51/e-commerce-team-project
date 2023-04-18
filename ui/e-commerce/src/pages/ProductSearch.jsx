@@ -69,7 +69,7 @@ function ProductSearch(props) {
 
     return (
 
-       <Search
+       <Search size={"big"}
             loading={loading}
             placeholder="Search..."
             onResultSelect={(e, data) =>

@@ -20,11 +20,11 @@ function Dashboard () {
 
 
           <Navbar />
-          <Segment>
+
               <div style={{ display: 'flex' }}>
                   <MyAccount />
               </div>
-          </Segment>
+
       </Container>
   )
 

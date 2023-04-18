@@ -2,7 +2,7 @@ import React, {useState} from "react";
 //import {FormControl, InputLabel, Input, Button, FormHelperText} from "@mui/material"
 import { useNavigate } from "react-router-dom";
 import { Form, Button, Row,Col} from 'react-bootstrap';
-import {Message} from 'semantic-ui-react'
+import {Message, Image,Segment} from 'semantic-ui-react'
 import "../../design/design.css"
 
 function AddProduct () {
@@ -94,8 +94,21 @@ function AddProduct () {
                 return res.text();
             })
             .then((data) => {
-                setmessage("Product has been added!")
+                setAuthorName("")
+                setProductName("")
+                setPublishedDate("")
+                setImageUrl("")
+                setISBN("")
+                setStock("")
+                setPublisher("")
+                setNumberofpages("")
+                setPrice("")
                 setMessageColor("green")
+                setmessage("Product has been added!")
+
+
+
+
             })
             .catch((err) =>{
                 console.log(err)
@@ -116,28 +129,35 @@ function AddProduct () {
             sendRequest("products/addProduct")
         }
     }
+    console.log("url "+process.env.PUBLIC)
     return(
+<Segment>
+    <Image src={process.env.PUBLIC_URL + './ordek.jpg'} alt="logo" />
 
-        <Form>
+    <Form>
 
                 <label htmlFor="">
                     <h1>
                         <center>ADD</center>
+
                     </h1>
+                    <center>{imageUrl ?  <Image width={"200"}height={"300"}src={imageUrl} />: <Image width={"200"}height={"300"}  src={"https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png"}/>}</center>
                 </label><br/><br/>
+
 <Row>
-            <Form.Group as={Col}>
+
+    <Form.Group as={Col}>
                         <Form.Label>Book Name *</Form.Label>
-                        <Form.Control  type="text" placeholder="Kaşağı" onChange={(event) => handleProductName(event.target.value)} /><br/>
+                        <Form.Control value={productName}   type="text" placeholder="Kaşağı" onChange={(event) => handleProductName(event.target.value)} /><br/>
                         <Form.Label>Author Name *</Form.Label>
-                        <Form.Control type="text" placeholder="Ömer Seyfettin" onChange={(event) => handleAuthorName(event.target.value)} />
+                        <Form.Control value={authorName}  type="text" placeholder="Ömer Seyfettin" onChange={(event) => handleAuthorName(event.target.value)} />
                          <br/>
 
                           <Form.Label>Number of Pages *</Form.Label>
-                              <Form.Control type="number" placeholder="93" onChange={(event) => handlenumberOfPages(event.target.value)} />
+                              <Form.Control value={numberOfPages}  type="number" placeholder="93" onChange={(event) => handlenumberOfPages(event.target.value)} />
                         <br/>
                         <Form.Label>Language</Form.Label>
-                        <Form.Select onChange={(event) => handleLanguage(event.target.value)}>
+                        <Form.Select value={language}  onChange={(event) => handleLanguage(event.target.value)}>
                             <option value="">Choose language</option>
                             <option value="Turkish">Turkish</option>
                             <option value="English">English</option>
@@ -148,19 +168,20 @@ function AddProduct () {
 
 
             </Form.Group> <Form.Group as={Col}>
+
                         <Form.Label>Image Url</Form.Label>
-                        <Form.Control type="text" placeholder="http://" onChange={(event) => handleImageUrl(event.target.value)} /><br/>
+                        <Form.Control value={imageUrl}  type="text" placeholder="http://" onChange={(event) => handleImageUrl(event.target.value)} /><br/>
                         <Form.Label>ISBN</Form.Label><br/>
-                        <Form.Control type="text" placeholder="ISBN" onChange={(event) => handleISBN(event.target.value)} />
+                        <Form.Control value={isbn}  type="text" placeholder="ISBN" onChange={(event) => handleISBN(event.target.value)} />
 
 
 
                     <br/>
                     <Form.Label>Publisher</Form.Label>
-                    <Form.Control rows type="text" placeholder="mcan123" onChange={(event) => handlePublisher(event.target.value)} />
+                    <Form.Control rows value={publisher}  type="text" placeholder="mcan123" onChange={(event) => handlePublisher(event.target.value)} />
                     <br/>
                     <Form.Label>Publish Date</Form.Label>
-    <Form.Select onSubmit={publishedDate===""? setPublishedDate(2023):null} onChange={(event) => handlePublishedDate(event.target.value)} >
+    <Form.Select onSubmit={publishedDate===""? setPublishedDate(2023):null} value={publishedDate}  onChange={(event) => handlePublishedDate(event.target.value)} >
         {Array.from({ length: 124 }, (_, i) => 2023 - i).map((year) => (
             <option key={year} value={year}>
                 {year}
@@ -171,19 +192,22 @@ function AddProduct () {
 
 </Row> <br/>
                     <Form.Label>Price *</Form.Label>
-                    <Form.Control type="number"  placeholder="25" onChange={(event) => handlePrice(event.target.value)} />
+                    <Form.Control type="number"  value={price} placeholder="25" onChange={(event) => handlePrice(event.target.value)} />
             <br/>
                     <Form.Label>Stock</Form.Label>
-                    <Form.Control type="number" placeholder="17" onChange={(event) => handleStock(event.target.value)} />
+                    <Form.Control type="number" value={stock}  placeholder="17" onChange={(event) => handleStock(event.target.value)} />
 
 
                     <br/>
-                    <Form.Label>Description *</Form.Label><br></br>
-                    <Form.Control as="textarea" rows={3}  onChange={(event) => handleDescription(event.target.value)} style={{ minWidth: 200 }}/>
+                    <Form.Label>Description * (5000 character)</Form.Label><br></br>
+                    <Form.Control as="textarea" maxLength={5000} value={description}  rows={7}  onChange={(event) => handleDescription(event.target.value)} style={{ minWidth: 200 }}/>
                     <center>
                         <br/>
+
                         <Button variant="dark"  onClick={handleAddProduct}>Add Product</Button></center>
-                    <Form.Text className="text-muted mb-33">
+            {message !=="" ? <Message color={messageColor}>{message}</Message> : null}
+
+            <Form.Text className="text-muted mb-33">
 
                         <br/>
                     </Form.Text>
@@ -192,9 +216,8 @@ function AddProduct () {
 
 
 
-            {message !=="" ? <Message color={messageColor}>{message}</Message> : null}
         </Form>
-
+</Segment>
 
     )
 }
