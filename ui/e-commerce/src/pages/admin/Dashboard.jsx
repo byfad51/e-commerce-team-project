@@ -8,7 +8,7 @@ function Dashboard () {
     useEffect(() => {
 
         const timeout = setTimeout(() => {
-            if(localStorage.getItem("role")!=="ROLE_ADMIN") {
+            if(localStorage.getItem("role")!=="ADMIN") {
                 navigate('/');
             }
         }, 1000);

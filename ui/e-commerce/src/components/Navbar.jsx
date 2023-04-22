@@ -60,7 +60,7 @@ function Navbar() {
                 {"Products"}
               </a>
             </li>
-            {localStorage.getItem("role")==="ROLE_ADMIN" ? <li key={2}>
+            {localStorage.getItem("role")==="ADMIN" ? <li key={2}>
               <a className={"nav-links"} href={"./Dashboard"}>
                 {"Dashboard"}
               </a>
