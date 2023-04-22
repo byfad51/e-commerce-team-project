@@ -5,6 +5,7 @@ import com.example.ecommerce.dto.user.UserCreateRequest;
 import com.example.ecommerce.dto.user.UserLoginRequest;
 import com.example.ecommerce.exception.InvalidCredentialsException;
 import com.example.ecommerce.exception.UserNotFoundException;
+import com.example.ecommerce.enums.Role;
 import com.example.ecommerce.model.User;
 import com.example.ecommerce.repository.UserRepository;
 import com.example.ecommerce.security.JwtTokenProvider;
@@ -45,7 +46,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             user.setUsername(request.getUsername());
             user.setPassword(passwordEncoder.encode(request.getPassword()));
             user.setEmail(request.getEmail());
-            user.setRole("ROLE_USER");
+            user.setRole(Role.USER);
             user.setActive(true);
             user.setPhone(request.getPhone());
             user.setQuestion(request.getQuestion());
@@ -55,6 +56,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             userRepository.save(user);
             response.setMessage("Successfully registered!");
             response.setUserId(user.getId());
+            response.setRole(user.getRole().toString());
 
             return response;
         }
@@ -88,7 +90,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         AuthResponse response = new AuthResponse();
         response.setMessage("Bearer " + jwtToken);
         response.setUserId(user.get().getId());
-        response.setRole(user.get().getRole());
+        response.setRole(user.get().getRole().toString());
         return response;
 
     }
