@@ -1,5 +1,6 @@
 package com.example.ecommerce.controller;
 
+import com.example.ecommerce.dto.product.ProductResponse;
 import com.example.ecommerce.dto.user.UserResponse;
 import com.example.ecommerce.model.User;
 import com.example.ecommerce.service.impl.UserServiceImpl;
@@ -56,4 +57,22 @@ public class UserController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
+    @PostMapping("/favProduct")
+    public ResponseEntity<String>  addOrDeleteFavoriteProduct(@RequestParam Long productId,@RequestParam Long userId) {
+        try{
+            userService.addOrDeleteFavoriteProduct(productId,userId);
+            return new ResponseEntity<>("addOrDeleteFavoriteProduct", HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>("You have to login firstly.", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/getFavProduct")
+    public ResponseEntity<List<ProductResponse>>  getFavProducts(@RequestParam Long userId) {
+       try{
+           return new ResponseEntity<>(userService.getFavProducts(userId), HttpStatus.OK);
+       }catch (Exception e){
+           return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+       }
+    }
 }

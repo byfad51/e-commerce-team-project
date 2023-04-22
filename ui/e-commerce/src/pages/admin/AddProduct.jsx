@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-//import {FormControl, InputLabel, Input, Button, FormHelperText} from "@mui/material"
+
 import { useNavigate } from "react-router-dom";
 import { Form, Button, Row,Col} from 'react-bootstrap';
 import {Message, Image,Segment} from 'semantic-ui-react'
@@ -103,6 +103,8 @@ function AddProduct () {
                 setPublisher("")
                 setNumberofpages("")
                 setPrice("")
+                setDescription("")
+                setLanguage("")
                 setMessageColor("green")
                 setmessage("Product has been added!")
 
@@ -132,8 +134,6 @@ function AddProduct () {
     console.log("url "+process.env.PUBLIC)
     return(
 <Segment>
-    <Image src={process.env.PUBLIC_URL + './ordek.jpg'} alt="logo" />
-
     <Form>
 
                 <label htmlFor="">

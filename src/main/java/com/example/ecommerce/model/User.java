@@ -4,6 +4,7 @@ package com.example.ecommerce.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -51,5 +52,9 @@ public class User {
 //    private Roles roles;
 
     private String role;
+
+    @OneToMany
+    @Column(name = "favoriteProducts")
+    private List<Product> favoriteProducts;
 
 }
