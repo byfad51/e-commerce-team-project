@@ -1,6 +1,7 @@
 package com.example.ecommerce.model;
 
 
+import com.example.ecommerce.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
@@ -48,10 +49,9 @@ public class User {
     @Column(name = "phone")
     private String phone;
 
-//    @Enumerated(EnumType.STRING)
-//    private Roles roles;
-
-    private String role;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private Role role;
 
     @OneToMany
     @Column(name = "favoriteProducts")
