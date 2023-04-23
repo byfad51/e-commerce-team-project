@@ -5,6 +5,8 @@ import ProductSearch from "./ProductSearch"
 
 function ProductList() {
     const [data, setData] = useState([]);
+    const [favData, setFavData] = useState([]);
+
     const [kacTane, setKacTane] = useState(24);
     const [showClick, setShowClick] = useState(false);
     const [showButtonText, setShowButtonText] = useState("SHOW MORE PRODUCT");
@@ -28,6 +30,7 @@ function ProductList() {
                 console.error(error);
             }
         };
+        getFavData();
 
         postData();
     }, []);
@@ -48,6 +51,77 @@ function ProductList() {
             setShowButtonText("All Products were Showed")
         }
     }
+    const handleFav = async (productId) => {
+        if (localStorage.getItem("authorized") === "true") {
+            const url = "http://localhost:8080/users/favProduct?productId=" + productId + "&userId="+localStorage.getItem("currentUser") ;
+            const data = {
+                productId: productId,
+                userId: localStorage.getItem("currentUser")
+            };
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    'Authorization': localStorage.getItem("tokenKey")
+                },
+             //   body: JSON.stringify(data)
+            })
+                .then(response => {
+                    //response.status
+                    getFavData()
+                })
+                .then(data => console.log(data))
+                .catch(error => console.error(error));
+        }
+
+
+        }
+   /* const getFav = async () => {
+        if (localStorage.getItem("authorized") === "true") {
+            const url = "http://localhost:8080/users/getFavProduct?userId=" + localStorage.getItem("currentUser");
+            const data = {
+                userId: localStorage.getItem("currentUser")
+            };
+             fetch(url, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    'Authorization': localStorage.getItem("tokenKey")
+                },
+                //   body: JSON.stringify(data)
+            })
+                .then(async response => {
+                    const dataa = await response.json()
+                    setFavData(dataa)
+                    console.log(favData)
+
+                })
+
+                .catch(error => console.error(error));
+        }
+    }*/
+
+
+        const getFavData = async () => {
+            const url = "http://localhost:8080/users/getFavProduct?userId=" + localStorage.getItem("currentUser");
+            try {
+                const response = await fetch(url, {
+                    headers: {
+                        "Content-Type": "application/json; charset=utf-8",
+                        'Authorization': localStorage.getItem("tokenKey")
+                    },
+                })
+                const data = await response.json();
+                setFavData(data);
+                console.log(favData)
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+
+    console.log(favData)
+
     const myProductCard = (item) => (
 
 <>
@@ -76,8 +150,12 @@ function ProductList() {
                            <br/><Button  inverted color='orange' onClick={() => addCart(item.productName)}>
                            <Icon circular fitted  color='brown'  name='cart arrow down'  /> {item.price} ₺
                         </Button>                <br/>
-                           <Button inverted><Icon  fitted  color='red' size='large' name='heart outline' outline/></Button>
-
+                           {localStorage.getItem("authorized") ==="true"?
+                               <Button onClick={()=>{
+                                   handleFav(item.id)}
+                               } inverted>{favData.find((favItem) => favItem.id === item.id)?
+                                   <Icon fitted color='red' size='large' name='heart' outline/>:
+                                   <Icon fitted color='red' size='large' name='heart outline' outline/>}</Button>:null}
                        </center>
 
 
@@ -87,7 +165,7 @@ function ProductList() {
                 </Card>
         </>
     )
-    console.log(data)
+    //
     return (<Container>
 
             <Navbar />
