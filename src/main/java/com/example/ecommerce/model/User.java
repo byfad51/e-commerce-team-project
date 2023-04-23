@@ -53,7 +53,7 @@ public class User {
     @Column(name = "role")
     private Role role;
 
-    @OneToMany
+    @ManyToMany
     @Column(name = "favoriteProducts")
     private List<Product> favoriteProducts;
 
