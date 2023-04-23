@@ -49,6 +49,7 @@ function ProductList() {
         }
     }
     const myProductCard = (item) => (
+
 <>
                 <Card key={item.productName} >
 
@@ -59,7 +60,7 @@ function ProductList() {
                     <Card.Content>
 
 
-                                <Card.Header>{item.productName}</Card.Header>
+                                <Card.Header><a href={"/products/detail?id="+ item.id}>{item.productName}</a></Card.Header>
                                 <Card.Meta>{item.authorName}</Card.Meta>
 
 
