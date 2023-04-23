@@ -6,7 +6,6 @@ import ProductSearch from "./ProductSearch"
 function ProductList() {
     const [data, setData] = useState([]);
     const [favData, setFavData] = useState([]);
-
     const [kacTane, setKacTane] = useState(24);
     const [showClick, setShowClick] = useState(false);
     const [showButtonText, setShowButtonText] = useState("SHOW MORE PRODUCT");
@@ -127,8 +126,8 @@ function ProductList() {
 <>
                 <Card key={item.productName} >
 
-                    {item.imageUrl!== ""? <Image  height="300" src={item.imageUrl} />:
-                         <img  height="300"  src={"https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png"}/>
+                    {item.imageUrl!== ""? <a href={"/detail?id="+ item.id}><Image  height="300" src={item.imageUrl} /></a>:
+                        <a href={"/detail?id="+ item.id}><Image  height="300"   src={"https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png"}/></a>
                    }
 <div onClick={() => setOpen(true)}>
                     <Card.Content>
