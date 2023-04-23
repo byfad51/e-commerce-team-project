@@ -5,7 +5,7 @@ import ProductSearch from "./ProductSearch"
 
 function ProductList() {
     const [data, setData] = useState([]);
-    const [kacTane, setKacTane] = useState(10);
+    const [kacTane, setKacTane] = useState(24);
     const [showClick, setShowClick] = useState(false);
     const [showButtonText, setShowButtonText] = useState("SHOW MORE PRODUCT");
     const [open, setOpen] = useState(false)
@@ -41,7 +41,7 @@ function ProductList() {
 
     const showMoreProduct = () => {
         setShowClick(true)
-        setKacTane(kacTane+8)
+        setKacTane(kacTane+12)
         if(data.length >= kacTane){
             setShowClick(false)
         }else{
