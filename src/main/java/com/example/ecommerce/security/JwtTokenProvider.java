@@ -13,7 +13,7 @@ public class JwtTokenProvider {
     // @Value("${todoapp.app.secret}")
     private final String APP_SECRET = "todo";
     //@Value("${todoapp.expires.in}")
-    private final long EXPIRES_IN = 604800;
+    private final long EXPIRES_IN = 3628800;
 
     public String generateJwtToken(Authentication auth){
 
