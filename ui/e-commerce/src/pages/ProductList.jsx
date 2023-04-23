@@ -60,7 +60,7 @@ function ProductList() {
                     <Card.Content>
 
 
-                                <Card.Header><a href={"/products/detail?id="+ item.id}>{item.productName}</a></Card.Header>
+                                <Card.Header><a href={"/detail?id="+ item.id}>{item.productName}</a></Card.Header>
                                 <Card.Meta>{item.authorName}</Card.Meta>
 
 
