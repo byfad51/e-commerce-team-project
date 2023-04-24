@@ -11,7 +11,7 @@ import lombok.Data;
 public class ProductCreateRequest {
     @NotNull
     @NotBlank(message = "Product name cannot be empty")
-    @Size(min=2, max = 50, message = "Product Name long cannot over 300 characters long")
+    @Size(min=2, max = 100, message = "Product Name long cannot over 300 characters long")
     private String productName;
 
     @NotNull
@@ -22,7 +22,7 @@ public class ProductCreateRequest {
 
     @NotNull
     @NotBlank(message = "Author name cannot be empty")
-    @Size(min=2, max = 50, message = "Product Name long cannot over 300 characters long")
+    @Size(min=2, max = 80, message = "Product Name long cannot over 300 characters long")
     private String authorName;
 
     @NotNull
