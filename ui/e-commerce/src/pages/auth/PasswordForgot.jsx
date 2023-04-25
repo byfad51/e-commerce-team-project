@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
-import {Form, Button, FormControl} from 'react-bootstrap';
-import {Grid, Segment, TextArea} from 'semantic-ui-react'
+import {Form, Button} from 'react-bootstrap';
+import {Grid, Message, Segment} from 'semantic-ui-react'
 import {useNavigate} from "react-router-dom";
 
 
@@ -11,8 +11,10 @@ function PasswordForgot () {
     const [question, setQuestion] = useState("")
     const [answer, setAnswer] = useState("")
     const [password, setPassword] = useState("")
-      let [isThereEmail, setisThereEmail] = useState("")
+    const [isThereEmail, setisThereEmail] = useState("") //??
 
+    const [message, setmessage] = useState("");
+    const [messageColor, setMessageColor] = useState("red");
     const handleEmail = (value) => {
         setEmail(value)
     }
@@ -27,17 +29,17 @@ function PasswordForgot () {
         // history.go("/auth")
     }
     const handleCheck = () => {
-   
+
         if(email === ""){
-           alert("Enter an email")
+           setmessage("Enter an email")
         }else{
           //  setisThereEmail(true)
-          const requestBody = {
+         /* const requestBody = {
             email:email,
-          };
-          console.log(requestBody);
+          };*/
+        //  console.log(requestBody);
 
-          fetch("http://localhost:8080/passreset/getUserByEmail?email=" + email, {
+          fetch("http://localhost:8080/passreset/getUserByEmail", {
             method: 'POST',
             body: JSON.stringify({ email: email }),
             headers: {
@@ -46,72 +48,77 @@ function PasswordForgot () {
           })
           .then(response => {
             if (!response.ok) {
-              alert("error")
-              throw new Error('Network response was not ok');
+            //  alert("error")
+               // console.log(response.status)
+              //  console.log(response.statusMessage)
+              //  console.log(response.statusText)
+                response.text().then(value => setmessage(value))
+
+                throw new Error(response.status + " " + message);
             }
+              setmessage("")
             setisThereEmail(true)
             return response.json();
           })
           .then(data => {
-            console.log(data)
+            //console.log(data)
             setQuestion(data.question)
-            setAnswer(data.question)
-        
-            
-           
+            //setAnswer(data.question) //burada ne yapmışım bir fikrim, hata verirse burayı açın bi
+
+
+
           })
           .catch(error => {
-            alert("error")
+           // alert("error")
             setisThereEmail(false)
-            console.error('There was a problem with the fetch operation:', error);
+             console.log(error.message);
+
           });
-          
+
         }
     }
     const handleSend = () => {
-   
-      if(answer === "" || password===""){
-         alert("Enter an answer and your new password. Probably you signed answer when you register.")
-      }else{
-        //  setisThereEmail(true)
-        const requestBody = {
-          email:email,
-          answer:answer,
-          password:password,
-        };
-        console.log(requestBody);
-        const url = "http://localhost:8080/passreset/changePasswordByAnswer?email="+email+"&answer="+answer+"&password="+password
-        fetch(url, {
-          method: 'POST',
-          body: JSON.stringify({
-            email:email,
-            answer:answer,
-            password:password
-          }),
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
-        .then(response => {
-          if (!response.ok) {
-            alert("error" + response.status)
-            throw new Error('Network response was not ok');
-          }else{
-            alert("Password changed for "+ email + "you are navigated to login")
-            navigate("/login")
-          }
-        
-     
-        })
-        .catch(error => {
-          alert("error")
-          console.error('There was a problem with the fetch operation:', error);
-        });
-        
-      }
-  }
+        if(answer === "" || password===""){
+            setmessage("Enter an answer and your new password. Probably you signed answer when you register.");
+        } else {
+          /*  const requestBody = {
+                email:email,
+                answer:answer,
+                password:password,
+            };*/
+           // console.log(requestBody);
+            const url = "http://localhost:8080/passreset/changePasswordByAnswer"
+            fetch(url, {
+                method: 'POST',
+                body: JSON.stringify({
+                    email:email,
+                    answer:answer,
+                    password:password
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                       // console.log(response.status)
+                      //  console.log(response.statusMessage)
+                      //  console.log(response.statusText)
+                        response.text().then(value => setmessage(value))
+                        throw new Error(response.status +" "+ message);
+                    } else {
+                        alert("Password changed for "+ email + " you are navigated to login");
+                        navigate("/login");
+                    }
+                })
+                .catch(error => {
+                   console.error( error.message);
+                });
+        }
+    }
 
-   // const navigate = useNavigate();
+
+    // const navigate = useNavigate();
     return (<Segment><center><label><h1>Password Forgotten</h1></label></center>
         <Grid columns={3} relaxed='very' stackable>
             <Grid.Column> </Grid.Column>
@@ -122,9 +129,10 @@ function PasswordForgot () {
                         <Form.Control type="email"  placeholder="name@example.com" disabled={isThereEmail} onChange={(event) => handleEmail(event.target.value)} />
                     </Form.Group>
                     <Button variant="dark" disabled={isThereEmail} onClick={handleCheck}>CHECK</Button><br/>
+
                 </Form>
-                
-                {isThereEmail ? 
+
+                {isThereEmail ?
                <Form>  <br/>
                   <Form.Label>The tip for answer: {question}</Form.Label>
                   <Form.Group className="mb-3">
@@ -135,9 +143,11 @@ function PasswordForgot () {
 
                     </Form.Group>
                     <Button variant="dark" disabled={!isThereEmail} onClick={handleSend}>SEND</Button><br/>
-                
-                
+
+
+
                 </Form>:  <Form.Label>Enter an email registered before.</Form.Label>}
+                {message !=="" ? <Message color={messageColor}>{message}</Message> : null}
             </Grid.Column>
             <Grid.Column> </Grid.Column><Grid.Column> </Grid.Column>
             <Grid.Column  verticalAlign='middle'>
@@ -148,14 +158,13 @@ function PasswordForgot () {
                 <Grid.Column> </Grid.Column>
         </Grid>
 
-
     </Segment>);
 
 }
-
+/*
 function WhenClick () {
     return ( <Form.Text className="text-muted mb-3"> <Button variant="outline-danger" style={{color:"darkred"}} >Register for Free</Button></Form.Text>
     );
-}
+}*/
 
 export default PasswordForgot
