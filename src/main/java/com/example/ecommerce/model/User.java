@@ -56,5 +56,7 @@ public class User {
     @ManyToMany
     @Column(name = "favoriteProducts")
     private List<Product> favoriteProducts;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews;
 
 }
