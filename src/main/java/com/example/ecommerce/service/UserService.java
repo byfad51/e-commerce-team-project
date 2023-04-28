@@ -8,11 +8,15 @@ import java.util.List;
 
 public interface UserService {
 
+    User getUser();
+
     List<UserResponse> getAllUsers();
 
     UserResponse getUserByUsername(String username);
 
     UserResponse getUserById(Long userId);
+
+    User saveUser(User user);
 
     User getUserByEmail(String email);
 
