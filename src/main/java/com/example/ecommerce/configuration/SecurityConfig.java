@@ -53,6 +53,10 @@ public class SecurityConfig{
                 .requestMatchers("/products/addProduct").hasRole("ADMIN")
                 .requestMatchers("/products/**").permitAll()
                 .requestMatchers("/cart/**").hasAnyRole("ADMIN","USER")
+                .requestMatchers("/reviews/createReview").hasAnyRole("ADMIN","USER")
+                .requestMatchers("/reviews/getAllReviews").hasRole("ADMIN")
+                .requestMatchers("/reviews/getUserReviews/{userId}").hasRole("ADMIN")
+                .requestMatchers("/reviews/**").permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
