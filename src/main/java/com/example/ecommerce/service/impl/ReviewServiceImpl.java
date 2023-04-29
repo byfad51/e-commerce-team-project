@@ -56,7 +56,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public List<ReviewResponse> getUserReviews(Long userId) {
+    public List<ReviewResponse> getUserReviewsByUserId(Long userId) {
         List<Review> reviews = reviewRepository.findByUserId(userId).stream().toList();
         return mapToReviewResponses(reviews);
     }
@@ -71,7 +71,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     private ReviewResponse mapToReviewResponse(Review review) {
-        return new ReviewResponse(review.getId(), review.getUser().getId(),
+        return new ReviewResponse(review.getId(), review.getUser().getId(),review.getUser().getUsername(),
                 review.getProduct().getId(), review.getContent(),
                 review.getRating(), review.getCreatedDate());
     }

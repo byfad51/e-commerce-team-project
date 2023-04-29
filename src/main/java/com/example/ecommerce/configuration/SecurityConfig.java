@@ -55,7 +55,7 @@ public class SecurityConfig{
                 .requestMatchers("/cart/**").hasAnyRole("ADMIN","USER")
                 .requestMatchers("/reviews/createReview").hasAnyRole("ADMIN","USER")
                 .requestMatchers("/reviews/getAllReviews").hasRole("ADMIN")
-                .requestMatchers("/reviews/getUserReviews/{userId}").hasRole("ADMIN")
+                .requestMatchers("/reviews/getUserReviewsByUserId/{userId}").hasRole("ADMIN")
                 .requestMatchers("/reviews/**").permitAll()
                 .anyRequest().authenticated();
 
