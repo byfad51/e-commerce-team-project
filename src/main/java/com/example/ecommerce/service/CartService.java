@@ -1,5 +1,6 @@
 package com.example.ecommerce.service;
 
+import com.example.ecommerce.dto.cart.CartResponse;
 import com.example.ecommerce.model.Cart;
 import com.example.ecommerce.model.CartItem;
 
@@ -7,17 +8,17 @@ import java.util.List;
 
 public interface CartService {
 
-    void addToCart(Long productId, Integer amount);
+    CartResponse addToCart(Long productId, Integer amount);
 
     Cart calculatePrice(Cart cart);
 
-    void incrementCartItem(Long cartItemId, Integer amount);
+    CartResponse incrementCartItem(Long cartItemId, Integer amount);
 
-    void decrementCartItem(Long cartItemId, Integer amount);
+    CartResponse decrementCartItem(Long cartItemId, Integer amount);
 
-    void removeFromCart(Long cartItemId);
+    CartResponse removeFromCart(Long cartItemId);
 
-    List<CartItem> getCart();
+    CartResponse getCart();
 
     void emptyCart();
 

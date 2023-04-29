@@ -1,5 +1,7 @@
 package com.example.ecommerce.service.impl;
 
+import com.example.ecommerce.dto.cart.CartItemDto;
+import com.example.ecommerce.dto.cart.CartResponse;
 import com.example.ecommerce.exception.InvalidArgumentException;
 import com.example.ecommerce.exception.ResourceNotFoundException;
 import com.example.ecommerce.model.Cart;
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -31,7 +34,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void addToCart(Long productId, Integer amount) {
+    public CartResponse addToCart(Long productId, Integer amount) {
 
         User user = userService.getUser();
         Cart cart = user.getCart();
@@ -47,7 +50,7 @@ public class CartServiceImpl implements CartService {
                 cartItem.get().setAmount(cartItem.get().getAmount() + amount);
                 Cart updatedCart = calculatePrice(cart);
                 cartRepository.save(updatedCart);
-                return;
+                return cartResponseConverter(updatedCart);
             }
         }
 
@@ -71,13 +74,14 @@ public class CartServiceImpl implements CartService {
             cart.setCartItemList(new ArrayList<>());
 
         cart.getCartItemList().add(cartItem);
-        cart = calculatePrice(cart);
 
-        cartRepository.save(cart);
+        Cart updatedCart = calculatePrice(cart);
+        cartRepository.save(updatedCart);
+        return cartResponseConverter(updatedCart);
     }
 
     @Override
-    public void incrementCartItem(Long cartItemId, Integer amount) {
+    public CartResponse incrementCartItem(Long cartItemId, Integer amount) {
         User user = userService.getUser();
         Cart cart = user.getCart();
         if (Objects.isNull(cart) || Objects.isNull(cart.getCartItemList()) || cart.getCartItemList().isEmpty()) {
@@ -96,11 +100,12 @@ public class CartServiceImpl implements CartService {
 
         cartItem.setAmount(cartItem.getAmount() + amount);
         cart = calculatePrice(cart);
-        cartRepository.save(cart);
+        Cart updatedCart = cartRepository.save(cart);
+        return cartResponseConverter(updatedCart);
     }
 
     @Override
-    public void decrementCartItem(Long cartItemId, Integer amount){
+    public CartResponse decrementCartItem(Long cartItemId, Integer amount){
 
         User user = userService.getUser();
         Cart cart = user.getCart();
@@ -122,19 +127,22 @@ public class CartServiceImpl implements CartService {
             if (Objects.isNull(cart.getCartItemList()) || cart.getCartItemList().isEmpty()) {
                 user.setCart(null);
                 userService.saveUser(user);
+                return null;
             }
             cart.setCartItemList(cartItemList);
             cart = calculatePrice(cart);
             cart = cartRepository.save(cart);
+            return cartResponseConverter(cart);
         }
 
         cartItem.setAmount(cartItem.getAmount() - amount);
         cart = calculatePrice(cart);
         cartRepository.save(cart);
+        return cartResponseConverter(cart);
     }
 
     @Override
-    public void removeFromCart(Long cartItemId){
+    public CartResponse removeFromCart(Long cartItemId){
 
         User user = userService.getUser();
         Cart cart = user.getCart();
@@ -157,17 +165,25 @@ public class CartServiceImpl implements CartService {
 
             user.setCart(null);
             userService.saveUser(user);
+            return null;
         }
 
         cart.setCartItemList(cartItemList);
         cart = calculatePrice(cart);
         cartRepository.save(cart);
+        return cartResponseConverter(cart);
 
     }
 
     @Override
-    public List<CartItem> getCart(){
-        return userService.getUser().getCart().getCartItemList();
+    public CartResponse getCart(){
+
+        Cart cart = userService.getUser().getCart();
+        if (cart != null){
+            return cartResponseConverter(cart);
+        }
+        else
+            return null;
     }
 
     @Override
@@ -199,6 +215,33 @@ public class CartServiceImpl implements CartService {
         Cart cart = new Cart();
         cart.setUser(user);
         return cart;
+    }
+
+    private CartResponse cartResponseConverter(Cart cart){
+
+        CartResponse cartResponse = new CartResponse();
+
+        cartResponse.setCartItems(cart.getCartItemList()
+                .stream()
+                .map(cartItem -> CartItemDto
+                        .builder()
+                        .id(cartItem.getId())
+                        .amount(cartItem.getAmount())
+                        .productName(cartItem.getProduct().getProductName())
+                        .authorName(cartItem.getProduct().getAuthorName())
+                        .price(cartItem.getProduct().getPrice())
+                        .stock(cartItem.getProduct().getStock())
+                        .imageUrl(cartItem.getProduct().getImageUrl())
+                        .ISBN(cartItem.getProduct().getISBN())
+                        .publisher(cartItem.getProduct().getPublisher())
+                        .language(cartItem.getProduct().getLanguage())
+                        .productId(cartItem.getProduct().getId())
+                        .build())
+                .collect(Collectors.toList()));
+
+        cartResponse.setTotalCartPrice(cart.getTotalCartPrice());
+        cartResponse.setTotalPrice(cart.getTotalPrice());
+        return cartResponse;
     }
 
 }
