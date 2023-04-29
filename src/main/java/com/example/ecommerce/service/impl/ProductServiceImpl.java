@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,12 +33,8 @@ public class ProductServiceImpl implements ProductService {
             return new ProductResponse(product);
         else return null;
     }
-    public ProductResponse getProductById(Long productId) {
-        Product product = productRepository.findById(productId).orElse(null);
-        if(product != null)
-            return new ProductResponse(product);
-        else
-            return null;
+    public Product getProductById(Long productId) {
+        return productRepository.findById(productId).orElse(null);
     }
     public String addProduct(ProductCreateRequest request) {
         if(productRepository.findByProductNameAndAuthorName(request.getProductName(), request.getAuthorName()).isEmpty()){

@@ -5,6 +5,8 @@ import com.example.ecommerce.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -17,6 +19,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Cart cart;
 
     @Column(name = "first_name", nullable = false)
     private String firstname;
@@ -52,6 +57,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
     private Role role;
+
+    @Column(name = "registration_date")
+    private LocalDateTime registrationDate;
 
     @ManyToMany
     @Column(name = "favoriteProducts")
