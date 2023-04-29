@@ -3,6 +3,7 @@ package com.example.ecommerce.service;
 import com.example.ecommerce.TestData;
 import com.example.ecommerce.dto.user.UserResponse;
 import com.example.ecommerce.model.User;
+import com.example.ecommerce.repository.ProductRepository;
 import com.example.ecommerce.repository.UserRepository;
 import com.example.ecommerce.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,12 +25,15 @@ class UserServiceTest {
     @Mock
     private UserRepository userRepository;
 
+   @Mock
+   private ProductRepository productRepository;
+
     private UserServiceImpl userService;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        userService = new UserServiceImpl(userRepository);
+        userService = new UserServiceImpl(userRepository, productRepository);
     }
 
     @Test
