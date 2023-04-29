@@ -2,9 +2,12 @@ package com.example.ecommerce.model;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import java.time.LocalDateTime;
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -24,6 +27,7 @@ public class Product {
 
     @Column(name = "description")
     @Lob
+    @Size(max = 5000)
     private String description;
 
     @Column(name = "price")
@@ -59,5 +63,6 @@ public class Product {
 
     @Column(name = "stock")
     private long stock;
-
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews;
 }

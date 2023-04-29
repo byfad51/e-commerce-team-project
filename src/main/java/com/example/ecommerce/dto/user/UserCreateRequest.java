@@ -15,8 +15,8 @@ public class UserCreateRequest {
     private String firstname;
 
     @NotNull
-    @NotBlank(message = "First name cannot be empty")
-    @Size(min = 2, max = 20, message = "First name must be between 2 and 20 characters long")
+    @NotBlank(message = "Last name cannot be empty")
+    @Size(min = 2, max = 20, message = "Last name must be between 2 and 20 characters long")
     private String lastname;
 
     @NotBlank(message = "Username cannot be empty")

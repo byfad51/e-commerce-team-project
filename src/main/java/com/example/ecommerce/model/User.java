@@ -1,8 +1,13 @@
 package com.example.ecommerce.model;
 
 
+import com.example.ecommerce.enums.Role;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,6 +20,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Cart cart;
+
     @Column(name = "first_name", nullable = false)
     private String firstname;
 
@@ -22,6 +30,7 @@ public class User {
     private String lastname;
 
     @Column(name = "email", nullable = false)
+    @Email
     private String email;
 
     @Column(name = "username", nullable = false, unique = true)
@@ -45,9 +54,17 @@ public class User {
     @Column(name = "phone")
     private String phone;
 
-//    @Enumerated(EnumType.STRING)
-//    private Roles roles;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private Role role;
 
-    private String role;
+    @Column(name = "registration_date")
+    private LocalDateTime registrationDate;
+
+    @ManyToMany
+    @Column(name = "favoriteProducts")
+    private List<Product> favoriteProducts;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews;
 
 }

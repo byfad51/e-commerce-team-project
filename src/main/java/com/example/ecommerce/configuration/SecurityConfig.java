@@ -45,10 +45,18 @@ public class SecurityConfig{
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/users/getAllUsers").hasRole("ADMIN")
+                .requestMatchers("/users/getUserByUsername").permitAll()
+                .requestMatchers("/users/getUserByEmail").permitAll()
                 .requestMatchers("/users/**").hasAnyRole("ADMIN","USER")
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/passreset/**").permitAll()
+                .requestMatchers("/products/addProduct").hasRole("ADMIN")
                 .requestMatchers("/products/**").permitAll()
+                .requestMatchers("/cart/**").hasAnyRole("ADMIN","USER")
+                .requestMatchers("/reviews/createReview").hasAnyRole("ADMIN","USER")
+                .requestMatchers("/reviews/getAllReviews").hasRole("ADMIN")
+                .requestMatchers("/reviews/getUserReviews/{userId}").hasRole("ADMIN")
+                .requestMatchers("/reviews/**").permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

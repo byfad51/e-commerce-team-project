@@ -1,10 +1,16 @@
 package com.example.ecommerce.controller;
 import com.example.ecommerce.model.User;
 import com.example.ecommerce.service.impl.UserServiceImpl;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,6 +19,36 @@ public class PasswordForgotten {
     private final UserServiceImpl userService;
     private final PasswordEncoder passwordEncoder;
 
+
+    @Data
+    static class AllRequest {
+
+        @Size(min = 5, max = 20, message = "The password must be between 5 and 20 characters long")
+        private String password;
+
+        @Email(message = "Incorrect mail")
+        @NotBlank(message = "Email cannot be empty")
+        private String email;
+
+        @NotBlank(message = "You need to answer!")
+        private String answer;
+    }
+@Data
+    static class MyResponse {
+
+        private String question;
+
+
+        public MyResponse(User user) {
+            this.question = user.getQuestion();
+        }
+    }
+    @Data
+    static class EmailRequest {
+        @Email(message = "Incorrect mail")
+        @NotBlank(message = "Email cannot be empty")
+        private String email;
+    }
     @Autowired
     public PasswordForgotten(UserServiceImpl userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
@@ -20,50 +56,39 @@ public class PasswordForgotten {
     }
 
     @PostMapping("/getUserByEmail")
-    public ResponseEntity<User> getUserByEmail(@RequestParam String email) {
-        User user = userService.getUserByEmail(email);
+    public ResponseEntity<Object> getUserByEmail(@Valid @RequestBody EmailRequest emailRequest, Errors errors) {
+        if(errors.hasErrors()){
+            return new ResponseEntity<>(errors.getFieldError().getDefaultMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+        User user = userService.getUserByEmail(emailRequest.email);
         if (user != null)
-            return new ResponseEntity<>(user, HttpStatus.OK);
+            return new ResponseEntity<>(new MyResponse(user), HttpStatus.OK);
         else
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Email was not found",HttpStatus.NOT_FOUND);
     }
 
-  /*  @PostMapping("/getQuestionByEmail")
-    public ResponseEntity<String> getQuestionByEmail(@RequestParam String email) {
-        User user = userService.getUserByEmail(email);
-        if (user != null)
-            return new ResponseEntity<>(user.getQuestion(), HttpStatus.FOUND);
-        else
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    @PostMapping("/getAnswerByEmail")
-    public ResponseEntity<String> getQuestionByUser(@RequestParam String email) {
-        User user = userService.getUserByEmail(email);
-        if (user != null)
-            return new ResponseEntity<>(user.getAnswer(), HttpStatus.FOUND);
-        else
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }*/
 
     @PostMapping("/changePasswordByAnswer")
-    public ResponseEntity changePasswordByAnswer(@RequestParam String email,@RequestParam String answer, @RequestParam String password) {
-        User user = userService.getUserByEmail(email);
+    public ResponseEntity<Object> changePasswordByAnswer(@Valid @RequestBody AllRequest allRequest, Errors errors) {
+        if(errors.hasErrors()){
+            return new ResponseEntity<>(errors.getFieldError().getDefaultMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+        User user = userService.getUserByEmail(allRequest.email);
         if (user != null) {
-            if (user.getAnswer().equals(answer)) {
+            if (user.getAnswer().equals(allRequest.answer)) {
                 try {
-                   user.setPassword(passwordEncoder.encode(password));
-                   userService.updateUser(user );
-                    return new ResponseEntity<>(HttpStatus.OK);
+                   user.setPassword(passwordEncoder.encode(allRequest.password));
+                   userService.updateUser(user);
+                    return new ResponseEntity<>("Password changed",HttpStatus.OK);
 
                 } catch (Exception e) {
-                    return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+                    return new ResponseEntity<>("Password Encoder error",HttpStatus.NOT_ACCEPTABLE);
                 }
             }else{
-                return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+                return new ResponseEntity<>("Answer was not correct.",HttpStatus.NOT_ACCEPTABLE);
             }
         }else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>("User not found",HttpStatus.NOT_FOUND);
             }
         }
     }

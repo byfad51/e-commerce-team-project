@@ -3,9 +3,10 @@ package com.example.ecommerce.dto.user;
 import lombok.Data;
 
 @Data
-public class AuthResponse {
+public class ErrorResponse {
 
     private String message;
-    private Long userId;
-    private String role;
+    private int status;
+
+
 }

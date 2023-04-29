@@ -1,11 +1,11 @@
-package com.example.ecommerce.model;
+package com.example.ecommerce.enums;
 
-public enum Roles {
+public enum Role {
 
     ADMIN ("ROLE_ADMIN"),
     USER ("ROLE_USER");
 
-    Roles(String roleName) {
+    Role(String roleName) {
         this.roleName=roleName;
     }
 
