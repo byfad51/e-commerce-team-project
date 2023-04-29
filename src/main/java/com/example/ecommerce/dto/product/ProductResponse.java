@@ -33,6 +33,9 @@ public class ProductResponse {
         this.ISBN=product.getISBN();
         this.isAvailable=product.isAvailable();
         this.language=product.getLanguage();
+        this.numberOfPages=product.getNumberOfPages();
+        this.numberOfSales=product.getNumberOfSales();
+        this.publisher=product.getPublisher();
     }
 
 }
