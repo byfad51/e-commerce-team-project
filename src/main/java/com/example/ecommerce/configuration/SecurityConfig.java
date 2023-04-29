@@ -52,6 +52,7 @@ public class SecurityConfig{
                 .requestMatchers("/passreset/**").permitAll()
                 .requestMatchers("/products/addProduct").hasRole("ADMIN")
                 .requestMatchers("/products/**").permitAll()
+                .requestMatchers("/cart/**").hasAnyRole("ADMIN","USER")
                 .requestMatchers("/reviews/createReview").hasAnyRole("ADMIN","USER")
                 .requestMatchers("/reviews/getAllReviews").hasRole("ADMIN")
                 .requestMatchers("/reviews/getUserReviews/{userId}").hasRole("ADMIN")
