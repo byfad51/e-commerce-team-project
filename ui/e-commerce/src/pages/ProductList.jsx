@@ -57,6 +57,7 @@ function ProductList() {
                         .then(response => {
                             //response.status
                             console.log(response.status)
+                            alert("ADDED")
                         })
                         .then(data => console.log(data))
                         .catch(error => console.error(error));
