@@ -5,11 +5,16 @@ function ShoppingCard() {
   const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
-    // Fetch cart items from API
-    fetch('http://localhost:8080/getShoppingCard')
+    // Fetch cart items from API with headers
+    fetch('http://localhost:8080/cart/getCart', {
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Authorization': localStorage.getItem("tokenKey")
+      }
+    })
       .then(response => response.json())
       .then(data => setCartItems(data));
-
+      console.log(cartItems)
   }, []);
 
   const handleDelete = (itemId) => {
@@ -20,7 +25,7 @@ function ShoppingCard() {
       .then(response => response.json())
       .then(data => {
         // Refresh cart items from API
-        fetch('http://localhost:8080/getShoppingCard')
+        fetch('http://localhost:8080/cart/getCart')
           .then(response => response.json())
           .then(data => setCartItems(data));
       });
@@ -34,7 +39,7 @@ function ShoppingCard() {
       .then(response => response.json())
       .then(data => {
         // Refresh cart items from API
-        fetch('http://localhost:8080/getShoppingCard')
+        fetch('http://localhost:8080/cart/getCart')
           .then(response => response.json())
           .then(data => setCartItems(data));
       });
@@ -62,19 +67,19 @@ function ShoppingCard() {
           {cartItems.map(item => (
             <tr key={item.id} className="cart-item">
               <td className="cart-item__detail">
-                <img className="cart-item__image" src={item.product.imageUrl} alt={item.product.productName} />
+                <img className="cart-item__image" src={item.cartItems.imageUrl} alt={item.cartItems.productName} />
                 <div className="cart-item__info">
-                  <div className="cart-item__name">{item.product.productName}</div>
-                  <div className="cart-item__id">Item #{item.product.id}</div>
+                  <div className="cart-item__name">{item.cartItems.productName}</div>
+                  <div className="cart-item__id">Item #{item.cartItems.id}</div>
                 </div>
               </td>
-              <td className="cart-item__price">{formatPrice(item.product.price)}</td>
+              <td className="cart-item__price">{formatPrice(item.cartItems.price)}</td>
               <td className="cart-item__quantity">
                 <button className="cart-item__button" onClick={() => handleQuantityChange(item.id, item.amount - 1)}>-</button>
-                <span className="cart-item__quantity-value">{item.quantity}</span>
+                <span className="cart-item__quantity-value">{item.cartItems.amount}</span>
                 <button className="cart-item__button" onClick={() => handleQuantityChange(item.id, item.amount + 1)}>+</button>
               </td>
-              <td className="cart-item__subtotal">{formatPrice(item.product.price * item.amount)}</td>
+              <td className="cart-item__subtotal">{formatPrice(item.cartItems.price * item.cartItems.amount)}</td>
               <td className="cart-item__remove">
                 <button className="cart-item__button cart-item__button--remove" onClick={() => handleDelete(item.id)}>Remove</button>
               </td>
