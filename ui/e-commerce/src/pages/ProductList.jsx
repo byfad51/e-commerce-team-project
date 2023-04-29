@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {Grid, Image,Icon, Container, Segment, Button,  Card} from 'semantic-ui-react'
 import Navbar from "../components/Navbar";
 import ProductSearch from "./ProductSearch"
+import {useNavigate} from "react-router-dom";
 
 function ProductList() {
     const [data, setData] = useState([]);
@@ -10,6 +11,7 @@ function ProductList() {
     const [showClick, setShowClick] = useState(false);
     const [showButtonText, setShowButtonText] = useState("SHOW MORE PRODUCT");
     const [open, setOpen] = useState(false)
+    const navigate = useNavigate();
 
 
     const url = 'http://localhost:8080/products/getAllProducts';
@@ -35,9 +37,34 @@ function ProductList() {
     }, []);
 
 
-    const addCart = (item) =>
+    const addCart = (productId) =>
         {
-            console.log(item)
+            console.log(productId)
+
+                if (localStorage.getItem("authorized") === "true") {
+                    const url = "http://localhost:8080/cart/addToCart?productId=" + productId ;
+                    const data = {
+                        productId: productId
+                    };
+                    fetch(url, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            'Authorization': localStorage.getItem("tokenKey")
+                        },
+                         // body: JSON.stringify(data)
+                    })
+                        .then(response => {
+                            //response.status
+                            console.log(response.status)
+                        })
+                        .then(data => console.log(data))
+                        .catch(error => console.error(error));
+                }else{
+                    navigate("/login")
+                }
+
+
 
         }
 
@@ -75,31 +102,6 @@ function ProductList() {
 
 
         }
-   /* const getFav = async () => {
-        if (localStorage.getItem("authorized") === "true") {
-            const url = "http://localhost:8080/users/getFavProduct?userId=" + localStorage.getItem("currentUser");
-            const data = {
-                userId: localStorage.getItem("currentUser")
-            };
-             fetch(url, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    'Authorization': localStorage.getItem("tokenKey")
-                },
-                //   body: JSON.stringify(data)
-            })
-                .then(async response => {
-                    const dataa = await response.json()
-                    setFavData(dataa)
-                    console.log(favData)
-
-                })
-
-                .catch(error => console.error(error));
-        }
-    }*/
-
 
         const getFavData = async () => {
             const url = "http://localhost:8080/users/getFavProduct?userId=" + localStorage.getItem("currentUser");
@@ -146,7 +148,7 @@ function ProductList() {
                            <Icon  fitted  color='yellow' name='star'/> 4.5
 
 
-                           <br/><Button  inverted color='orange' onClick={() => addCart(item.productName)}>
+                           <br/><Button  inverted color='orange' onClick={() => addCart(item.id)}>
                            <Icon circular fitted  color='brown'  name='cart arrow down'  /> {item.price} ₺
                         </Button>                <br/>
                            {localStorage.getItem("authorized") ==="true"?
@@ -165,6 +167,8 @@ function ProductList() {
         </>
     )
     //
+
+
     return (<Container>
 
             <Navbar />
