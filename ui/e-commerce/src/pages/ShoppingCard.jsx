@@ -13,8 +13,10 @@ function ShoppingCard() {
       }
     })
       .then(response => response.json())
-      .then(data => setCartItems(data));
-      console.log(cartItems)
+      .then(data => {
+        setCartItems(data);
+        console.log(data);
+      });
   }, []);
 
   const handleDelete = (itemId) => {
@@ -65,7 +67,7 @@ function ShoppingCard() {
         </thead>
         <tbody>
           {cartItems.map(item => (
-            <tr key={item.id} className="cart-item">
+            <tr key={item.cartItems} className="cart-item">
               <td className="cart-item__detail">
                 <img className="cart-item__image" src={item.cartItems.imageUrl} alt={item.cartItems.productName} />
                 <div className="cart-item__info">
