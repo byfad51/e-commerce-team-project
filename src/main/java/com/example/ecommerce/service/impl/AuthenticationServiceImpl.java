@@ -75,10 +75,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Optional<User> user = userRepository.findByUsername(request.getUsername());
 
         if(user.isEmpty())
-            throw new InvalidCredentialsException("User not found");
+            throw new InvalidCredentialsException("The username or password you entered is incorrect. Please try again.");
 
         if(!passwordEncoder.matches(request.getPassword(),user.get().getPassword()))
-            throw new InvalidCredentialsException("Incorrect password");
+            throw new InvalidCredentialsException("The username or password you entered is incorrect. Please try again.");
 
         UsernamePasswordAuthenticationToken authToken =
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword());
