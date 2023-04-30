@@ -11,6 +11,7 @@ public interface ReviewService {
     List<ReviewResponse> getProductReviews(Long productId);
     List<ReviewResponse> getUserReviews(Long userId);
     ReviewResponse createReview(ReviewRequest reviewRequest);
+    Double getAverageRatingByProductId(Long productId);
 
 
 }

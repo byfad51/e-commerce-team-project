@@ -60,6 +60,10 @@ public class ReviewServiceImpl implements ReviewService {
         List<Review> reviews = reviewRepository.findByUserId(userId).stream().toList();
         return mapToReviewResponses(reviews);
     }
+    @Override
+    public Double getAverageRatingByProductId(Long productId){
+        return reviewRepository.getAverageRatingByProductId(productId);
+    }
 
     private Review mapToReview(ReviewRequest reviewRequest) {
         Review review = new Review();

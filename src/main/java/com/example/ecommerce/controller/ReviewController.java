@@ -50,5 +50,10 @@ public class ReviewController {
     public List<ReviewResponse> getUserReviews(@PathVariable Long userId) {
         return reviewService.getUserReviews(userId);
     }
+    @GetMapping("/getAverageRatingByProductId/{productId}")
+    public  ResponseEntity<Double> getAverageRatingByProductId(@PathVariable Long productId){
+        return new ResponseEntity<>(reviewService.getAverageRatingByProductId(productId),HttpStatus.OK);
+
+    }
 
 }
