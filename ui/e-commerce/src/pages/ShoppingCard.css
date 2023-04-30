@@ -1,0 +1,140 @@
+.shopping-cart {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  .cart-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .cart-table__header {
+    font-weight: bold;
+    text-align: left;
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .cart-item {
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .cart-item__detail {
+    display: flex;
+    align-items: center;
+  }
+  
+  .cart-item__image {
+    max-width: 80px;
+    margin-right: 10px;
+  }
+  
+  .cart-item__name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .cart-item__id {
+    color: #666;
+  }
+  
+  .cart-item__price {
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+  
+  .cart-item__quantity {
+    display: flex;
+    align-items: center;
+  }
+  
+  .cart-item__quantity-value {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin: 0 10px;
+  }
+  
+  .cart-item__button {
+    font-size: 1.2rem;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .cart-item__button:hover {
+    background-color: #f5f5f5;
+  }
+  
+  .cart-item__button:active {
+    background-color: #e5e5e5;
+  }
+  
+  .cart-item__button--remove {
+    color: #ff0000;
+    border-color: #ff0000;
+    margin-left: 10px;
+  }
+  
+  .cart-item__subtotal {
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+
+  .total-price {
+    float: right;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+  }
+
+  .clear-cart-button {
+    background-color: #f44336; /* red */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .clear-cart-button:hover {
+    background-color: #d32f2f; /* darker shade of red */
+  }
+  
+  @media (max-width: 768px) {
+    .cart-item__detail {
+      flex-wrap: wrap;
+    }
+    
+    .cart-item__image {
+      max-width: 100%;
+      margin-right: 0;
+      margin-bottom: 10px;
+    }
+    
+    .cart-item__name {
+      font-size: 1rem;
+    }
+    
+    .cart-item__quantity {
+      margin-top: 10px;
+    }
+    
+    .cart-item__remove {
+      margin-top: 10px;
+    }
+  }
