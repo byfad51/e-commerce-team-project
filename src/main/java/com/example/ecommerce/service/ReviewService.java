@@ -9,7 +9,7 @@ public interface ReviewService {
     List<ReviewResponse> getAllReviews();
     ReviewResponse getReviewById(Long reviewId);
     List<ReviewResponse> getProductReviews(Long productId);
-    List<ReviewResponse> getUserReviewsByUserId(Long userId);
+    List<ReviewResponse> getUserReviews(Long userId);
     ReviewResponse createReview(ReviewRequest reviewRequest);
 
 
