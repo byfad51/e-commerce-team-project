@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductResponse {
+    private Long id;
     private String productName;
     private String authorName;
     private String description;
@@ -22,7 +23,7 @@ public class ProductResponse {
 
 
     public ProductResponse(Product product) {
-        this.authorName = product.getAuthorName();
+        this.id = product.getId();
         this.productName = product.getProductName();
         this.authorName=product.getAuthorName();
         this.description = product.getDescription();
@@ -32,6 +33,9 @@ public class ProductResponse {
         this.ISBN=product.getISBN();
         this.isAvailable=product.isAvailable();
         this.language=product.getLanguage();
+        this.publisher=product.getPublisher();
+        this.numberOfSales=product.getNumberOfSales();
+        this.numberOfPages=product.getNumberOfPages();
     }
 
 }

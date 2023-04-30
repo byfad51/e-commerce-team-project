@@ -9,6 +9,7 @@ import 'semantic-ui-css/semantic.min.css';
 import Dashboard from "./pages/admin/Dashboard";
 import ProductList from "./pages/ProductList";
 import ProductDetails from "./pages/ProductDetails";
+import ShoppingCard from "./pages/ShoppingCard";
 
 function App() {
   return (
@@ -17,13 +18,14 @@ function App() {
           <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/cart" element={<ShoppingCard />} />
+          <Route path="/cart" element={<ShoppingCard />} />
           <Route path="/products" element={<ProductList />} />
           <Route path="/detail" element={<ProductDetails />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/passwordforgot" element={<PasswordForgot />} />
         <Route  path="/register" element={<Register />}>
         </Route>
-
       </Routes>
     </Router>
   );

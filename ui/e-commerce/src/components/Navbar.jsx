@@ -82,7 +82,7 @@ function Navbar() {
             </li>
 
 
-            <button className="cart-button">
+            <button className="cart-button" onClick={() => navigate('/cart')}>
               <FontAwesomeIcon icon={faShoppingCart} className="cart-icon" />
             </button>
           </ul>
