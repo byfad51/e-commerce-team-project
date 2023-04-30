@@ -2,6 +2,7 @@ package com.example.ecommerce.service.impl;
 import com.example.ecommerce.dto.review.ReviewRequest;
 import com.example.ecommerce.dto.review.ReviewResponse;
 import com.example.ecommerce.exception.ReviewNotFoundException;
+import com.example.ecommerce.model.Product;
 import com.example.ecommerce.model.Review;
 import com.example.ecommerce.repository.ProductRepository;
 import com.example.ecommerce.repository.ReviewRepository;
@@ -62,7 +63,14 @@ public class ReviewServiceImpl implements ReviewService {
     }
     @Override
     public Double getAverageRatingByProductId(Long productId){
-        return reviewRepository.getAverageRatingByProductId(productId);
+        Double average= reviewRepository.getAverageRatingByProductId(productId);
+        List<Review> reviews = reviewRepository.findByProductId(productId).stream().toList();
+        if (reviews.isEmpty()) {
+            average=0.0;
+            return average;
+        }else{
+            return average;
+        }
     }
 
     private Review mapToReview(ReviewRequest reviewRequest) {
