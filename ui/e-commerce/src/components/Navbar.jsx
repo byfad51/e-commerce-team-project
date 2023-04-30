@@ -43,7 +43,7 @@ function Navbar() {
       <div className="navbar-container">
         <nav className="NavbarItems">
           <div>
-            <h1 className="navbar-logo">EE</h1>
+            <h1 className="navbar-logo">Book Nook</h1>
             <div className="menu-icon" onClick={handleClick}>
               <FontAwesomeIcon icon={clicked ? faTimes : faBars} className="menu-icon" />
             </div>
@@ -82,7 +82,7 @@ function Navbar() {
             </li>
 
 
-            <button className="cart-button">
+            <button className="cart-button" onClick={() => navigate('/cart')}>
               <FontAwesomeIcon icon={faShoppingCart} className="cart-icon" />
             </button>
           </ul>
