@@ -46,9 +46,9 @@ public class ReviewController {
         return reviewService.getProductReviews(productId);
     }
 
-    @GetMapping("/getUserReviewsByUserId/{userId}")
-    public List<ReviewResponse> getUserReviewsByUserId(@PathVariable Long userId) {
-        return reviewService.getUserReviewsByUserId(userId);
+    @GetMapping("/getUserReviews/{userId}")
+    public List<ReviewResponse> getUserReviews(@PathVariable Long userId) {
+        return reviewService.getUserReviews(userId);
     }
 
 }
