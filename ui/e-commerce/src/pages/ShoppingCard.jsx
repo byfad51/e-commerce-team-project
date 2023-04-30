@@ -63,24 +63,112 @@ function ShoppingCard() {
             setCargoPrice(data.totalCargoPrice);
             setCartTotal(data.totalPrice);
           })
-          .catch(error => console.error('Error fetching cart items:', error));
+          
       })
-      .catch(error => console.error('Error removing item from cart:', error));
+     
   };
 
-  const handleQuantityChange = (itemId, newQuantity) => {
-    // Send PUT request to API to update item quantity in cart
-    fetch(`http://localhost:8080/updateStockbyId?id=${itemId}&quantity=${newQuantity}`, {
-      method: 'PUT',
-    })
-      .then(response => response.json())
+  const handleIncrease = (itemId) => {
+    // Send DELETE request to API to remove item from cart
+    fetch(`http://localhost:8080/cart/increment?cartItemId=${itemId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+          'Authorization': localStorage.getItem("tokenKey")
+        },
+      })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('Network response was not ok');
+        }
+      })
       .then(data => {
         // Refresh cart items from API
-        fetch('http://localhost:8080/cart/getCart')
-          .then(response => response.json())
-          .then(data => setCartItems(data));
-      });
+        fetch('http://localhost:8080/cart/getCart', {
+          headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Authorization': localStorage.getItem("tokenKey")
+          }
+        })
+          .then(response => {
+            if (response.ok) {
+              return response.json();
+            } else {
+              throw new Error('Network response was not ok');
+            }
+          })
+          .then(data => {
+            setCartItems(data.cartItems);
+            setCartPrice(data.totalCartPrice);
+            setCargoPrice(data.totalCargoPrice);
+            setCartTotal(data.totalPrice);
+          })
+          
+      })
+    
   };
+
+  const handleDecrease = (itemId) => {
+    // Send DELETE request to API to remove item from cart
+    fetch(`http://localhost:8080/cart/decrement?cartItemId=${itemId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+          'Authorization': localStorage.getItem("tokenKey")
+        },
+      })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('Network response was not ok');
+        }
+      })
+      .then(data => {
+        // Refresh cart items from API
+        fetch('http://localhost:8080/cart/getCart', {
+          headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Authorization': localStorage.getItem("tokenKey")
+          }
+        })
+          .then(response => {
+            if (response.ok) {
+              return response.json();
+            } else {
+              throw new Error('Network response was not ok');
+            }
+          })
+          .then(data => {
+            setCartItems(data.cartItems);
+            setCartPrice(data.totalCartPrice);
+            setCargoPrice(data.totalCargoPrice);
+            setCartTotal(data.totalPrice);
+          })
+        
+      })
+  };
+
+  function handleEmpty() {
+    fetch('http://localhost:8080/cart/emptyCart', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Authorization': localStorage.getItem("tokenKey")
+      }
+    })
+    .then(response => {
+      window.location.reload();
+    })
+    
+    .catch(error => {
+      // handle error
+    });
+  }
+
+  const totalPrice = cartItems.reduce((total, item) => total + item.price * item.amount, 0);
 
   const formatPrice = (price) => {
     // Format price as currency with 2 decimal places
@@ -107,14 +195,14 @@ function ShoppingCard() {
                 <img className="cart-item__image" src={item.imageUrl} alt={item.productName} />
                 <div className="cart-item__info">
                   <div className="cart-item__name">{item.productName}</div>
-                  <div className="cart-item__id">Item #{item.id}</div>
+                  <div className="cart-item__id">{item.authorName}</div>
                 </div>
               </td>
               <td className="cart-item__price">{formatPrice(item.price)}</td>
               <td className="cart-item__quantity">
-                <button className="cart-item__button" onClick={() => handleQuantityChange(item.id, item.amount - 1)}>-</button>
+                <button className="cart-item__button" onClick={() => handleDecrease(item.id)}>-</button>
                 <span className="cart-item__quantity-value">{item.amount}</span>
-                <button className="cart-item__button" onClick={() => handleQuantityChange(item.id, item.amount + 1)}>+</button>
+                <button className="cart-item__button" onClick={() => handleIncrease(item.id)}>+</button>
               </td>
               <td className="cart-item__subtotal">{formatPrice(item.price * item.amount)}</td>
               <td className="cart-item__remove">
@@ -124,6 +212,8 @@ function ShoppingCard() {
           ))}
         </tbody>
       </table>
+      <button className="clear-cart-button" onClick={() => handleEmpty()}>Clear the cart</button>
+      <div className="total-price">Total: {totalPrice} $</div>
     </div>
   );
 }
