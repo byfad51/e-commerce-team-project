@@ -134,15 +134,10 @@ function AddProduct () {
     console.log("url "+process.env.PUBLIC)
     return(
 <Segment>
+    <h1 style={{color:"darkslategray", textAlign:"center",paddingBottom: "10px", paddingTop: "5px"}}>Add Product</h1>
     <Form>
 
-                <label htmlFor="">
-                    <h1>
-                        <center>ADD</center>
 
-                    </h1>
-                    <center>{imageUrl ?  <Image width={"200"}height={"300"}src={imageUrl} />: <Image width={"200"}height={"300"}  src={"https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png"}/>}</center>
-                </label><br/><br/>
 
 <Row>
 
@@ -162,49 +157,57 @@ function AddProduct () {
                             <option value="Turkish">Turkish</option>
                             <option value="English">English</option>
                         </Form.Select>
+        <br/>
+        <Form.Label>ISBN</Form.Label><br/>
+        <Form.Control value={isbn}  type="text" placeholder="ISBN" onChange={(event) => handleISBN(event.target.value)} />
 
 
 
+        <br/>
+        <Form.Label>Publisher</Form.Label>
+        <Form.Control rows value={publisher}  type="text" placeholder="İş Bankası Yayınları" onChange={(event) => handlePublisher(event.target.value)} />
+        <br/>
 
-
-            </Form.Group> <Form.Group as={Col}>
-
+    </Form.Group> <Form.Group as={Col}>
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <label htmlFor="" >
+            <center>{imageUrl ?  <Image width={"200"}height={"300"}src={imageUrl} />: <Image width={"200"}height={"300"}  src={"https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png"}/>}</center>
+        </label><br/><br/></div>
                         <Form.Label>Image Url</Form.Label>
                         <Form.Control value={imageUrl}  type="text" placeholder="http://" onChange={(event) => handleImageUrl(event.target.value)} /><br/>
-                        <Form.Label>ISBN</Form.Label><br/>
-                        <Form.Control value={isbn}  type="text" placeholder="ISBN" onChange={(event) => handleISBN(event.target.value)} />
 
+    <br/>
+    <Form.Label>Publish Date</Form.Label>
 
-
-                    <br/>
-                    <Form.Label>Publisher</Form.Label>
-                    <Form.Control rows value={publisher}  type="text" placeholder="mcan123" onChange={(event) => handlePublisher(event.target.value)} />
-                    <br/>
-                    <Form.Label>Publish Date</Form.Label>
     <Form.Select onSubmit={publishedDate===""? setPublishedDate(2023):null} value={publishedDate}  onChange={(event) => handlePublishedDate(event.target.value)} >
         {Array.from({ length: 124 }, (_, i) => 2023 - i).map((year) => (
             <option key={year} value={year}>
                 {year}
             </option>
         ))}
-    </Form.Select>                    </Form.Group>
+    </Form.Select>
+                      </Form.Group>
 
 
-</Row> <br/>
-                    <Form.Label>Price *</Form.Label>
-                    <Form.Control type="number"  value={price} placeholder="25" onChange={(event) => handlePrice(event.target.value)} />
-            <br/>
-                    <Form.Label>Stock</Form.Label>
-                    <Form.Control type="number" value={stock}  placeholder="17" onChange={(event) => handleStock(event.target.value)} />
+</Row>
+        <Row>
+            <Col>
+                <Form.Label>Price *</Form.Label>
+                <Form.Control type="number" value={price} placeholder="25" onChange={(event) => handlePrice(event.target.value)} />
+            </Col>
+            <Col>
+                <Form.Label>Stock</Form.Label>
+                <Form.Control type="number" value={stock} placeholder="17" onChange={(event) => handleStock(event.target.value)} />
+            </Col>
+        </Row>
 
-
-                    <br/>
+        <br/>
                     <Form.Label>Description * (5000 character)</Form.Label><br></br>
                     <Form.Control as="textarea" maxLength={5000} value={description}  rows={7}  onChange={(event) => handleDescription(event.target.value)} style={{ minWidth: 200 }}/>
                     <center>
                         <br/>
 
-                        <Button variant="dark"  onClick={handleAddProduct}>Add Product</Button></center>
+                        <Button style={{backgroundColor: "darkslategray", color: "white",borderColor:"darkslategray"}} onClick={handleAddProduct}>Add Product</Button></center>
             {message !=="" ? <Message color={messageColor}>{message}</Message> : null}
 
             <Form.Text className="text-muted mb-33">

@@ -3,6 +3,7 @@ import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, Button} from 'react-bootstrap';
 import {Grid, Message, Segment} from 'semantic-ui-react'
+import { Container, Row, Col } from 'react-bootstrap';
 
 
 function Register () {
@@ -167,20 +168,28 @@ function Register () {
     }
 
     return(
-        <Segment><center><label><h1>REGISTER FOR FREE</h1></label></center>
+        <div >
+        <Segment><center><label><h1 className="registerName">REGISTER</h1></label></center>
             <Grid columns={3} relaxed='very' stackable>
                 <Grid.Column> </Grid.Column>
                 <Grid.Column>
       <Form>
-      <Form.Group className="mb-3">
-        <Form.Label>First Name (*)</Form.Label>
-        <Form.Control type="text" placeholder="Enter your first name" onChange={(event) => handleFirstname(event.target.value)} />
-      </Form.Group>
-      <Form.Group className="mb-3">
-        <Form.Label>Last Name (*)</Form.Label>
-        <Form.Control type="text" placeholder="Enter your last name" onChange={(event) => handleLastname(event.target.value)} />
-      </Form.Group>
-      <Form.Group className="mb-3">
+              <Row>
+                  <Col>
+                      <Form.Group className="mb-3">
+                          <Form.Label>First Name (*)</Form.Label>
+                          <Form.Control type="text" placeholder="Enter your first name" onChange={(event) => handleFirstname(event.target.value)} />
+                      </Form.Group>
+                  </Col>
+                  <Col>
+                      <Form.Group className="mb-3">
+                          <Form.Label>Last Name (*)</Form.Label>
+                          <Form.Control type="text" placeholder="Enter your last name" onChange={(event) => handleLastname(event.target.value)} />
+                      </Form.Group>
+                  </Col>
+              </Row>
+
+          <Form.Group className="mb-3">
         <Form.Label>Username (*) {buttonBlockUsername?<font color={"red"}>Username exists</font>:null}</Form.Label>
         <Form.Control type="text"  onBlur={()=>isUserExists()} placeholder="Enter your username" onChange={(event) => handleUsername(event.target.value)} />
       </Form.Group>
@@ -213,11 +222,11 @@ function Register () {
         <Form.Label>Answer (*)</Form.Label>
         <Form.Control type="text" placeholder="Answer" onChange={(event) => handleAnswer(event.target.value)} />
       </Form.Group>
-      <Button disabled={buttonBlockUsername || buttonBlockEmail} variant="dark" onClick={handleRegister}>Register</Button>
+      <Button disabled={buttonBlockUsername || buttonBlockEmail}onClick={handleRegister} style={{backgroundColor: "darkslateblue", color: "white",  display: "block", margin: "0 auto",borderColor:"darkslateblue"}}>Register</Button>
       <Form.Text className="text-muted mb-3">
 
           <br/>
-         <center> <Button variant="outline-danger" style={{color:"darkred"}}  onClick={handleLogin}>Already registered?</Button></center>
+         <center> <Button  onClick={handleLogin} style={{backgroundColor: "white", color: "darkslateblue",borderColor:"darkslateblue"}}>Already registered?</Button></center>
       </Form.Text>
           {message !=="" ? <Message color={messageColor}>{message}</Message> : null}
 
@@ -228,6 +237,7 @@ function Register () {
 
 
         </Segment>
+        </div>
     )
 }
 

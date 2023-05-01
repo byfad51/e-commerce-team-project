@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { Form, Button } from 'react-bootstrap';
 import {Grid, Message, Segment} from 'semantic-ui-react'
-
+import "../../design/DesignLoginRegister.css"
 
 function Login () {
     document.title = 'Login';
@@ -132,23 +132,24 @@ console.log(localStorage.getItem("authorized"))
     }
 
     return(
-        <Segment><center><label><h1>LOGIN</h1></label></center><div>{authorized ? navigate("/"):null}</div>
+        <div className="loginDesign">
+        <Segment><center><label><h1 className='loginName'>LOGIN</h1></label></center><div>{authorized ? navigate("/"):null}</div>
             <Grid columns={3} relaxed='very' stackable>
                 <Grid.Column> </Grid.Column>
                 <Grid.Column>
                     <Form>
                         <Form.Group className="mb-3">
                             <Form.Label>Username</Form.Label>
-                            <Form.Control type="email"  placeholder="mcan123" onChange={(event) => handleUsername(event.target.value)} />
+                            <Form.Control type="email"  placeholder="username" onChange={(event) => handleUsername(event.target.value)} />
                         </Form.Group>
 
                         <Form.Group className="mb-3">
                             <Form.Label>Password</Form.Label>
-                            <Form.Control type="password"  onChange={(event) => handlePassword(event.target.value)} />
+                            <Form.Control type="password" placeholder="password" onChange={(event) => handlePassword(event.target.value)} />
                         </Form.Group>
 
-                        <Button variant="dark" onClick={handleLogin}>Login</Button>
-                        <Form.Text className="text-muted mb-3"> <Button variant="link" style={{color:"cadetblue"}} onClick={handleForgotPassword}>Password Forgotten?</Button></Form.Text>
+                        <Button onClick={handleLogin} style={{backgroundColor: "darkslateblue", color: "white",  display: "block", float:"right",borderColor:"darkslateblue"}}>Login</Button>
+                        <Form.Text className="text-muted mb-3"> <Button variant="link" style={{color:"cadetblue", float:"left",marginLeft: "-10px"}} onClick={handleForgotPassword}>Password Forgotten?</Button></Form.Text>
                         <br/>
                         {message !=="" ? <Message color={messageColor}>{message}</Message> : null}
                     </Form>
@@ -157,12 +158,13 @@ console.log(localStorage.getItem("authorized"))
                 </Grid.Column>
                 <Grid.Column> </Grid.Column><Grid.Column> </Grid.Column>
                 <Grid.Column verticalAlign='middle'>
-                    <center> <Form.Text className="text-muted mb-3"> <Button variant="outline-danger" style={{color:"darkred"}} onClick={handleRegister}>Register for Free</Button></Form.Text>
+                    <center> <Form.Text className="text-muted mb-3"> <Button  style={{backgroundColor: "white", color: "darkslateblue",borderColor:"darkslateblue"}} onClick={handleRegister}>Register for Free</Button></Form.Text>
                     </center>   </Grid.Column> <Grid.Column> </Grid.Column><Grid.Column> </Grid.Column>
             </Grid>
 
 
         </Segment>
+        </div>
     )
 }
 

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import './ShoppingCard.css';
-
+import Navbar from "../components/Navbar";
+import {Container} from "semantic-ui-react";
 function ShoppingCard() {
   const [cartItems, setCartItems] = useState([]);
   const [cartPrice, setCartPrice] = useState();
@@ -176,6 +177,8 @@ function ShoppingCard() {
   };
 
   return (
+<Container>
+  <div><Navbar/></div>
     <div className="shopping-cart">
       <h1 className="title">Shopping Cart</h1>
       <table className="cart-table">
@@ -215,6 +218,7 @@ function ShoppingCard() {
       <button className="clear-cart-button" onClick={() => handleEmpty()}>Clear the cart</button>
       <div className="total-price">Total: {totalPrice} $</div>
     </div>
+</Container>
   );
 }
 

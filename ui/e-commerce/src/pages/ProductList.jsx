@@ -145,12 +145,17 @@ function ProductList() {
 </div>
                     <Card.Content extra>
                        <center>
-                           <Icon  fitted  name='comment outline'/> 15
-                           <Icon  fitted  color='yellow' name='star'/> 4.5
+                           <div>
+                               <Icon fitted name='comment outline' />
+                               <span style={{ marginLeft: '5px' }}>15</span>
+                               <span style={{ marginLeft: '10px' }} />
+                               <Icon fitted color='yellow' name='star' />
+                               <span style={{ marginLeft: '5px' }}>4.5</span>
+                           </div>
 
-
-                           <br/><Button  inverted color='orange' onClick={() => addCart(item.id)}>
-                           <Icon circular fitted  color='brown'  name='cart arrow down'  /> {item.price} ₺
+                           <br/>
+                               <Button  inverted color='instagram' onClick={() => addCart(item.id)}>
+                           <Icon circular fitted  color='white'  name='cart arrow down'  /> {item.price} ₺
                         </Button>                <br/>
                            {localStorage.getItem("authorized") ==="true"?
                                <Button onClick={()=>{
@@ -195,7 +200,7 @@ function ProductList() {
                 myProductCard(item,index)
             ))}
         </Card.Group><br/>
-           <center> <Button inverted color='brown' onClick={showMoreProduct} disabled={showClick}>{showButtonText}</Button></center>
+           <center> <Button inverted color='linkedin' onClick={showMoreProduct} disabled={showClick}>{showButtonText}</Button></center>
             </Segment></Container>);
 }
 
