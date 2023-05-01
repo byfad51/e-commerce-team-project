@@ -218,7 +218,7 @@ function ShoppingCard() {
         </tbody>
       </table>
       <button className="clear-cart-button" onClick={() => handleEmpty()}>Clear the cart</button>
-      <div className="total-price">Total: {formatPrice(totalPrice)} TL</div>
+      <div className="total-price">Total: {formatPrice(totalPrice)}</div>
     </div>
 </Container>
   );
