@@ -175,7 +175,7 @@ function ShoppingCard() {
 
   const formatPrice = (price) => {
     // Format price as currency with 2 decimal places
-    return `$${price.toFixed(2)}`;
+    return `${price.toFixed(2)} TL`;
   };
 
   return (
@@ -218,7 +218,7 @@ function ShoppingCard() {
         </tbody>
       </table>
       <button className="clear-cart-button" onClick={() => handleEmpty()}>Clear the cart</button>
-      <div className="total-price">Total: {formatPrice(totalPrice)} $</div>
+      <div className="total-price">Total: {formatPrice(totalPrice)} TL</div>
     </div>
 </Container>
   );
