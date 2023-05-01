@@ -63,6 +63,7 @@ function ShoppingCard() {
             setCartPrice(data.totalCartPrice);
             setCargoPrice(data.totalCargoPrice);
             setCartTotal(data.totalPrice);
+            window.location.reload();
           })
           
       })
@@ -147,7 +148,7 @@ function ShoppingCard() {
             setCartPrice(data.totalCartPrice);
             setCargoPrice(data.totalCargoPrice);
             setCartTotal(data.totalPrice);
-            window.location.reload();
+          
           })
         
       })
