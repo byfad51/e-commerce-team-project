@@ -147,6 +147,7 @@ function ShoppingCard() {
             setCartPrice(data.totalCartPrice);
             setCargoPrice(data.totalCargoPrice);
             setCartTotal(data.totalPrice);
+            window.location.reload();
           })
         
       })
@@ -216,7 +217,7 @@ function ShoppingCard() {
         </tbody>
       </table>
       <button className="clear-cart-button" onClick={() => handleEmpty()}>Clear the cart</button>
-      <div className="total-price">Total: {totalPrice} $</div>
+      <div className="total-price">Total: {formatPrice(totalPrice)} $</div>
     </div>
 </Container>
   );
