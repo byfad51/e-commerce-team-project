@@ -3,6 +3,9 @@ import com.example.ecommerce.model.Product;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,15 +23,15 @@ public class ProductResponse {
     private String publisher;
     private String language;
     private boolean isAvailable;
-
-
+    private int publishedDate;
+    private LocalDateTime createdAt;
     public ProductResponse(Product product) {
         this.id = product.getId();
         this.productName = product.getProductName();
         this.authorName=product.getAuthorName();
         this.description = product.getDescription();
         this.price = product.getPrice();
-       this.stock=product.getStock();
+        this.stock=product.getStock();
         this.imageUrl=product.getImageUrl();
         this.ISBN=product.getISBN();
         this.isAvailable=product.isAvailable();
@@ -36,6 +39,8 @@ public class ProductResponse {
         this.publisher=product.getPublisher();
         this.numberOfSales=product.getNumberOfSales();
         this.numberOfPages=product.getNumberOfPages();
+        this.publishedDate = product.getPublishedDate();
+        this.createdAt = product.getCreatedAt();
     }
 
 }
