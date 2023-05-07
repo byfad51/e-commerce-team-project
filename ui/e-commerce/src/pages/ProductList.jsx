@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {Grid, Image,Icon, Container, Segment, Button,  Card} from 'semantic-ui-react'
+import {Grid, Image, Icon, Container, Segment, Button, Card, Dropdown, Select} from 'semantic-ui-react'
 import Navbar from "../components/Navbar";
 import ProductSearch from "./ProductSearch"
 import {useNavigate} from "react-router-dom";
@@ -17,7 +17,11 @@ function ProductList() {
     const url = 'http://localhost:8080/products/getAllProducts';
 
     useEffect(() => {
-        const postData = async () => {
+        getFavData();
+        getAllProduct();
+        console.log("calisti set")
+    }, []);
+        const getAllProduct = async () => {
             try {
                 const response = await fetch(url, {
                     headers: {
@@ -31,10 +35,7 @@ function ProductList() {
                 console.error(error);
             }
         };
-        getFavData();
 
-        postData();
-    }, []);
 
 
     const addCart = (productId) =>
@@ -122,8 +123,6 @@ function ProductList() {
         }
 
 
-    console.log(favData)
-
     const myProductCard = (item) => (
 
 <>
@@ -172,21 +171,95 @@ function ProductList() {
                 </Card>
         </>
     )
-    //
 
+    const [selectedFilter, setSelectedFilter] = useState(1);
+    const [selectedSorting, setSelectedSorting] = useState(1);
+    useEffect(() => {/////////////
+        setShowClick(false)
+       console.log("calisti filter")
+        setSelectedSorting(1)
+        if(selectedFilter === 1){
+            getAllProduct()
+        }else if(selectedFilter=== 2){
+            setData(getFavData())
+         setData(favData)
+            console.log(data)
+        }else if(selectedFilter=== 3){
+            console.log("calisti filter3")
 
+        }else{
+            console.log("calisti filter4")
+        }
+        console.log(data)
+    }, [selectedFilter]);
+
+    useEffect(() => {//////////////
+        console.log(data)
+        if(selectedSorting === 1){
+            const sortedData = [...data].sort((a, b) => a.publishedDate - b.publishedDate);
+            setData(sortedData);
+            console.log("calisti 1")
+        }else if(selectedSorting=== 2){
+            const sortedData = [...data].sort((b, a) => a.publishedDate - b.publishedDate);
+            setData(sortedData);
+            console.log("calisti 2")
+        }else if(selectedSorting=== 3){
+            const sortedData = [...data].sort((a, b) => a.price - b.price);
+            setData(sortedData);
+            console.log("calisti 3")
+
+        }else if(selectedSorting=== 4){
+            const sortedData = [...data].sort((b,a) => a.price - b.price);
+            setData(sortedData);
+            console.log("calisti 4")
+
+        }else if(selectedSorting=== 5){
+            const sortedData = [...data].sort((a,b) =>new Date(a.createdAt) - new Date(b.createdAt));
+            setData(sortedData);
+            console.log("calisti 5")
+        }else if(selectedSorting=== 6){
+            const sortedData = [...data].sort((b,a) => new Date(a.createdAt) -new Date(b.createdAt));
+            setData(sortedData);
+            console.log("calisti 6")
+        }else{
+        }
+    }, [selectedSorting]);
+    function handleSelectionFilter(e, { name, value }) {
+        setSelectedFilter(value);
+    }
+    function handleSelectionSorting(e, { name, value }) {
+        setSelectedSorting(value);
+    }
+    const filterOptions = [
+        { key: 1, text: 'All books', value: 1 },
+        { key: 2, text: 'My Favorites (user needed)', value: 2 },
+        { key: 3, text: '', value: 3 },
+    ]
+    const sortingOptions = [
+        { key: 1, text: 'First old published', value: 1 },
+        { key: 2, text: 'First new published', value: 2 },
+        { key: 3, text: 'First cheaper', value: 3 },
+        { key: 4, text: 'First more expensive', value: 4 },
+        { key: 5, text: 'First old added', value: 5 },
+        { key: 6, text: 'First new added', value: 6 },
+    ]
     return (<Container>
 
             <Navbar />
             <Segment>
                 <Grid >
-                    <Grid.Row columns={2}>
+                    <Grid.Row columns={3}>
                         <Grid.Column >
                             <ProductSearch style={{width: "100%"}} dataa={data} />
                         </Grid.Column>
                         <Grid.Column>
-                          <Button style={{width: "100%"}}>Filters and sorting will be added.</Button>
+                            <Dropdown style={{width: "100%"}} value={selectedFilter}   onChange={handleSelectionFilter}  clearable options={filterOptions} selection/>
                         </Grid.Column>
+
+                        <Grid.Column>
+                            <Dropdown style={{width: "100%"}}  value={selectedSorting}  onChange={handleSelectionSorting} placeholder={"First old books"} clearable options={sortingOptions} selection />
+                        </Grid.Column>
+
 
                     </Grid.Row>
                 </Grid>
