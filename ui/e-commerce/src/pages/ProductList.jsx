@@ -135,7 +135,7 @@ function ProductList() {
                     <Card.Content>
 
 
-                                <Card.Header><a href={"/detail?id="+ item.id}>{item.productName}</a></Card.Header>
+                                <Card.Header><a href={"/detail?id="+ item.id} ><p >{item.productName}</p></a></Card.Header>
                                 <Card.Meta>{item.authorName}</Card.Meta>
 
 
@@ -148,7 +148,7 @@ function ProductList() {
                                <Icon fitted name='comment outline' />
                                <span style={{ marginLeft: '5px' }}>15</span>
                                <span style={{ marginLeft: '10px' }} />
-                               <Icon fitted color='yellow' name='star' />
+                               <Icon fitted color='yellow' name='star'/>
                                <span style={{ marginLeft: '5px' }}>4.5</span>
                            </div>
 
@@ -182,7 +182,7 @@ function ProductList() {
             getAllProduct()
         }else if(selectedFilter=== 2){
             setData(getFavData())
-         setData(favData)
+            setData(favData)
             console.log(data)
         }else if(selectedFilter=== 3){
             console.log("calisti filter3")
@@ -232,9 +232,14 @@ function ProductList() {
     }
     const filterOptions = [
         { key: 1, text: 'All books', value: 1 },
-        { key: 2, text: 'My Favorites (user needed)', value: 2 },
-        { key: 3, text: '', value: 3 },
+
+        { key: 3, text: 'Search author', value: 3 },
+        { key: 4, text: 'Search category', value: 4 },
+        { key: 5, text: 'Search with year range', value: 5 },
     ]
+    if (localStorage.getItem("authorized") === "true") {
+        filterOptions.push(  { key: 2, text: 'My Favorites (user needed)', value: 2 })
+    }
     const sortingOptions = [
         { key: 1, text: 'First old published', value: 1 },
         { key: 2, text: 'First new published', value: 2 },
@@ -242,6 +247,8 @@ function ProductList() {
         { key: 4, text: 'First more expensive', value: 4 },
         { key: 5, text: 'First old added', value: 5 },
         { key: 6, text: 'First new added', value: 6 },
+        { key: 7, text: 'First higher average rating', value: 7 },
+        { key: 8, text: 'First higher sold', value: 8 },
     ]
     return (<Container>
 
