@@ -43,7 +43,7 @@ function Navbar() {
       <div className="navbar-container">
         <nav className="NavbarItems">
           <div>
-            <h1 className="navbar-logo">EE</h1>
+            <h1 className="navbar-logo"><a href={"/"}><font color={"yellow"} >E</font><font color={"blue"} >E</font></a></h1>
             <div className="menu-icon" onClick={handleClick}>
               <FontAwesomeIcon icon={clicked ? faTimes : faBars} className="menu-icon" />
             </div>
