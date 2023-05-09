@@ -4,6 +4,7 @@ package com.example.ecommerce.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.annotations.Formula;
 import org.springframework.data.annotation.CreatedDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -40,7 +41,7 @@ public class Product {
     @Column(name = "image_url")
     private String imageUrl;
     @Column(name = "number_of_sales")
-    private String numberOfSales;
+    private int numberOfSales;
     @Column(name = "publisher")
     private String publisher;
     @Column(name = "language")
@@ -65,4 +66,8 @@ public class Product {
     private long stock;
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews;
+  //@Formula("(SELECT AVG(r.rating) FROM reviews r WHERE r.product_id = id)")
+    @Column(name="average_rating")
+    private Double averageRating;
+
 }
