@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
-import Navbar from "../components/Navbar";
-import {Button, Container, Icon, Label, Segment,Comment, Form, Header,Rating,Grid} from "semantic-ui-react";
+import Navbar from "../../components/Navbar";
+import {Button, Container, Icon, Label, Segment, Comment, Form, Header, Rating, Grid, Message} from "semantic-ui-react";
 import {useNavigate} from "react-router-dom";
 
 function ProductDetails() {
@@ -12,6 +12,10 @@ function ProductDetails() {
     const navigate = useNavigate();
     const url = `http://localhost:8080/products/getProductById/${productId}`;
     const [data, setData] = useState([]);
+    const [commentMessage, setCommentMessage] = useState("");
+    const [addCommentText, setAddCommentText] = useState("");
+    const [addCommentRating, setAddCommentRating] = useState(0);
+    const [messageColor, setMessageColor] = useState("red");
 
     const addCart = (productId) =>
     {
@@ -118,7 +122,58 @@ function ProductDetails() {
 
         </>
     )
-    console.log(productData)
+    const addComment = async () => {
+        if (addCommentRating === 0) {
+            setMessageColor("red")
+            setCommentMessage("Please give a few stars")
+        } else if (addCommentText === "") {
+            setMessageColor("red")
+            setCommentMessage("Please add comment text")
+        } else {
+            setMessageColor("green")
+            setCommentMessage("")
+            await fetch('http://localhost:8080/reviews/createReview', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem("tokenKey")
+                },
+                body: JSON.stringify({
+                    "userId": localStorage.getItem("currentUser"),
+                    "productId": productId,
+                    "content": addCommentText,
+                    "rating": addCommentRating
+                })
+            })
+                .then(response => {
+                    if (response.status === 409) {
+                        setMessageColor("red")
+                        setCommentMessage("You already have a comment for this book.")
+                        throw new Error('HTTP error ' + response.status);
+                    }else
+                    if (!response.ok) {
+                        throw new Error('HTTP error ' + response.status);
+                    }
+
+                    return response.json();
+                })
+                .then(data1 => {
+                    data.push(data1)
+                    console.log(data1);
+                })
+                .catch(error => {
+                    console.error('There was an error:', error);
+                }).then(()=>
+                {
+                    setAddCommentText("");
+                    setAddCommentRating(0);
+                });
+        }
+    }
+
+
+
+   // console.log(productData)
     const productFound =() => (
 
 <div>
@@ -193,7 +248,7 @@ function ProductDetails() {
                 Comments
             </Header>
 
-                            {data.map(item => (
+                            {data.map.length > 0 ?data.map(item => (
                                 <Comment  style={({ textAlign: "left" })}>
 
                                     <Comment.Content >
@@ -208,14 +263,16 @@ function ProductDetails() {
 
                                     </Comment.Content>
                                 </Comment>
-                            ))}
+                            )) :"Yorum Yapılmamış"}<br/><br/>
 
 
-
-            <Form reply>
-                <Form.TextArea />
-                <Button  circular content='Add Reply' labelPosition='left' icon='edit' color='instagram'  />
-            </Form>
+            {localStorage.getItem("authorized") ==="true"?
+                <Form reply>
+                <Form.TextArea value={addCommentText} onChange={(event) => setAddCommentText(event.target.value)}/>
+                 <Rating icon='star' rating={addCommentRating} onRate={(event, data1) => setAddCommentRating(data1.rating)}  maxRating={5} size={"huge"}/><br/><br/>
+                    {commentMessage!==""? <>{<Message color={messageColor}>{commentMessage}</Message>}</>:null}<br/><br/>
+                <Button circular content='Add Comment' onClick={addComment} labelPosition='left' icon='edit' color='instagram'/>
+            </Form>:"Yorum yapmak için giriş yapınız"}
         </Comment.Group>
         </div>
     )

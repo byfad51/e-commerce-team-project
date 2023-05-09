@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {Grid, Image, Icon, Container, Segment, Button, Card, Dropdown, Select} from 'semantic-ui-react'
-import Navbar from "../components/Navbar";
+import Navbar from "../../components/Navbar";
 import ProductSearch from "./ProductSearch"
 import {useNavigate} from "react-router-dom";
 

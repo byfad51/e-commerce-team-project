@@ -1,7 +1,7 @@
 import React from 'react'
 import { Search } from 'semantic-ui-react'
 import _ from 'lodash'
-import "../design/design.css"
+import "../../design/design.css"
 const initialState = {
     loading: false,
     results: [],

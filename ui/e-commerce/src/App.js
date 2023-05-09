@@ -7,8 +7,8 @@ import PasswordForgot from "./pages/auth/PasswordForgot";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'semantic-ui-css/semantic.min.css';
 import Dashboard from "./pages/admin/Dashboard";
-import ProductList from "./pages/ProductList";
-import ProductDetails from "./pages/ProductDetails";
+import ProductList from "./pages/product/ProductList";
+import ProductDetails from "./pages/product/ProductDetails";
 import ShoppingCard from "./pages/ShoppingCard";
 
 function App() {
