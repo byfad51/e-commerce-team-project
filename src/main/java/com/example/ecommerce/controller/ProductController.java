@@ -44,7 +44,6 @@ public class ProductController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    // CREATE method
     @PostMapping("/addProduct")
     public ResponseEntity<String> addProduct(@Valid @RequestBody ProductCreateRequest request){
        if(productService.addProduct(request)!=null){
@@ -54,5 +53,15 @@ public class ProductController {
        else
            return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
+    @PutMapping("/updateProduct/{productId}")
+    public ResponseEntity<String> updateProduct(@PathVariable Long productId, @RequestBody ProductCreateRequest request) {
+        String result = productService.updateProduct(productId, request);
+        return ResponseEntity.ok(result);
+    }
 
+    @DeleteMapping("/deleteProduct/{productId}")
+    public ResponseEntity<String> deleteProduct(@PathVariable Long productId) {
+        String result = productService.deleteProduct(productId);
+        return ResponseEntity.ok(result);
+    }
 }
