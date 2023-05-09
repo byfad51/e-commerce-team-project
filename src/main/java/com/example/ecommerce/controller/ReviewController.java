@@ -23,7 +23,7 @@ public class ReviewController {
     public ResponseEntity<ReviewResponse> createReview(@RequestBody ReviewRequest reviewRequest) {
         ReviewResponse response=reviewService.createReview(reviewRequest);
         if(response!=null){
-            return new ResponseEntity<>(reviewService.createReview(reviewRequest),HttpStatus.CREATED);
+            return new ResponseEntity<>(response,HttpStatus.CREATED);
         }
        else{
            return new ResponseEntity<>(HttpStatus.CONFLICT);
