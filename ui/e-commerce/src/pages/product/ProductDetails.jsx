@@ -167,6 +167,7 @@ function ProductDetails() {
                 {
                     setAddCommentText("");
                     setAddCommentRating(0);
+                    window.location.reload()
                 });
         }
     }

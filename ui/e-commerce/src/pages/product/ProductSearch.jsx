@@ -2,6 +2,7 @@ import React from 'react'
 import { Search } from 'semantic-ui-react'
 import _ from 'lodash'
 import "../../design/design.css"
+import {useNavigate} from "react-router-dom";
 const initialState = {
     loading: false,
     results: [],
@@ -17,7 +18,7 @@ function exampleReducer(state, action) {
         case 'FINISH_SEARCH':
             return { ...state, loading: false, results: action.results }
         case 'UPDATE_SELECTION':
-            console.log(action.selection.toString())
+        //    console.log(action.selection)
             return { ...state, value: action.selection}
         default:
             throw new Error()
@@ -33,6 +34,7 @@ function ProductSearch(props) {
             description: item.authorName,
             image: item.imageUrl,
             price: item.price,
+            productId : item.id
         }))
         setSource(newSource)
     }, [props.dataa])
@@ -66,14 +68,18 @@ function ProductSearch(props) {
             clearTimeout(timeoutRef.current)
         }
     }, [])
+    const navigate = useNavigate();
 
+    const handleRegister = (id) => {
+        navigate("/detail?id="+id)
+    }
     return (
 
        <Search size={"big"}
             loading={loading}
             placeholder="Search..."
             onResultSelect={(e, data) =>
-                dispatch({ type: 'UPDATE_SELECTION', selection: data.result.title })
+                dispatch({ type: 'UPDATE_SELECTION', selection: handleRegister(data.result.productId) })
 
             }
             onSearchChange={handleSearchChange}

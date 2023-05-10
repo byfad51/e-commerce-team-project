@@ -132,10 +132,12 @@ function ProductList() {
                         <a href={"/detail?id="+ item.id}><Image  height="300"   src={"https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png"}/></a>
                    }
 <div onClick={() => setOpen(true)}>
-                    <Card.Content>
+                    <Card.Content style={{ height: '140px',overflow:'hidden',textOverflow:'ellipsis'  }}>
 
 
-                                <Card.Header><a href={"/detail?id="+ item.id} ><p >{item.productName}</p></a></Card.Header>
+
+                                <Card.Header><a href={"/detail?id="+ item.id} ><p >{item.productName}</p>
+                                </a></Card.Header>
                                 <Card.Meta>{item.authorName}</Card.Meta>
 
 
@@ -146,10 +148,10 @@ function ProductList() {
                        <center>
                            <div>
                                <Icon fitted name='comment outline' />
-                               <span style={{ marginLeft: '5px' }}>15</span>
+                               <span style={{ marginLeft: '5px' }}>{item.numberOfReviews}</span>
                                <span style={{ marginLeft: '10px' }} />
                                <Icon fitted color='yellow' name='star'/>
-                               <span style={{ marginLeft: '5px' }}>4.5</span>
+                               <span style={{ marginLeft: '5px' }}>{item.averageRating}</span>
                            </div>
 
                            <br/>
