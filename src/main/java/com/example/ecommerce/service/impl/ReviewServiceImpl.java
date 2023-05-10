@@ -31,6 +31,8 @@ public class ReviewServiceImpl implements ReviewService {
     public ReviewResponse createReview(ReviewRequest reviewRequest) {
         if(reviewRepository.findByUserIdAndProductId(reviewRequest.getUserId(), reviewRequest.getProductId()).isEmpty()){
             Review review = reviewRepository.save(mapToReview(reviewRequest));
+            review.getProduct().setAverageRating(getAverageRating(review.getProduct()));
+            productRepository.save(review.getProduct());
             return mapToReviewResponse(review);
         }
        else{
@@ -92,5 +94,17 @@ public class ReviewServiceImpl implements ReviewService {
         return reviews.stream()
                 .map(this::mapToReviewResponse)
                 .collect(Collectors.toList());
+    }
+    private double getAverageRating(Product product) {
+
+        if (product.getReviews() == null || product.getReviews().isEmpty()) {
+            return 0.0;
+        }
+
+        int sum = 0;
+        for (Review review : product.getReviews()) {
+            sum += review.getRating();
+        }
+        return (double) sum / product.getReviews().size();
     }
 }

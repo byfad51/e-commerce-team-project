@@ -1,5 +1,6 @@
 package com.example.ecommerce.dto.product;
 import com.example.ecommerce.model.Product;
+import com.example.ecommerce.model.Review;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,12 +20,14 @@ public class ProductResponse {
     private String imageUrl;
     private String ISBN;
     private long numberOfPages;
-    private String numberOfSales;
+    private int numberOfSales;
     private String publisher;
     private String language;
     private boolean isAvailable;
     private int publishedDate;
     private LocalDateTime createdAt;
+    private int numberOfReviews;
+    private Double averageRating;
     public ProductResponse(Product product) {
         this.id = product.getId();
         this.productName = product.getProductName();
@@ -34,13 +37,14 @@ public class ProductResponse {
         this.stock=product.getStock();
         this.imageUrl=product.getImageUrl();
         this.ISBN=product.getISBN();
-        this.isAvailable=product.isAvailable();
+        this.isAvailable= product.getStock() > 0;
         this.language=product.getLanguage();
         this.publisher=product.getPublisher();
         this.numberOfSales=product.getNumberOfSales();
         this.numberOfPages=product.getNumberOfPages();
         this.publishedDate = product.getPublishedDate();
         this.createdAt = product.getCreatedAt();
+        this.numberOfReviews = product.getReviews().size();
+        this.averageRating = product.getAverageRating();
     }
-
-}
+    }

@@ -37,20 +37,10 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findById(productId).orElse(null);
     }
     public String addProduct(ProductCreateRequest request) {
-        if(productRepository.findByProductNameAndAuthorName(request.getProductName(), request.getAuthorName()).isEmpty()){
+        if(productRepository.findByProductNameAndAuthorName(request.getProductName(),
+                request.getAuthorName()).isEmpty()){
             Product product= new Product();
-            product.setProductName(request.getProductName());
-            product.setAuthorName(request.getAuthorName());
-            product.setDescription(request.getDescription());
-            product.setAvailable(true);
-            product.setImageUrl(request.getImageUrl());
-            product.setISBN(request.getISBN());
-            product.setLanguage(request.getLanguage());
-            product.setNumberOfPages(request.getNumberOfPages());
-            product.setPrice(request.getPrice());
-            product.setStock(request.getStock());
-            product.setPublisher(request.getPublisher());
-            product.setPublishedDate(request.getPublishedDate());
+            addProduct(request, product);
             product.setCreatedAt(LocalDateTime.now());
 
             productRepository.save(product);
@@ -60,5 +50,45 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    private void addProduct(ProductCreateRequest request, Product product) {
+        product.setProductName(request.getProductName());
+        product.setAuthorName(request.getAuthorName());
+        product.setDescription(request.getDescription());
+        product.setAvailable(request.getStock() > 0);
+        product.setImageUrl(request.getImageUrl());
+        product.setISBN(request.getISBN());
+        product.setLanguage(request.getLanguage());
+        product.setNumberOfPages(request.getNumberOfPages());
+        product.setPrice(request.getPrice());
+        product.setStock(request.getStock());
+        product.setPublisher(request.getPublisher());
+        product.setPublishedDate(request.getPublishedDate());
+    }
+
+
+    @Override
+    public String updateProduct(Long productId, ProductCreateRequest request) {
+        Product product = productRepository.findById(productId).orElse(null);
+        if (product != null) {
+            addProduct(request, product);
+            product.setUpdatedAt(LocalDateTime.now());
+
+            productRepository.save(product);
+            return "Successfully updated the product :)";
+        } else {
+            return "Product not found.";
+        }
+    }
+
+    @Override
+    public String deleteProduct(Long productId) {
+        Product product = productRepository.findById(productId).orElse(null);
+        if (product != null) {
+            productRepository.delete(product);
+            return "Successfully deleted the product :)";
+        } else {
+            return "Product not found.";
+        }
+    }
 }
 
