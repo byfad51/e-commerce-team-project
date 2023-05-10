@@ -150,8 +150,8 @@ function ProductList() {
                                <Icon fitted name='comment outline' />
                                <span style={{ marginLeft: '5px' }}>{item.numberOfReviews}</span>
                                <span style={{ marginLeft: '10px' }} />
-                               <Icon fitted color='yellow' name='star'/>
-                               <span style={{ marginLeft: '5px' }}>{item.averageRating}</span>
+                               {(item.averageRating=== null || item.averageRating=== 0) ? null:
+                                   <><Icon fitted color='yellow' name='star'/><span style={{ marginLeft: '5px' }}>{item.averageRating}</span></>}
                            </div>
 
                            <br/>
