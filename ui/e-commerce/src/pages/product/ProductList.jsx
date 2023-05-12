@@ -62,9 +62,12 @@ function ProductList() {
                         .then(response => {
                             //response.status
                             console.log(response.status)
+
+                        })
+                        .then(data => {
+                            console.log(data)
                             setShowPopup2(true)
                         })
-                        .then(data => console.log(data))
                         .catch(error => console.error(error));
                 }else{
                     setShowPopup1(true)
