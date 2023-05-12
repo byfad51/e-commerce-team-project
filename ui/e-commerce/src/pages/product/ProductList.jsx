@@ -129,13 +129,12 @@ function ProductList() {
 
     const myProductCard = (item) => (
 
-<>
-                <Card key={item.productName} >
+        <>
+            <Card key={item.productName} >
 
-                    {item.imageUrl!== ""? <a href={"/detail?id="+ item.id}><Image  height="350" width="100%" src={item.imageUrl} /></a>:
-                        <a href={"/detail?id="+ item.id}><Image  height="400"  width="100%" src={"https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png"}/></a>
-                   }
-<div onClick={() => setOpen(true)}>
+                {item.imageUrl!== ""? <a href={"/detail?id="+ item.id}><Image  height="350" width="100%" src={item.imageUrl} /></a>:
+                    <a href={"/detail?id="+ item.id}><Image  height="400"  width="100%" src={"https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png"}/></a>
+                }
                     <Card.Content style={{
 
                         height: 80
@@ -143,48 +142,47 @@ function ProductList() {
 
 
 
-                                <Card.Header><a href={"/detail?id="+ item.id} ><p style={{
-                                    lineHeight: "1.2",
-                                    maxHeight: "2.4em",
-                                    overflow: "hidden",
-                                    textOverflow: "ellipsis",
+                        <Card.Header><a href={"/detail?id="+ item.id} ><p style={{
+                            lineHeight: "1.2",
+                            maxHeight: "2.4em",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
 
-                                }}>{item.productName}</p>
-                                </a></Card.Header>
-                                <Card.Meta>{item.authorName}</Card.Meta>
-
-
-
-                    </Card.Content>
-</div>
-                    <Card.Content extra>
-                       <center>
-                           <div>
-                               <Icon fitted name='comment outline' size='large'/>
-                               <span style={{ marginLeft: '5px' }}>{item.numberOfReviews}</span>
-                               <span style={{ marginLeft: '10px' }} />
-                               {(item.averageRating=== null || item.averageRating=== 0) ? null:
-                                   <><Icon fitted color='yellow' name='star' size='large' disabled/><span style={{ marginLeft: '5px' }}>{item.averageRating}</span></>}
-                               <>   {localStorage.getItem("authorized") ==="true"?
-                                   <Button onClick={()=>{
-                                       handleFav(item.id)}
-                                   } inverted>{favData.find((favItem) => favItem.id === item.id)?
-                                       <Icon fitted color='red' size='large' name='heart' outline/>:
-                                       <Icon fitted color='red' size='large' name='heart outline' outline/>}</Button>:null}</>
-                           </div>
-
-                           <br/>
-                           <Button  inverted color='instagram' onClick={() => addCart(item.id)}>
-                               <Icon circular fitted  color='white'  name='cart arrow down'  /> {item.price} ₺
-                           </Button>                <br/>
-
-                       </center>
+                        }}>{item.productName}</p>
+                        </a></Card.Header>
+                        <Card.Meta>{item.authorName}</Card.Meta>
 
 
 
                     </Card.Content>
+                <Card.Content extra>
+                    <center>
+                        <div>
+                            <Icon fitted name='comment outline' size='large'/>
+                            <span style={{ marginLeft: '5px' }}>{item.numberOfReviews}</span>
+                            <span style={{ marginLeft: '10px' }} />
+                            {(item.averageRating=== null || item.averageRating=== 0) ? null:
+                                <><Icon fitted color='yellow' name='star' size='large' disabled/><span style={{ marginLeft: '5px' }}>{item.averageRating}</span></>}
+                            <>   {localStorage.getItem("authorized") ==="true"?
+                                <Button onClick={()=>{
+                                    handleFav(item.id)}
+                                } inverted>{favData.find((favItem) => favItem.id === item.id)?
+                                    <Icon fitted color='red' size='large' name='heart' outline/>:
+                                    <Icon fitted color='red' size='large' name='heart outline' outline/>}</Button>:null}</>
+                        </div>
 
-                </Card>
+                        <br/>
+                        <Button  inverted color='instagram' onClick={() => addCart(item.id)}>
+                            <Icon circular fitted  color='white'  name='cart arrow down'  /> {item.price} ₺
+                        </Button>                <br/>
+
+                    </center>
+
+
+
+                </Card.Content>
+
+            </Card>
         </>
     )
 
