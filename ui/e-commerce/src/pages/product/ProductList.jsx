@@ -65,6 +65,8 @@ function ProductList() {
                             console.log(response.status)
                             if(response.status===200){
                                 setShowPopup2(true)
+                            }else{
+                                setShowPopup3(true)
                             }
                         })
                         .then(data => {
