@@ -16,6 +16,7 @@ function ProductList() {
 
     const [showPopup1, setShowPopup1] = useState(false);
     const [showPopup2, setShowPopup2] = useState(false);
+    const [showPopup3, setShowPopup3] = useState(false);
 
     const url = 'http://localhost:8080/products/getAllProducts';
 
@@ -62,11 +63,13 @@ function ProductList() {
                         .then(response => {
                             //response.status
                             console.log(response.status)
-
+                            if(response.status===200){
+                                setShowPopup2(true)
+                            }
                         })
                         .then(data => {
                             console.log(data)
-                            setShowPopup2(true)
+
                         })
                         .catch(error => console.error(error));
                 }else{
@@ -304,6 +307,19 @@ function ProductList() {
             }}
         />
     )}</>
+        <>{showPopup3 && (
+            <Popup
+                buttonText1={"OKEY"}
+                buttonColor1={"red"}
+                errorMessageTitle={"Error - There is no book named like you choose."}
+                errorMessage={"The book is in your cart now."}
+                icon={'warning circle'}
+                onClose1={()=> {
+                    setShowPopup3(false)
+                }}
+
+            />
+        )}</>
             <Navbar />
             <Segment>
                 <Grid >
