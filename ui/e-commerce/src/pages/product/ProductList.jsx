@@ -4,6 +4,7 @@ import Navbar from "../../components/Navbar";
 import ProductSearch from "./ProductSearch"
 import {useNavigate} from "react-router-dom";
 import Popup from "../../components/pop_message";
+import ProductFilter from "./ProductFilter";
 
 function ProductList() {
     const [data, setData] = useState([]);
@@ -17,6 +18,7 @@ function ProductList() {
     const [showPopup1, setShowPopup1] = useState(false);
     const [showPopup2, setShowPopup2] = useState(false);
     const [showPopup3, setShowPopup3] = useState(false);
+    const [showFilters, setShowFilters] = useState(false);
 
     const url = 'http://localhost:8080/products/getAllProducts';
 
@@ -259,9 +261,7 @@ function ProductList() {
         { key: 4, text: 'Search category', value: 4 },
         { key: 5, text: 'Search with year range', value: 5 },
     ]
-    if (localStorage.getItem("authorized") === "true") {
-        filterOptions.push(  { key: 2, text: 'My Favorites (user needed)', value: 2 })
-    }
+
     const sortingOptions = [
         { key: 1, text: 'First old published', value: 1 },
         { key: 2, text: 'First new published', value: 2 },
@@ -272,7 +272,7 @@ function ProductList() {
         { key: 7, text: 'First higher average rating', value: 7 },
         { key: 8, text: 'First higher sold', value: 8 },
     ]
-    return (<Container style={{width:"85%"}}>
+    return (<Container style={{width:"75%"}}>
 <>{showPopup1 && (
     <Popup
         buttonText1={"Go to Login"}
@@ -330,7 +330,7 @@ function ProductList() {
                             <ProductSearch style={{width: "100%"}} dataa={data} />
                         </Grid.Column>
                         <Grid.Column>
-                            <Dropdown style={{width: "100%"}} value={selectedFilter}   onChange={handleSelectionFilter}  clearable options={filterOptions} selection/>
+                            <center> <Button style={{width:"100%"}}inverted color="green" onClick={()=>setShowFilters(!showFilters)} disabled={showClick}>FILTERS</Button></center>
                         </Grid.Column>
 
                         <Grid.Column>
@@ -339,6 +339,7 @@ function ProductList() {
 
 
                     </Grid.Row>
+                    {showFilters ? ProductFilter():null}
                 </Grid>
 
 
