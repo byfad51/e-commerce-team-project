@@ -7,9 +7,14 @@ import com.example.ecommerce.service.ProductService;
 import com.example.ecommerce.service.impl.ProductServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+
+import java.awt.print.Book;
 import java.util.List;
 @RestController
 @RequestMapping("/products")
@@ -45,14 +50,19 @@ public class ProductController {
     }
 
     @PostMapping("/addProduct")
-    public ResponseEntity<String> addProduct(@Valid @RequestBody ProductCreateRequest request){
-       if(productService.addProduct(request)!=null){
-           return new ResponseEntity<>(productService.addProduct(request),HttpStatus.CREATED);
+    public ResponseEntity<Object> addProduct(@Valid @RequestBody ProductCreateRequest request, Errors errors){
 
-       }
-       else
-           return new ResponseEntity<>(HttpStatus.CONFLICT);
+        if (errors.hasErrors()){
+            return new ResponseEntity<>(errors.getFieldError().getDefaultMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+
+        if(productService.addProduct(request)!=null){
+            return new ResponseEntity<>(productService.addProduct(request),HttpStatus.CREATED);
+        }
+        else
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
+
     @PutMapping("/updateProduct/{productId}")
     public ResponseEntity<String> updateProduct(@PathVariable Long productId, @RequestBody ProductCreateRequest request) {
         String result = productService.updateProduct(productId, request);
@@ -64,4 +74,15 @@ public class ProductController {
         String result = productService.deleteProduct(productId);
         return ResponseEntity.ok(result);
     }
+
+    @GetMapping("/getProducts")
+    public Page<ProductResponse> findBooksByFilters(@RequestParam(required = false) String authorName,
+                                         @RequestParam(required = false) Integer startYear,
+                                         @RequestParam(required = false) Integer endYear,
+                                         @RequestParam(required = false) String publisherName,
+                                         @RequestParam(required = false, defaultValue = "NEWEST") String sortByParam,
+                                         Pageable pageable) {
+        return productService.findBooksByFilters(authorName, startYear, endYear, publisherName, sortByParam, pageable);
+    }
+
 }
