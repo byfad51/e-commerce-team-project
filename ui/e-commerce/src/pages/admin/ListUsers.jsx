@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Table, Button, Modal } from 'react-bootstrap';
+import './Dashboardtables.css'; // Import custom CSS file for styling
 
 function ListUsers() {
   document.title = 'List Users';
@@ -26,7 +27,7 @@ function ListUsers() {
   };
 
   const confirmDelete = () => {
-    fetch(`http://localhost:8080/products/deleteProduct/${selectedItemId}`, {
+    fetch(`http://localhost:8080/users/deleteUserById/${selectedItemId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
@@ -60,11 +61,10 @@ function ListUsers() {
       <Table striped bordered hover>
         <thead>
           <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
+            <th>User's First Name</th>
+            <th>User's Last Name</th>
             <th>User-name</th>
-            
-            <th></th>
+            <th>Delete</th>
           </tr>
         </thead>
         <tbody>
@@ -75,7 +75,7 @@ function ListUsers() {
               <td>{item.username}</td>
               <td>
                 <Button variant="danger" onClick={() => handleDelete(item.id)}>
-                  Remove
+                  X
                 </Button>
               </td>
             </tr>

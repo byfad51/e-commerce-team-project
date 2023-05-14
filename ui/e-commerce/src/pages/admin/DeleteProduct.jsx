@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Table, Button, Modal } from 'react-bootstrap';
 import { CSSTransition } from 'react-transition-group';
 import { AiOutlineSearch } from 'react-icons/ai';
-import './DeleteProduct.css'; // Import custom CSS file for styling
+import './Dashboardtables.css'; // Import custom CSS file for styling
 
 function DeleteProduct() {
   document.title = 'Delete Product';
