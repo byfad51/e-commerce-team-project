@@ -40,12 +40,12 @@ function ProductList() {
     const [authorName, setAuthorName] = useState("")
     const [publisherName, setPublisherName] = useState("")
     const [language, setLanguage] = useState("")
-    const [minPublishedYear, setMinPublishedYear] = useState(0)
-    const [maxPublishedYear, setMaxPublishedYear] = useState(2025)
-    const [minPrice, setMinPrice] = useState(0)
+    const [minPublishedYear, setMinPublishedYear] = useState("")
+    const [maxPublishedYear, setMaxPublishedYear] = useState("")
+    const [minPrice, setMinPrice] = useState("")
     const [maxPrice, setMaxPrice] = useState("")
     const [minAverageStar, setMinAverageStar] = useState("")
-    const [maxAverageStar, setMaxAverageStar] = useState(5)
+    const [maxAverageStar, setMaxAverageStar] = useState("")
 
     const handleAuthorName= (value) => {setAuthorName(value) }
     const handlePublisherName= (value) => {setPublisherName(value) }
@@ -101,9 +101,9 @@ function ProductList() {
             setMaxAverageStar("");
         }
         if(!(pageNumber>0)){
-                pageNumber = 1;
+            pageNumber = 1;
         }
-       setGetProductUrl( `http://localhost:8080/products/getProductsByParams?page=${pageNumber-1}&sortByParam=${selectedSorting}&authorName=${authorName}&publisherName=${publisherName}&language=${language}&startYear=${minPublishedYear}&endYear=${maxPublishedYear}&minPrice=${minPrice}&maxPrice=${maxPrice}&minRating=${minAverageStar}&maxRating=${maxAverageStar}`);
+        setGetProductUrl( `http://localhost:8080/products/getProductsByParams?page=${pageNumber-1}&sortByParam=${selectedSorting}&authorName=${authorName}&publisherName=${publisherName}&language=${language}&startYear=${minPublishedYear}&endYear=${maxPublishedYear}&minPrice=${minPrice}&maxPrice=${maxPrice}&minRating=${minAverageStar}&maxRating=${maxAverageStar}`);
 
     }
     useEffect(() => {
@@ -114,9 +114,9 @@ function ProductList() {
 
     }, [handleFilterButton]);
     useEffect(() => {
-        if(pageNumber < 1 || pageNumber === "" || pageNumber===null){
+       if(pageNumber < 1 || pageNumber === "" || pageNumber===null){
             pageNumber=1
-            navigate("/products?page="+pageNumber)
+           navigate("/products?page="+pageNumber)
         }
         getFavData();
         getAllProduct();
@@ -125,68 +125,71 @@ function ProductList() {
 
     useEffect(() => {
         getAllProduct();
+        pageNumber=1
+        console.log("getProductUrl")
+        console.log(getProductUrl)
     }, [getProductUrl]);
 
 
-        const getAllProduct = async () => {
-            console.log(getProductUrl)
-            try {
-                const response = await fetch(getProductUrl, {
-                    headers: {
-                        "Content-Type": "application/json; charset=utf-8",
-                        'Authorization': localStorage.getItem("tokenKey")
-                    },
-                })
-                const data = await response.json();
-                console.log(data)
-                setData(data.content);
-                setMaxPageNumber(data.totalPages)
-            } catch (error) {
-                console.error(error);
-            }
-        };
+    const getAllProduct = async () => {
+        console.log(getProductUrl)
+        try {
+            const response = await fetch(getProductUrl, {
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+                    'Authorization': localStorage.getItem("tokenKey")
+                },
+            })
+            const data = await response.json();
+            console.log(data)
+            setData(data.content);
+            setMaxPageNumber(data.totalPages)
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
 
 
     const addCart = (productId) =>
-        {
-            console.log(productId)
+    {
+        console.log(productId)
 
-                if (localStorage.getItem("authorized") === "true") {
-                    setShowPopup1(false)
-                    const url = "http://localhost:8080/cart/addToCart?productId=" + productId ;
-                    const data = {
-                        productId: productId
-                    };
-                    fetch(url, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            'Authorization': localStorage.getItem("tokenKey")
-                        },
-                         // body: JSON.stringify(data)
-                    })
-                        .then(response => {
-                            //response.status
-                            console.log(response.status)
-                            if(response.status===200){
-                                setShowPopup2(true)
-                            }else{
-                                setShowPopup3(true)
-                            }
-                        })
-                        .then(data => {
-                            console.log(data)
+        if (localStorage.getItem("authorized") === "true") {
+            setShowPopup1(false)
+            const url = "http://localhost:8080/cart/addToCart?productId=" + productId ;
+            const data = {
+                productId: productId
+            };
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    'Authorization': localStorage.getItem("tokenKey")
+                },
+                // body: JSON.stringify(data)
+            })
+                .then(response => {
+                    //response.status
+                    console.log(response.status)
+                    if(response.status===200){
+                        setShowPopup2(true)
+                    }else{
+                        setShowPopup3(true)
+                    }
+                })
+                .then(data => {
+                    console.log(data)
 
-                        })
-                        .catch(error => console.error(error));
-                }else{
-                    setShowPopup1(true)
-                }
-
-
-
+                })
+                .catch(error => console.error(error));
+        }else{
+            setShowPopup1(true)
         }
+
+
+
+    }
 
     const handleFav = async (productId) => {
         if (localStorage.getItem("authorized") === "true") {
@@ -201,7 +204,7 @@ function ProductList() {
                     "Content-Type": "application/json",
                     'Authorization': localStorage.getItem("tokenKey")
                 },
-             //   body: JSON.stringify(data)
+                //   body: JSON.stringify(data)
             })
                 .then(response => {
                     //response.status
@@ -212,24 +215,24 @@ function ProductList() {
         }
 
 
-        }
+    }
 
-        const getFavData = async () => {
-            const url = "http://localhost:8080/users/getFavProduct?userId=" + localStorage.getItem("currentUser");
-            try {
-                const response = await fetch(url, {
-                    headers: {
-                        "Content-Type": "application/json; charset=utf-8",
-                        'Authorization': localStorage.getItem("tokenKey")
-                    },
-                })
-                const data = await response.json();
-                setFavData(data);
-                console.log(favData)
-            } catch (error) {
-                console.error(error);
-            }
+    const getFavData = async () => {
+        const url = "http://localhost:8080/users/getFavProduct?userId=" + localStorage.getItem("currentUser");
+        try {
+            const response = await fetch(url, {
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+                    'Authorization': localStorage.getItem("tokenKey")
+                },
+            })
+            const data = await response.json();
+            setFavData(data);
+            console.log(favData)
+        } catch (error) {
+            console.error(error);
         }
+    }
 
 
     const myProductCard = (item) => (
@@ -240,26 +243,26 @@ function ProductList() {
                 {item.imageUrl!== ""? <a href={"/detail?id="+ item.id}><Image  height="350" width="100%" src={item.imageUrl} /></a>:
                     <a href={"/detail?id="+ item.id}><Image  height="400"  width="100%" src={"https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png"}/></a>
                 }
-                    <Card.Content style={{
+                <Card.Content style={{
 
-                        height: 80
-                    }}>
-
-
-
-                        <Card.Header><a href={"/detail?id="+ item.id} ><p style={{
-                            lineHeight: "1.2",
-                            maxHeight: "2.4em",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-
-                        }}>{item.productName}</p>
-                        </a></Card.Header>
-                        <Card.Meta>{item.authorName}</Card.Meta>
+                    height: 80
+                }}>
 
 
 
-                    </Card.Content>
+                    <Card.Header><a href={"/detail?id="+ item.id} ><p style={{
+                        lineHeight: "1.2",
+                        maxHeight: "2.4em",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+
+                    }}>{item.productName}</p>
+                    </a></Card.Header>
+                    <Card.Meta>{item.authorName}</Card.Meta>
+
+
+
+                </Card.Content>
                 <Card.Content extra>
                     <center>
                         <div>
@@ -294,24 +297,24 @@ function ProductList() {
 
 
     return (<Container style={{width:"75%"}}>
-<>{showPopup1 && (
-    <Popup
-        buttonText1={"Go to Login"}
-        buttonColor1={"green"}
-        buttonText2={"Cancel"}
-        buttonColor2={"red"}
-        errorMessageTitle={"Session is Needed"}
-        errorMessage={"You need to login to use cart."}
-        icon={'warning circle'}
-        onClose1={()=> {
-            navigate("/login")
-            setShowPopup1(false)
-        }}
-        onClose2={()=> {
-            setShowPopup1(false)
-        }}
-    />
-)}</><>{showPopup2 && (
+        <>{showPopup1 && (
+            <Popup
+                buttonText1={"Go to Login"}
+                buttonColor1={"green"}
+                buttonText2={"Cancel"}
+                buttonColor2={"red"}
+                errorMessageTitle={"Session is Needed"}
+                errorMessage={"You need to login to use cart."}
+                icon={'warning circle'}
+                onClose1={()=> {
+                    navigate("/login")
+                    setShowPopup1(false)
+                }}
+                onClose2={()=> {
+                    setShowPopup1(false)
+                }}
+            />
+        )}</><>{showPopup2 && (
         <Popup
             buttonText1={"LOOK NEW BOOKS"}
             buttonColor1={"green"}
@@ -343,95 +346,95 @@ function ProductList() {
 
             />
         )}</>
-            <Navbar />
-            <Segment>
-                <Grid >
-                    <Grid.Row columns={3}>
-                        <Grid.Column >
-                            <ProductSearch style={{width: "100%"}} dataa={data} />
-                        </Grid.Column>
-                        <Grid.Column>
-                            <center> <Button style={{width:"100%"}}inverted color="green" onClick={()=>setShowFilters(!showFilters)} disabled={showClick}>FILTERS</Button></center>
-                        </Grid.Column>
+        <Navbar />
+        <Segment>
+            <Grid >
+                <Grid.Row columns={3}>
+                    <Grid.Column >
+                        <ProductSearch style={{width: "100%"}} dataa={data} />
+                    </Grid.Column>
+                    <Grid.Column>
+                        <center> <Button style={{width:"100%"}}inverted color="green" onClick={()=>setShowFilters(!showFilters)} disabled={showClick}>FILTERS</Button></center>
+                    </Grid.Column>
 
-                        <Grid.Column>
-                            <Dropdown style={{width: "100%"}}  value={selectedSorting}  onChange={handleSelectionSorting} clearable options={sortingOptions} selection />
-                        </Grid.Column>
+                    <Grid.Column>
+                        <Dropdown style={{width: "100%"}}  value={selectedSorting}  onChange={handleSelectionSorting} clearable options={sortingOptions} selection />
+                    </Grid.Column>
 
-                        {showFilters ? <> <Form>
+                    {showFilters ? <> <Form>
 
-                            <Row>
-                                <Col>
-                                    <Form.Label>Author Name</Form.Label>
-                                    <Form.Control type="text" value={authorName}  onChange={(event) => handleAuthorName(event.target.value)} />
+                        <Row>
+                            <Col>
+                                <Form.Label>Author Name</Form.Label>
+                                <Form.Control type="text" value={authorName}  onChange={(event) => handleAuthorName(event.target.value)} />
 
-                                </Col>
-                                <Col>
-                                    <Form.Label>Publisher</Form.Label>
-                                    <Form.Control type="text" value={publisherName} onChange={(event) => handlePublisherName(event.target.value)} />
+                            </Col>
+                            <Col>
+                                <Form.Label>Publisher</Form.Label>
+                                <Form.Control type="text" value={publisherName} onChange={(event) => handlePublisherName(event.target.value)} />
 
-                                </Col>
-                                <Col>
-                                    <Form.Label>Language</Form.Label>
-                                    <Form.Select value={language}  onChange={(event) => handleLanguage(event.target.value)}>
-                                        <option value="">Choose language</option>
-                                        <option value="Turkish">Turkish</option>
-                                        <option value="English">English</option>
-                                    </Form.Select>
+                            </Col>
+                            <Col>
+                                <Form.Label>Language</Form.Label>
+                                <Form.Select value={language}  onChange={(event) => handleLanguage(event.target.value)}>
+                                    <option value="">Choose language</option>
+                                    <option value="Turkish">Turkish</option>
+                                    <option value="English">English</option>
+                                </Form.Select>
 
-                                </Col>
-                            </Row>
+                            </Col>
+                        </Row>
 
-                            <Row>
-                                <Col>
-                                    <Form.Label>Min Published Year</Form.Label>
-                                    <Form.Control type="number" value={minPublishedYear} placeholder="25" onChange={(event) => handleMinPublishedYear(event.target.value)} />
+                        <Row>
+                            <Col>
+                                <Form.Label>Min Published Year</Form.Label>
+                                <Form.Control type="number" value={minPublishedYear} placeholder="25" onChange={(event) => handleMinPublishedYear(event.target.value)} />
 
-                                </Col>
-                                <Col>
-                                    <Form.Label>Max Published Year</Form.Label>
-                                    <Form.Control type="number" value={maxPublishedYear} placeholder="25" onChange={(event) => handleMaxPublishedYear(event.target.value)} />
+                            </Col>
+                            <Col>
+                                <Form.Label>Max Published Year</Form.Label>
+                                <Form.Control type="number" value={maxPublishedYear} placeholder="25" onChange={(event) => handleMaxPublishedYear(event.target.value)} />
 
-                                </Col>
-                                <Col>
-                                    <Form.Label>Min Price</Form.Label>
-                                    <Form.Control type="number" value={minPrice}  placeholder="25" onChange={(event) => handleMinPrice(event.target.value)} />
+                            </Col>
+                            <Col>
+                                <Form.Label>Min Price</Form.Label>
+                                <Form.Control type="number" value={minPrice}  placeholder="25" onChange={(event) => handleMinPrice(event.target.value)} />
 
-                                </Col>
-                                <Col>
-                                    <Form.Label>Max Price</Form.Label>
-                                    <Form.Control type="number"  value={maxPrice} onChange={(event) => handleMaxPrice(event.target.value)} />
+                            </Col>
+                            <Col>
+                                <Form.Label>Max Price</Form.Label>
+                                <Form.Control type="number"  value={maxPrice} onChange={(event) => handleMaxPrice(event.target.value)} />
 
-                                </Col>
-                                <Col>
-                                    <Form.Label>Min Average Star</Form.Label>
-                                    <Form.Control type="number"  value={minAverageStar} onChange={(event) => handleMinAverageStar(event.target.value)} />
+                            </Col>
+                            <Col>
+                                <Form.Label>Min Average Star</Form.Label>
+                                <Form.Control type="number"  value={minAverageStar} onChange={(event) => handleMinAverageStar(event.target.value)} />
 
-                                </Col>
-                                <Col>
-                                    <Form.Label>Max Average Star</Form.Label>
-                                    <Form.Control type="number"  value={maxAverageStar} onChange={(event) => handleMaxAverageStar(event.target.value)} />
+                            </Col>
+                            <Col>
+                                <Form.Label>Max Average Star</Form.Label>
+                                <Form.Control type="number"  value={maxAverageStar} onChange={(event) => handleMaxAverageStar(event.target.value)} />
 
-                                </Col>
+                            </Col>
 
-                            </Row><br/>
-                    <center><Button onClick={handleFilterButton} secondary>SEND</Button></center>
-                        </Form></>:null}
-                    </Grid.Row>
+                        </Row><br/>
+                        <center><Button onClick={handleFilterButton} secondary>SEND</Button></center>
+                    </Form></>:null}
+                </Grid.Row>
 
-                </Grid>
+            </Grid>
 
 
 
-                <br/>
-                <Card.Group doubling itemsPerRow={5} stackable>
+            <br/>
+            <Card.Group doubling itemsPerRow={5} stackable>
 
-            {data.map((item, index)=> (
-                myProductCard(item,index)
-            ))}
-        </Card.Group><br/>
-           <center> <Pagination defaultActivePage={pageNumber} onPageChange={handlePaginationChange} totalPages={maxPageNumber} /></center>
-            </Segment></Container>);
+                {data.map((item, index)=> (
+                    myProductCard(item,index)
+                ))}
+            </Card.Group><br/>
+            <center> <Pagination defaultActivePage={pageNumber} onPageChange={handlePaginationChange} totalPages={maxPageNumber} /></center>
+        </Segment></Container>);
 }
 
 export default ProductList;
