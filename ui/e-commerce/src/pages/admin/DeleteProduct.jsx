@@ -1,101 +1,140 @@
-import React, { useState,useEffect } from "react"
-import { Table, Button } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { Table, Button, Modal } from 'react-bootstrap';
+import { CSSTransition } from 'react-transition-group';
+import { AiOutlineSearch } from 'react-icons/ai';
+import './DeleteProduct.css'; // Import custom CSS file for styling
 
-function DeleteProduct () {
-    document.title = 'Delete Product';
-    const [deleteProductsItems, setDeleteProductsItems] = useState([]);
-    
+function DeleteProduct() {
+  document.title = 'Delete Product';
+  const [deleteProductsItems, setDeleteProductsItems] = useState([]);
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [selectedItemId, setSelectedItemId] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredProducts, setFilteredProducts] = useState([]);
+
   useEffect(() => {
-    // Fetch cart items from API with headers
     fetch('http://localhost:8080/products/getAllProducts', {
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
         'Authorization': localStorage.getItem("tokenKey")
-       
       }
     })
       .then(response => response.json())
       .then(data => {
         setDeleteProductsItems(data);
-        
       });
   }, []);
 
+  useEffect(() => {
+    const filtered = deleteProductsItems.filter((item) =>
+      item.productName.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredProducts(filtered);
+  }, [deleteProductsItems, searchQuery]);
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
   const handleDelete = (itemId) => {
-    // Send DELETE request to API to remove item from cart
-    fetch(`http://localhost:8080/products/deleteProduct/${itemId}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8',
-          'Authorization': localStorage.getItem("tokenKey")
-          
-        },
-      })
+    setSelectedItemId(itemId);
+    setShowConfirmationModal(true);
+  };
+
+  const confirmDelete = () => {
+    fetch(`http://localhost:8080/products/deleteProduct/${selectedItemId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        'Authorization': localStorage.getItem("tokenKey")
+      },
+    })
       .then(response => {
         if (response.ok) {
+          // Remove the deleted item from the state
+          setDeleteProductsItems(prevItems =>
+            prevItems.filter(item => item.id !== selectedItemId)
+          );
+          setShowConfirmationModal(false);
           return response.json();
         } else {
           throw new Error('Network response was not ok');
         }
       })
-      .then(data => {
-        // Refresh cart items from API
-        fetch('http://localhost:8080/products/getAllProducts', {
-          headers: {
-            'Content-Type': 'application/json; charset=utf-8',
-            
-          }
-        })
-          .then(response => {
-            if (response.ok) {
-              return response.json();
-            } else {
-              throw new Error('Network response was not ok');
-            }
-          })
-          .then(data => {
-            setDeleteProductsItems(data)
-          })
-          
-      })
-     
+      .catch(error => {
+        console.error('Error deleting product:', error);
+      });
   };
 
-  
-
-
+  const closeModal = () => {
+    setShowConfirmationModal(false);
+  };
 
   return (
-    <div>
+    <div className="container">
       <h1>Delete Product</h1>
-      <Table striped bordered hover>
+
+      <div className="search-container">
+        <div className="search-icon">
+            <AiOutlineSearch />
+          </div>
+          <input
+            type="text"
+            placeholder="Search by Book's Name"
+            value={searchQuery}
+            onChange={handleSearchChange}
+            className="search-input"
+           />
+       </div>
+
+      <Table className="product-table" striped bordered hover>
         <thead>
           <tr>
-            <th>Product</th>
+            <th>Book</th>
             <th>Name</th>
             <th>Author</th>
             <th>Publisher</th>
-            <th></th>
+            <th>Delete</th>
           </tr>
         </thead>
         <tbody>
-          {deleteProductsItems.map(item => (
+          {filteredProducts.map((item) => (
             <tr key={item.id}>
               <td>
-                <img src={item.imageUrl} alt={item.productName} style={{ width: '50px' }} />
+                <div className="product-image-container">
+                  <img className="product-image" src={item.imageUrl} alt={item.productName} />
+                </div>
               </td>
               <td>{item.productName}</td>
               <td>{item.authorName}</td>
-              <td>{item.publisherName}</td>
+              <td>{item.publisher}</td>
               <td>
                 <Button variant="danger" onClick={() => handleDelete(item.id)}>
-                  Remove
+                  X
                 </Button>
               </td>
             </tr>
           ))}
         </tbody>
       </Table>
+
+      <Modal show={showConfirmationModal} onHide={closeModal} centered>
+          <Modal.Header closeButton>
+            <Modal.Title>Confirmation</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            Are you sure you want to delete this product?
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={closeModal}>
+              No
+            </Button>
+            <Button variant="danger" onClick={confirmDelete}>
+              Yes
+            </Button>
+          </Modal.Footer>
+      </Modal>
+      
     </div>
   );
 }
