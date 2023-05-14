@@ -1,6 +1,7 @@
 package com.example.ecommerce.service.impl;
 
 import com.example.ecommerce.dto.product.ProductResponse;
+import com.example.ecommerce.dto.user.UserCreateRequest;
 import com.example.ecommerce.dto.user.UserResponse;
 import com.example.ecommerce.exception.InvalidArgumentException;
 import com.example.ecommerce.exception.UserNotFoundException;
@@ -12,6 +13,7 @@ import com.example.ecommerce.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,10 +28,13 @@ public class UserServiceImpl implements UserService {
 
     private final ProductRepository productRepository;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, ProductRepository productRepository) {
+    public UserServiceImpl(UserRepository userRepository, ProductRepository productRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.productRepository = productRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -66,8 +71,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(User user) {
-        userRepository.save(user);
+    public UserResponse updateUser(long userId, UserCreateRequest request) {
+
+        User user = userRepository.findById(userId).orElseThrow(() ->
+                new UserNotFoundException("user not found with ID: " + userId));
+
+            if (!Objects.equals(user.getUsername(), request.getUsername()))
+                if (userRepository.findByUsername(request.getUsername()).isEmpty())
+                    user.setUsername(request.getUsername());
+                else
+                    throw new InvalidArgumentException("Username already taken!");
+
+            if (!Objects.equals(user.getEmail(), request.getEmail()))
+                if (userRepository.findByEmail(request.getEmail()).isEmpty())
+                    user.setEmail(request.getEmail());
+                else
+                    throw new InvalidArgumentException("Email already taken!");
+
+            user.setFirstname(request.getFirstname());
+            user.setLastname(request.getLastname());
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+            user.setPhone(request.getPhone());
+            user.setQuestion(request.getQuestion());
+            user.setAnswer(request.getAnswer());
+            user.setAddress(request.getAddress());
+            userRepository.save(user);
+            return new UserResponse(user);
+
     }
 
     @Override
@@ -87,6 +117,16 @@ public class UserServiceImpl implements UserService {
         else
             return null;
     }
+
+    @Override
+    public void deleteUserById(long userId){
+
+        User user = userRepository.findById(userId).orElse(null);
+        if (user == null)
+            throw new UserNotFoundException("User not found with ID: " + userId);
+        userRepository.deleteById(userId);
+    }
+
 
     @Override
     public void addOrDeleteFavoriteProduct(Long productId, Long userId){
