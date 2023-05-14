@@ -78,7 +78,7 @@ public class PasswordForgotten {
             if (user.getAnswer().equals(allRequest.answer)) {
                 try {
                    user.setPassword(passwordEncoder.encode(allRequest.password));
-                   userService.updateUser(user);
+                   userService.saveUser(user);
                     return new ResponseEntity<>("Password changed",HttpStatus.OK);
 
                 } catch (Exception e) {
