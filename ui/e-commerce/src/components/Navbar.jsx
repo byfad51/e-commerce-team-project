@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faBars, faTimes,faShoppingCart  } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from "react-router-dom";
 import Popup from "./pop_message";
+import {faHeart} from "@fortawesome/free-solid-svg-icons/faHeart";
 
 function Navbar() {
   const [showPopup, setShowPopup] = useState(false);
@@ -136,10 +137,13 @@ function Navbar() {
               </a>
             </li>
 
-
             <button className="cart-button" onClick={() => navigate('/cart')}>
               <FontAwesomeIcon icon={faShoppingCart} className="cart-icon" />
             </button>
+            {authorized==="true" ? <button className="cart-button" onClick={() => navigate('/favorites')}>
+              <FontAwesomeIcon icon={faHeart} style={{color: "#ff0000",}}/>
+            </button>: null}
+
           </ul>
         </nav>
       </div>

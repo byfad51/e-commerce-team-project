@@ -19,11 +19,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
    // List<Product> searchProducts(@Param("keyword") String keyword);
 
    @Query("SELECT b FROM Product b " +
-           "WHERE (:authorName IS NULL OR b.authorName = :authorName) " +
+           "WHERE (:authorName IS NULL OR b.authorName LIKE %:authorName%) " +
            "AND (:startYear IS NULL OR b.publishedDate >= :startYear) " +
            "AND (:endYear IS NULL OR b.publishedDate <= :endYear) " +
-           "AND (:publisherName IS NULL OR b.publisher = :publisherName) " +
-           "AND (:language IS NULL OR b.language = :language) " +
+           "AND (:publisherName IS NULL OR b.publisher LIKE %:publisherName%) " +
+           "AND (:language IS NULL OR b.language LIKE %:language%) " +
            "AND (:minRating IS NULL OR b.averageRating >= :minRating) " +
            "AND (:maxRating IS NULL OR b.averageRating <= :maxRating) " +
            "AND (:minPrice IS NULL OR b.price >= :minPrice) " +
