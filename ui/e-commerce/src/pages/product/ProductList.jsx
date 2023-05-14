@@ -54,11 +54,17 @@ function ProductList() {
     const handleMaxPublishedYear= (value) => {setMaxPublishedYear(value) }
     const handleMinPrice = (value) => {setMinPrice(value) }
     const handleMaxPrice = (value) => {setMaxPrice(value) }
-    const handleMinAverageStar = (value) => {setMinAverageStar(value) }
+    const handleMinAverageStar = (value) => {
+        setMinAverageStar(value)
+        pageNumber=1
+        navigate("/products?page="+pageNumber)
+    }
+
     const handleMaxAverageStar = (value) => {setMaxAverageStar(value) }
 
     const [maxPageNumber, setMaxPageNumber] = useState(1)
-    let pageNumber=1
+    let [pageNumber, setPageNumber] = useState(1)
+
 
     const handlePaginationChange = (e, { activePage }) => {
         pageNumber = activePage;
@@ -107,12 +113,16 @@ function ProductList() {
 
     }
     useEffect(() => {
-        handleFilterButton()
+
+        setGetProductUrl( `http://localhost:8080/products/getProductsByParams?page=${pageNumber-1}&sortByParam=${selectedSorting}&authorName=${authorName}&publisherName=${publisherName}&language=${language}&startYear=${minPublishedYear}&endYear=${maxPublishedYear}&minPrice=${minPrice}&maxPrice=${maxPrice}&minRating=${minAverageStar}&maxRating=${maxAverageStar}`);
+
         if(!(pageNumber > 0) || pageNumber === "" || pageNumber===null|| pageNumber.isNaN){
             pageNumber=1
         }
-
+console.log("useeffect111111")
     }, [handleFilterButton]);
+
+
     useEffect(() => {
        if(pageNumber < 1 || pageNumber === "" || pageNumber===null){
             pageNumber=1
@@ -120,15 +130,17 @@ function ProductList() {
         }
         getFavData();
         getAllProduct();
-        console.log("calisti set")
+        console.log("useeffect222222")
+
     }, []);
 
     useEffect(() => {
+
+        console.log("useeffect33333333333")
         getAllProduct();
-        pageNumber=1
-        console.log("getProductUrl")
-        console.log(getProductUrl)
+
     }, [getProductUrl]);
+
 
 
     const getAllProduct = async () => {
@@ -348,6 +360,7 @@ function ProductList() {
         )}</>
         <Navbar />
         <Segment>
+
             <Grid >
                 <Grid.Row columns={3}>
                     <Grid.Column >
@@ -418,7 +431,7 @@ function ProductList() {
                             </Col>
 
                         </Row><br/>
-                        <center><Button onClick={handleFilterButton} secondary>SEND</Button></center>
+
                     </Form></>:null}
                 </Grid.Row>
 
@@ -436,5 +449,5 @@ function ProductList() {
             <center> <Pagination defaultActivePage={pageNumber} onPageChange={handlePaginationChange} totalPages={maxPageNumber} /></center>
         </Segment></Container>);
 }
-
+///   <center><Button onClick={handleFilterButton} secondary>SEND</Button></center>
 export default ProductList;
