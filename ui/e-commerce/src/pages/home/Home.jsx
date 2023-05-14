@@ -43,7 +43,7 @@ import HomeProductCard from "./product_card";
 
 //
     return (
-        <Container style={{width:"85%"}}>
+        <Container style={{width:"75%"}}>
             <Navbar/>
             <center><h1>Son Eklenenler</h1></center>
             {data1.length > 0 ? <MyCarousel data={data1} /> : <p>Loading data...</p>}
