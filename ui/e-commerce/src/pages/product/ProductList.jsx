@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react'
-import {Grid, Image, Icon, Container, Segment, Button, Card, Dropdown, Select} from 'semantic-ui-react'
+import {Grid, Image, Icon, Container, Segment, Button, Card, Dropdown, Select, Pagination} from 'semantic-ui-react'
 import Navbar from "../../components/Navbar";
 import ProductSearch from "./ProductSearch"
 import {useNavigate} from "react-router-dom";
 import Popup from "../../components/pop_message";
-import ProductFilter from "./ProductFilter";
+import {Col, Form, Row} from "react-bootstrap";
 
 function ProductList() {
     const [data, setData] = useState([]);
@@ -20,23 +20,127 @@ function ProductList() {
     const [showPopup3, setShowPopup3] = useState(false);
     const [showFilters, setShowFilters] = useState(false);
 
-    const url = 'http://localhost:8080/products/getAllProducts';
+    const [selectedSorting, setSelectedSorting] = useState("NEWEST");
 
+    function handleSelectionSorting(e, { name, value }) {
+        setSelectedSorting(value);
+    }
+
+    const sortingOptions = [
+        { key: 1, text: 'NEWEST', value: "NEWEST" },
+        { key: 2, text: 'OLDEST', value: "OLDEST" },
+        { key: 3, text: 'BEST SELLING', value: "BEST_SELLING" },
+        { key: 4, text: 'PRICE HIGH TO LOW', value: "PRICE_HIGH_TO_LOW" },
+        { key: 5, text: 'PRICE LOW TO HIGH', value:"PRICE_LOW_TO_HIGH" },
+        { key: 6, text: 'REVIEW HIGH TO LOW', value: "REVIEW_HIGH_TO_LOW" },
+        { key: 7, text: 'RATING HIGH TO LOW', value: "RATING_HIGH_TO_LOW" },
+        { key: 8, text: 'NEWLY PUBLISHED TO OLDLY PUBLISHED', value: "NEWLY_PUBLISHED_TO_OLDLY_PUBLISHED"},
+        { key: 9, text: 'OLDLY PUBLISHED TO NEWLY PUBLISHED', value: "OLDLY_PUBLISHED_TO_NEWLY_PUBLISHED"},
+    ]
+    const [authorName, setAuthorName] = useState("")
+    const [publisherName, setPublisherName] = useState("")
+    const [language, setLanguage] = useState("")
+    const [minPublishedYear, setMinPublishedYear] = useState(0)
+    const [maxPublishedYear, setMaxPublishedYear] = useState(2025)
+    const [minPrice, setMinPrice] = useState(0)
+    const [maxPrice, setMaxPrice] = useState("")
+    const [minAverageStar, setMinAverageStar] = useState("")
+    const [maxAverageStar, setMaxAverageStar] = useState(5)
+
+    const handleAuthorName= (value) => {setAuthorName(value) }
+    const handlePublisherName= (value) => {setPublisherName(value) }
+    const handleLanguage= (value) => {setLanguage(value) }
+    const handleMinPublishedYear= (value) => {setMinPublishedYear(value) }
+    const handleMaxPublishedYear= (value) => {setMaxPublishedYear(value) }
+    const handleMinPrice = (value) => {setMinPrice(value) }
+    const handleMaxPrice = (value) => {setMaxPrice(value) }
+    const handleMinAverageStar = (value) => {setMinAverageStar(value) }
+    const handleMaxAverageStar = (value) => {setMaxAverageStar(value) }
+
+    const [maxPageNumber, setMaxPageNumber] = useState(1)
+    let pageNumber=1
+
+    const handlePaginationChange = (e, { activePage }) => {
+        pageNumber = activePage;
+        navigate("/products?page="+pageNumber)
+    }
+    const searchParams = new URLSearchParams(window.location.search);
+    pageNumber = parseInt(searchParams.get('page'));
+    //setPageNumber(pageInUrl)
+
+    const [getProductUrl, setGetProductUrl] = useState("http://localhost:8080/products/getProductsByParams?page="+(pageNumber-1)+"&sortByParam="+selectedSorting)
+
+
+    const handleFilterButton = () => {
+
+        if(authorName === undefined || authorName === null) {
+            setAuthorName("");
+        }
+        if(publisherName === undefined || publisherName === null) {
+            setPublisherName("");
+        }
+        if(language === undefined || language === null) {
+            setLanguage("");
+        }
+        if(minPublishedYear === undefined || minPublishedYear === null || !(minPublishedYear > 0)) {
+            setMinPublishedYear(0);
+        }
+        if(maxPublishedYear === undefined || maxPublishedYear === null || !(maxPublishedYear > 0)) {
+            setMaxPublishedYear(2025);
+        }
+        if(minPrice === undefined || minPrice === null || !(minPrice > 0)) {
+            setMinPrice(0);
+        }
+        if(maxPrice === undefined || maxPrice === null || !(maxPrice > 0)) {
+            setMaxPrice("");
+        }
+        if(minAverageStar === undefined || minAverageStar === null || !(minAverageStar > 0)) {
+            setMinAverageStar("");
+        }
+        if(maxAverageStar === undefined || maxAverageStar === null || !(maxAverageStar > 0)) {
+            setMaxAverageStar("");
+        }
+        if(!(pageNumber>0)){
+                pageNumber = 1;
+        }
+       setGetProductUrl( `http://localhost:8080/products/getProductsByParams?page=${pageNumber-1}&sortByParam=${selectedSorting}&authorName=${authorName}&publisherName=${publisherName}&language=${language}&startYear=${minPublishedYear}&endYear=${maxPublishedYear}&minPrice=${minPrice}&maxPrice=${maxPrice}&minRating=${minAverageStar}&maxRating=${maxAverageStar}`);
+
+    }
     useEffect(() => {
+        handleFilterButton()
+        if(!(pageNumber > 0) || pageNumber === "" || pageNumber===null|| pageNumber.isNaN){
+            pageNumber=1
+        }
+
+    }, [handleFilterButton]);
+    useEffect(() => {
+        if(pageNumber < 1 || pageNumber === "" || pageNumber===null){
+            pageNumber=1
+            navigate("/products?page="+pageNumber)
+        }
         getFavData();
         getAllProduct();
         console.log("calisti set")
     }, []);
+
+    useEffect(() => {
+        getAllProduct();
+    }, [getProductUrl]);
+
+
         const getAllProduct = async () => {
+            console.log(getProductUrl)
             try {
-                const response = await fetch(url, {
+                const response = await fetch(getProductUrl, {
                     headers: {
                         "Content-Type": "application/json; charset=utf-8",
                         'Authorization': localStorage.getItem("tokenKey")
                     },
                 })
                 const data = await response.json();
-                setData(data);
+                console.log(data)
+                setData(data.content);
+                setMaxPageNumber(data.totalPages)
             } catch (error) {
                 console.error(error);
             }
@@ -84,15 +188,6 @@ function ProductList() {
 
         }
 
-    const showMoreProduct = () => {
-        setShowClick(true)
-        setKacTane(kacTane+12)
-        if(data.length >= kacTane){
-            setShowClick(false)
-        }else{
-            setShowButtonText("All Products were Showed")
-        }
-    }
     const handleFav = async (productId) => {
         if (localStorage.getItem("authorized") === "true") {
             const url = "http://localhost:8080/users/favProduct?productId=" + productId + "&userId="+localStorage.getItem("currentUser") ;
@@ -196,82 +291,8 @@ function ProductList() {
         </>
     )
 
-    const [selectedFilter, setSelectedFilter] = useState(1);
-    const [selectedSorting, setSelectedSorting] = useState(1);
-    useEffect(() => {/////////////
-        setShowClick(false)
-       console.log("calisti filter")
-        setSelectedSorting(1)
-        if(selectedFilter === 1){
-            getAllProduct()
-        }else if(selectedFilter=== 2){
-            setData(getFavData())
-            setData(favData)
-            console.log(data)
-        }else if(selectedFilter=== 3){
-            console.log("calisti filter3")
 
-        }else{
-            console.log("calisti filter4")
-        }
-        console.log(data)
-    }, [selectedFilter]);
 
-    useEffect(() => {//////////////
-        console.log(data)
-        if(selectedSorting === 1){
-            const sortedData = [...data].sort((a, b) => a.publishedDate - b.publishedDate);
-            setData(sortedData);
-            console.log("calisti 1")
-        }else if(selectedSorting=== 2){
-            const sortedData = [...data].sort((b, a) => a.publishedDate - b.publishedDate);
-            setData(sortedData);
-            console.log("calisti 2")
-        }else if(selectedSorting=== 3){
-            const sortedData = [...data].sort((a, b) => a.price - b.price);
-            setData(sortedData);
-            console.log("calisti 3")
-
-        }else if(selectedSorting=== 4){
-            const sortedData = [...data].sort((b,a) => a.price - b.price);
-            setData(sortedData);
-            console.log("calisti 4")
-
-        }else if(selectedSorting=== 5){
-            const sortedData = [...data].sort((a,b) =>new Date(a.createdAt) - new Date(b.createdAt));
-            setData(sortedData);
-            console.log("calisti 5")
-        }else if(selectedSorting=== 6){
-            const sortedData = [...data].sort((b,a) => new Date(a.createdAt) -new Date(b.createdAt));
-            setData(sortedData);
-            console.log("calisti 6")
-        }else{
-        }
-    }, [selectedSorting]);
-    function handleSelectionFilter(e, { name, value }) {
-        setSelectedFilter(value);
-    }
-    function handleSelectionSorting(e, { name, value }) {
-        setSelectedSorting(value);
-    }
-    const filterOptions = [
-        { key: 1, text: 'All books', value: 1 },
-
-        { key: 3, text: 'Search author', value: 3 },
-        { key: 4, text: 'Search category', value: 4 },
-        { key: 5, text: 'Search with year range', value: 5 },
-    ]
-
-    const sortingOptions = [
-        { key: 1, text: 'First old published', value: 1 },
-        { key: 2, text: 'First new published', value: 2 },
-        { key: 3, text: 'First cheaper', value: 3 },
-        { key: 4, text: 'First more expensive', value: 4 },
-        { key: 5, text: 'First old added', value: 5 },
-        { key: 6, text: 'First new added', value: 6 },
-        { key: 7, text: 'First higher average rating', value: 7 },
-        { key: 8, text: 'First higher sold', value: 8 },
-    ]
     return (<Container style={{width:"75%"}}>
 <>{showPopup1 && (
     <Popup
@@ -334,12 +355,70 @@ function ProductList() {
                         </Grid.Column>
 
                         <Grid.Column>
-                            <Dropdown style={{width: "100%"}}  value={selectedSorting}  onChange={handleSelectionSorting} placeholder={"First old books"} clearable options={sortingOptions} selection />
+                            <Dropdown style={{width: "100%"}}  value={selectedSorting}  onChange={handleSelectionSorting} clearable options={sortingOptions} selection />
                         </Grid.Column>
 
+                        {showFilters ? <> <Form>
 
+                            <Row>
+                                <Col>
+                                    <Form.Label>Author Name</Form.Label>
+                                    <Form.Control type="text" value={authorName}  onChange={(event) => handleAuthorName(event.target.value)} />
+
+                                </Col>
+                                <Col>
+                                    <Form.Label>Publisher</Form.Label>
+                                    <Form.Control type="text" value={publisherName} onChange={(event) => handlePublisherName(event.target.value)} />
+
+                                </Col>
+                                <Col>
+                                    <Form.Label>Language</Form.Label>
+                                    <Form.Select value={language}  onChange={(event) => handleLanguage(event.target.value)}>
+                                        <option value="">Choose language</option>
+                                        <option value="Turkish">Turkish</option>
+                                        <option value="English">English</option>
+                                    </Form.Select>
+
+                                </Col>
+                            </Row>
+
+                            <Row>
+                                <Col>
+                                    <Form.Label>Min Published Year</Form.Label>
+                                    <Form.Control type="number" value={minPublishedYear} placeholder="25" onChange={(event) => handleMinPublishedYear(event.target.value)} />
+
+                                </Col>
+                                <Col>
+                                    <Form.Label>Max Published Year</Form.Label>
+                                    <Form.Control type="number" value={maxPublishedYear} placeholder="25" onChange={(event) => handleMaxPublishedYear(event.target.value)} />
+
+                                </Col>
+                                <Col>
+                                    <Form.Label>Min Price</Form.Label>
+                                    <Form.Control type="number" value={minPrice}  placeholder="25" onChange={(event) => handleMinPrice(event.target.value)} />
+
+                                </Col>
+                                <Col>
+                                    <Form.Label>Max Price</Form.Label>
+                                    <Form.Control type="number"  value={maxPrice} onChange={(event) => handleMaxPrice(event.target.value)} />
+
+                                </Col>
+                                <Col>
+                                    <Form.Label>Min Average Star</Form.Label>
+                                    <Form.Control type="number"  value={minAverageStar} onChange={(event) => handleMinAverageStar(event.target.value)} />
+
+                                </Col>
+                                <Col>
+                                    <Form.Label>Max Average Star</Form.Label>
+                                    <Form.Control type="number"  value={maxAverageStar} onChange={(event) => handleMaxAverageStar(event.target.value)} />
+
+                                </Col>
+
+                            </Row><br/>
+                    <center><Button onClick={handleFilterButton} secondary>SEND</Button></center>
+                        </Form></>:null}
                     </Grid.Row>
-                    {showFilters ? ProductFilter():null}
+
                 </Grid>
 
 
@@ -347,11 +426,11 @@ function ProductList() {
                 <br/>
                 <Card.Group doubling itemsPerRow={5} stackable>
 
-            {data.slice(0, kacTane).map((item, index)=> (
+            {data.map((item, index)=> (
                 myProductCard(item,index)
             ))}
         </Card.Group><br/>
-           <center> <Button inverted color='linkedin' onClick={showMoreProduct} disabled={showClick}>{showButtonText}</Button></center>
+           <center> <Pagination defaultActivePage={pageNumber} onPageChange={handlePaginationChange} totalPages={maxPageNumber} /></center>
             </Segment></Container>);
 }
 

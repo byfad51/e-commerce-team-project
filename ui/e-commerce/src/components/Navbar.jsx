@@ -140,9 +140,9 @@ function Navbar() {
             <button className="cart-button" onClick={() => navigate('/cart')}>
               <FontAwesomeIcon icon={faShoppingCart} className="cart-icon" />
             </button>
-            <button className="cart-button" onClick={() => navigate('/favorites')}>
-              {authorized==="true" ? <FontAwesomeIcon icon={faHeart} style={{color: "#ff0000",}}/>: null}
-            </button>
+            {authorized==="true" ? <button className="cart-button" onClick={() => navigate('/favorites')}>
+              <FontAwesomeIcon icon={faHeart} style={{color: "#ff0000",}}/>
+            </button>: null}
 
           </ul>
         </nav>
