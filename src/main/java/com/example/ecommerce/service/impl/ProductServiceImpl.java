@@ -95,10 +95,25 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<ProductResponse> findBooksByFilters(String authorName, Integer startYear, Integer endYear, String publisherName, String sortByParam, Pageable pageable) {
-        return productRepository.findBooksByFilters(authorName, startYear, endYear, publisherName, sortByParam, pageable)
+    public Page<ProductResponse> findBooksByFilters(String authorName, Integer startYear, Integer endYear,
+                                                    String publisherName, String language, Double minRating,
+                                                    Double maxRating, Double minPrice, Double maxPrice,
+                                                    String sortByParam, Pageable pageable) {
+        return productRepository.findBooksByFilters(
+                        authorName,
+                        startYear,
+                        endYear,
+                        publisherName,
+                        language,
+                        minRating,
+                        maxRating,
+                        minPrice,
+                        maxPrice,
+                        sortByParam,
+                        pageable)
                 .map(ProductResponse::new);
     }
+
 
 
 }

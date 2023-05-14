@@ -23,6 +23,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
            "AND (:startYear IS NULL OR b.publishedDate >= :startYear) " +
            "AND (:endYear IS NULL OR b.publishedDate <= :endYear) " +
            "AND (:publisherName IS NULL OR b.publisher = :publisherName) " +
+           "AND (:language IS NULL OR b.language = :language) " +
+           "AND (:minRating IS NULL OR b.averageRating >= :minRating) " +
+           "AND (:maxRating IS NULL OR b.averageRating <= :maxRating) " +
+           "AND (:minPrice IS NULL OR b.price >= :minPrice) " +
+           "AND (:maxPrice IS NULL OR b.price <= :maxPrice) " +
            "ORDER BY " +
            "CASE WHEN :sortByParam = 'NEWEST' THEN b.createdAt END DESC, " +
            "CASE WHEN :sortByParam = 'OLDEST' THEN b.createdAt END ASC, " +
@@ -30,16 +35,20 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
            "CASE WHEN :sortByParam = 'PRICE_HIGH_TO_LOW' THEN b.price END DESC, " +
            "CASE WHEN :sortByParam = 'PRICE_LOW_TO_HIGH' THEN b.price END ASC, " +
            "CASE WHEN :sortByParam = 'REVIEW_HIGH_TO_LOW' THEN SIZE(b.reviews) END DESC, " +
-           "CASE WHEN :sortByParam = 'RATING_HIGH_TO_LOW' THEN b.averageRating END DESC")
+           "CASE WHEN :sortByParam = 'RATING_HIGH_TO_LOW' THEN b.averageRating END DESC, " +
+           "CASE WHEN :sortByParam = 'NEWLY_PUBLISHED_TO_OLDLY_PUBLISHED' THEN b.publishedDate END DESC, " +
+           "CASE WHEN :sortByParam = 'OLDLY_PUBLISHED_TO_NEWLY_PUBLISHED' THEN b.publishedDate END ASC")
    Page<Product> findBooksByFilters(@Param("authorName") String authorName,
                                     @Param("startYear") Integer startYear,
                                     @Param("endYear") Integer endYear,
                                     @Param("publisherName") String publisherName,
+                                    @Param("language") String language,
+                                    @Param("minRating") Double minRating,
+                                    @Param("maxRating") Double maxRating,
+                                    @Param("minPrice") Double minPrice,
+                                    @Param("maxPrice") Double maxPrice,
                                     @Param("sortByParam") String sortByParam,
                                     Pageable pageable);
-
-
-
 
 
 }

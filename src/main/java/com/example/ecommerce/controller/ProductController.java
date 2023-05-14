@@ -75,14 +75,20 @@ public class ProductController {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/getProducts")
+    @GetMapping("/getProductsByParams")
     public Page<ProductResponse> findBooksByFilters(@RequestParam(required = false) String authorName,
                                          @RequestParam(required = false) Integer startYear,
                                          @RequestParam(required = false) Integer endYear,
                                          @RequestParam(required = false) String publisherName,
+                                         @RequestParam(required = false) String language,
+                                         @RequestParam(required = false) Double minRating,
+                                         @RequestParam(required = false) Double maxRating,
+                                         @RequestParam(required = false) Double minPrice,
+                                         @RequestParam(required = false) Double maxPrice,
                                          @RequestParam(required = false, defaultValue = "NEWEST") String sortByParam,
                                          Pageable pageable) {
-        return productService.findBooksByFilters(authorName, startYear, endYear, publisherName, sortByParam, pageable);
+        return productService.findBooksByFilters(authorName, startYear, endYear, publisherName, language,
+                minRating, maxRating, minPrice, maxPrice, sortByParam, pageable);
     }
 
 }

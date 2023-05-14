@@ -17,6 +17,9 @@ public interface ProductService {
     String updateProduct(Long productId, ProductCreateRequest request);
     String deleteProduct(Long productId);
 
-    Page<ProductResponse> findBooksByFilters(String authorName, Integer startYear, Integer endYear, String publisherName, String sortByParam, Pageable pageable);
+    Page<ProductResponse> findBooksByFilters(String authorName, Integer startYear, Integer endYear,
+                                             String publisherName, String language, Double minRating,
+                                             Double maxRating, Double minPrice, Double maxPrice,
+                                             String sortByParam, Pageable pageable);
 }
 
