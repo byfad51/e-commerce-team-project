@@ -1,13 +1,18 @@
 package com.example.ecommerce.controller;
 
 import com.example.ecommerce.dto.product.ProductResponse;
+import com.example.ecommerce.dto.user.UserCreateRequest;
 import com.example.ecommerce.dto.user.UserResponse;
+import com.example.ecommerce.exception.InvalidArgumentException;
+import com.example.ecommerce.exception.UserNotFoundException;
 import com.example.ecommerce.model.User;
 import com.example.ecommerce.service.impl.UserServiceImpl;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -58,6 +63,37 @@ public class UserController {
     public ResponseEntity<List<UserResponse>> getAllUsers(){
         List<UserResponse> users = userService.getAllUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+    @PostMapping("/updateUser/{userId}")
+    public ResponseEntity<Object> updateUser(@PathVariable long userId,
+                                             @Valid @RequestBody UserCreateRequest request, Errors errors){
+
+        if (errors.hasErrors())
+            return new ResponseEntity<>(errors.getFieldError().getDefaultMessage(), HttpStatus.EXPECTATION_FAILED);
+
+        try {
+            UserResponse response = userService.updateUser(userId, request);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+        catch (UserNotFoundException ex){
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+        }
+        catch (InvalidArgumentException ex){
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+        }
+
+    }
+
+    @DeleteMapping("/deleteUserById/{userId}")
+    public ResponseEntity<Object> deleteUserById(@PathVariable long userId){
+        try {
+            userService.deleteUserById(userId);
+        }
+        catch (UserNotFoundException ex){
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/favProduct")
