@@ -22,7 +22,10 @@ public class UserController {
     public UserController(UserServiceImpl userService) {
         this.userService = userService;
     }
-
+    @PostMapping("/check")
+    public ResponseEntity checkOut() {
+        return new ResponseEntity<>(true, HttpStatus.OK);
+    }
     @GetMapping("/getUserById/{userId}")
     public ResponseEntity<UserResponse> getUserById(@PathVariable Long userId){
         UserResponse response = userService.getUserById(userId);

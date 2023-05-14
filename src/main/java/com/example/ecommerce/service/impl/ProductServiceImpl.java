@@ -6,9 +6,12 @@ import com.example.ecommerce.model.Product;
 import com.example.ecommerce.repository.ProductRepository;
 import com.example.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
+import java.awt.print.Book;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -90,5 +93,28 @@ public class ProductServiceImpl implements ProductService {
             return "Product not found.";
         }
     }
+
+    @Override
+    public Page<ProductResponse> findBooksByFilters(String authorName, Integer startYear, Integer endYear,
+                                                    String publisherName, String language, Double minRating,
+                                                    Double maxRating, Double minPrice, Double maxPrice,
+                                                    String sortByParam, Pageable pageable) {
+        return productRepository.findBooksByFilters(
+                        authorName,
+                        startYear,
+                        endYear,
+                        publisherName,
+                        language,
+                        minRating,
+                        maxRating,
+                        minPrice,
+                        maxPrice,
+                        sortByParam,
+                        pageable)
+                .map(ProductResponse::new);
+    }
+
+
+
 }
 
