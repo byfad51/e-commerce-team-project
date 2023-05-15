@@ -20,6 +20,8 @@ function AddProduct () {
     const [isbn, setISBN] = useState("");
     const [imageUrl, setImageUrl] = useState("");
     const [publishedDate, setPublishedDate] = useState("");
+    const [category, setCategory] = useState("");
+    
 
     const [message, setmessage] = useState("");
     const [messageColor, setMessageColor] = useState("green");
@@ -35,6 +37,7 @@ function AddProduct () {
     const handleISBN = (value) => {setISBN(value)}
     const handleImageUrl = (value) => {setImageUrl(value)}
     const handlePublishedDate = (value) => {setPublishedDate(value)}
+    const handleCategory = (value) => {setCategory(value)}
 
 
     const sendRequest = (path) => {
@@ -49,7 +52,8 @@ function AddProduct () {
             stock: stock,
             isbn: isbn,
             imageUrl: imageUrl,
-            publishedDate: publishedDate
+            publishedDate: publishedDate,
+            category: category
         };
         console.log(requestBody);
         console.log(localStorage.getItem("tokenKey"));
@@ -70,7 +74,8 @@ function AddProduct () {
                 stock: stock,
                 isbn: isbn,
                 imageUrl: imageUrl,
-                publishedDate: publishedDate
+                publishedDate: publishedDate,
+                category: category
             }),
         })
 
@@ -94,6 +99,7 @@ function AddProduct () {
                 return res.text();
             })
             .then((data) => {
+                setCategory("")
                 setAuthorName("")
                 setProductName("")
                 setPublishedDate("")
@@ -146,6 +152,9 @@ function AddProduct () {
                         <Form.Control value={productName}   type="text" placeholder="Kaşağı" onChange={(event) => handleProductName(event.target.value)} /><br/>
                         <Form.Label>Author Name *</Form.Label>
                         <Form.Control value={authorName}  type="text" placeholder="Ömer Seyfettin" onChange={(event) => handleAuthorName(event.target.value)} />
+                        <br/>
+                        <Form.Label>Category *</Form.Label>
+                        <Form.Control value={category}  type="text" placeholder="Drama" onChange={(event) => handleCategory(event.target.value)} />
                          <br/>
 
                           <Form.Label>Number of Pages *</Form.Label>
