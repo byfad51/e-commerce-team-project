@@ -209,10 +209,12 @@ function ProductDetails() {
                                                 <Grid.Column width={10} style={{paddingTop:10}}>
                                                     <Grid columns={2} divided>
                                                                 <Icon name='star' color={"yellow"}/>{star}
-
-
-
                                                     </Grid>
+                                                </Grid.Column>
+                                            </Grid.Row>
+                                            <Grid.Row>
+                                                <Grid.Column width={6}>
+                                                    {productData.category!=="" && productData.category !==null?<p>Category: {productData.category}</p>:null}
                                                 </Grid.Column>
                                             </Grid.Row>
                                         </Grid>

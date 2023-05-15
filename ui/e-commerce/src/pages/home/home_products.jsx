@@ -16,7 +16,7 @@ import ProductGrid from "./product_grid";
 
 
     return (
-        <Carousel interval={2500} indicators={false} style={{width:"100%"}} variant="dark">
+        <Carousel interval={3000} indicators={false} style={{width:"100%"}} variant="dark">
 
             <Carousel.Item>
 
