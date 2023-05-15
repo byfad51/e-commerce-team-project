@@ -69,4 +69,7 @@ public class Product {
     @Column(name="average_rating")
     private Double averageRating;
 
+    @Column(name = "category")
+    private String category;
+
 }
