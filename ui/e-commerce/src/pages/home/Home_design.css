@@ -1,0 +1,20 @@
+.div-style-week{
+    display: flex;
+    align-items: center;
+    padding: 25px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    background: linear-gradient(to bottom, #000000 0%, #575757 100%);
+}
+.div-style-week1{
+    margin-left: 40px;
+    font-size: 3rem;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #ffffff;
+    text-shadow: 2px 2px #a6a6a6;
+}
+.text-design-home{
+    text-align: left;
+}

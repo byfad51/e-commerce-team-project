@@ -1,12 +1,15 @@
 import { useNavigate } from 'react-router-dom';
 import { Container} from 'react-bootstrap';
 import Navbar from "../../components/Navbar";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import '../../design/message/popup.css';
 import {Button, Icon, Message} from "semantic-ui-react";
 import Popup from "../../components/pop_message";
 import MyCarousel from "./home_products";
 import HomeProductCard from "./product_card";
+import ProductGrid from "./product_grid";
+import { Link } from 'react-router-dom';
+import  "./Home_design.css"
 
  function Home() {
     const navigate = useNavigate();
@@ -39,19 +42,34 @@ import HomeProductCard from "./product_card";
      const data2 = [...data].sort((b, a) => a.numberOfSales - b.numberOfSales).slice(0,kacUrun);
      const data3 = [...data].sort((b, a) => a.averageRating - b.averageRating).slice(0,kacUrun);
      const data4 = [...data].sort((b, a) => a.numberOfReviews - b.numberOfReviews).slice(0,kacUrun);
-
+     const data5 = [...data].sort((b, a) => a.numberOfSales - b.numberOfSales).slice(0,1);
 
 //
     return (
-        <Container style={{width:"75%"}}>
+        <Container >
             <Navbar/>
-            <center><h1>Son Eklenenler</h1></center>
+            <br/>
+            <div className="div-style-week" >
+
+                {data !== null && data5.length > 0 && (
+                    <div style={{ marginLeft: '60px'}}>
+                        <Link to={`/detail?id= ${data5[0].id}`}>
+                            <img src={data5[0].imageUrl} alt={data5[0].productName} style={{ maxWidth: '200px' }} />
+                        </Link>
+                    </div>
+                )}
+                <h1 className='div-style-week1' >Best Seller of the Week</h1>
+            </div>
+
+
+            <br/>
+            <br/>   <h1 className='text-design-home'>New Releases</h1>
             {data1.length > 0 ? <MyCarousel data={data1} /> : <p>Loading data...</p>}
-            <center><h1>Çok Satanlar</h1></center>
+            <br/><br/><h1 className='text-design-home'>Best Sellers</h1>
             {data2.length > 0 ? <MyCarousel data={data2} /> : <p>Loading data...</p>}
-            <center><h1>Yıldızlı Ürünler</h1></center>
+            <br/><br/><h1 className='text-design-home'>Star-rated Products</h1>
             {data3.length > 0 ? <MyCarousel data={data3} /> : <p>Loading data...</p>}
-            <center><h1>Çok Yorum Alanlar</h1></center>
+            <br/><br/><h1 className='text-design-home'>Highly-rated products</h1>
             {data4.length > 0 ? <MyCarousel data={data4} /> : <p>Loading data...</p>}
         </Container>
 
