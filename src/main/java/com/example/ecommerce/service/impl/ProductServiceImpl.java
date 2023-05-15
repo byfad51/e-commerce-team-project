@@ -11,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
-import java.awt.print.Book;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -66,6 +65,7 @@ public class ProductServiceImpl implements ProductService {
         product.setStock(request.getStock());
         product.setPublisher(request.getPublisher());
         product.setPublishedDate(request.getPublishedDate());
+        product.setCategory(request.getCategory());
     }
 
 

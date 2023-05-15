@@ -28,6 +28,7 @@ public class ProductResponse {
     private LocalDateTime createdAt;
     private int numberOfReviews;
     private Double averageRating;
+    private String category;
     public ProductResponse(Product product) {
         this.id = product.getId();
         this.productName = product.getProductName();
@@ -46,5 +47,6 @@ public class ProductResponse {
         this.createdAt = product.getCreatedAt();
         this.numberOfReviews = product.getReviews().size();
         this.averageRating = product.getAverageRating();
+        this.category = product.getCategory();
     }
     }

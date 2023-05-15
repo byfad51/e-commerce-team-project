@@ -32,6 +32,8 @@ public class ProductCreateRequest {
     @NotNull
     private Integer numberOfPages;
 
+    private String category;
+
     private String publisher;
     private String language;
     private long stock;
