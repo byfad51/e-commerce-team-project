@@ -67,9 +67,9 @@ import  "./Home_design.css"
             {data1.length > 0 ? <MyCarousel data={data1} /> : <p>Loading data...</p>}
             <br/><br/><h1 className='text-design-home'>Best Sellers</h1>
             {data2.length > 0 ? <MyCarousel data={data2} /> : <p>Loading data...</p>}
-            <br/><br/><h1 className='text-design-home'>Star-rated Products</h1>
+            <br/><br/><h1 className='text-design-home'>Star-rated Books</h1>
             {data3.length > 0 ? <MyCarousel data={data3} /> : <p>Loading data...</p>}
-            <br/><br/><h1 className='text-design-home'>Highly-rated products</h1>
+            <br/><br/><h1 className='text-design-home'>Highly-rated Books</h1>
             {data4.length > 0 ? <MyCarousel data={data4} /> : <p>Loading data...</p>}
         </Container>
 
