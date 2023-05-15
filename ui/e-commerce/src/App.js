@@ -26,7 +26,7 @@ function App() {
           <Route path="/detail" element={<ProductDetails />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/passwordforgot" element={<PasswordForgot />} />
-        <Route  path="/register" elcement={<Register />}>
+        <Route  path="/register" element={<Register />}>
         </Route>
       </Routes>
     </Router>
