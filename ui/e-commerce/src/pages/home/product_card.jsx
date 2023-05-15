@@ -7,7 +7,7 @@ function HomeProductCard(props) {
         <>
             <Card key={props.item.productName} >
 
-                {props.item.imageUrl!== ""? <a href={"/detail?id="+ props.item.id}><Image  height="295" width="100%" src={props.item.imageUrl} /></a>:
+                {props.item.imageUrl!== ""? <a href={"/detail?id="+ props.item.id}><Image  height="350" width="100%" src={props.item.imageUrl} /></a>:
                     <a href={"/detail?id="+ props.item.id}><Image  height="400"  width="100%" src={"https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png"}/></a>
                 }
 

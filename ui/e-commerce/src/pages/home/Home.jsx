@@ -46,7 +46,7 @@ import  "./Home_design.css"
 
 //
     return (
-        <Container fluid style={{width:'1100px'}}>
+        <Container fluid style={{width:'70%'}}>
             <Navbar/>
             <br/>
             <div className="div-style-week" >
