@@ -107,4 +107,14 @@ public class ReviewServiceImpl implements ReviewService {
         }
         return (double) sum / product.getReviews().size();
     }
+    public ReviewResponse updateReview(Long reviewId, ReviewRequest reviewRequest) {
+        Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new ReviewNotFoundException());
+
+        review.setContent(reviewRequest.getContent());
+        review.setRating(reviewRequest.getRating());
+
+        Review updatedReview = reviewRepository.save(review);
+        return mapToReviewResponse(updatedReview);
+    }
+
 }
