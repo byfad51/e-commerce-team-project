@@ -13,5 +13,5 @@ public interface ReviewService {
     ReviewResponse createReview(ReviewRequest reviewRequest);
     Double getAverageRatingByProductId(Long productId);
 
-
+    void deleteReviewById(Long reviewId, Long userId);
 }

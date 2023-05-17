@@ -148,4 +148,15 @@ public class UserServiceImpl implements UserService {
         return user.getFavoriteProducts().stream().map(ProductResponse::new).collect(Collectors.toList());
     }
 
+    @Override
+    public Long getIdByUsername(String username) {
+        User user = userRepository.findByUsername(username).orElse(null);
+        if(user!=null){
+           return user.getId();
+        }else{
+            throw new UserNotFoundException("User not found with username :" + username);
+        }
+    }
+
+
 }

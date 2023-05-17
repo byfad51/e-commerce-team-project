@@ -40,6 +40,7 @@ function Navbar() {
       if (!response.ok) {
         console.log(response.status)
         if(response.status === 401 && localStorage.getItem("authorized") ==="true"){
+          localStorage.clear()
           localStorage.setItem("authorized", "false")
           console.log("you go to logout")
           setShowPopup(true)

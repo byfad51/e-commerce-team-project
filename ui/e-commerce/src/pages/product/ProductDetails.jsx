@@ -171,8 +171,15 @@ function ProductDetails() {
                 });
         }
     }
+    const handleEditClick = () => {
+        // Edit ikonuna tıklandığında gerçekleşecek işlemleri burada tanımlayabilirsiniz
+        console.log("Edit ikonuna tıklandı");
+    };
 
-
+    const handleDeleteClick = () => {
+        // Edit ikonuna tıklandığında gerçekleşecek işlemleri burada tanımlayabilirsiniz
+        console.log("Delete ikonuna tıklandı");
+    };
 
    // console.log(productData)
     const productFound =() => (
@@ -262,9 +269,14 @@ function ProductDetails() {
                                         <Comment.Metadata>
                                             <Rating icon='star' defaultRating={item.rating} maxRating={5} disabled />
                                         </Comment.Metadata>
+                                        {localStorage.getItem("username") === item.username ? <>
+                                            <Icon onClick={handleEditClick} link={true} style={{float:"right"}} name="edit outline" color="green" size={"big"}></Icon>
+                                            <Icon onClick={handleDeleteClick} link={true} style={{float:"right"}} name="trash alternate outline" color="yellow" size={"big"}></Icon></>:null}
+
                                         <Comment.Text>{item.content}</Comment.Text>
 
                                     </Comment.Content>
+
                                 </Comment>
                             )) :"Yorum Yapılmamış"}<br/><br/>
 

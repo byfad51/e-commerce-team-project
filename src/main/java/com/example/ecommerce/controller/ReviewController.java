@@ -3,21 +3,28 @@ package com.example.ecommerce.controller;
 
 import com.example.ecommerce.dto.review.ReviewRequest;
 import com.example.ecommerce.dto.review.ReviewResponse;
+import com.example.ecommerce.repository.UserRepository;
 import com.example.ecommerce.service.impl.ReviewServiceImpl;
+import com.example.ecommerce.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import com.example.ecommerce.security.JwtTokenProvider;
 
 @RestController
 @RequestMapping("/reviews")
 public class ReviewController {
 
     private final ReviewServiceImpl reviewService;
+    private final UserServiceImpl userServiceImpl;
+    private final JwtTokenProvider jtp;
     @Autowired
-    public ReviewController(ReviewServiceImpl reviewService){
+    public ReviewController(ReviewServiceImpl reviewService, UserServiceImpl userService, UserRepository userRepository, UserServiceImpl userServiceImpl, JwtTokenProvider jtp){
         this.reviewService=reviewService;
+        this.userServiceImpl = userServiceImpl;
+        this.jtp = jtp;
     }
     @PostMapping("/createReview")
     public ResponseEntity<ReviewResponse> createReview(@RequestBody ReviewRequest reviewRequest) {
@@ -28,6 +35,21 @@ public class ReviewController {
        else{
            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
+    }
+
+    @DeleteMapping("/deleteReviewById/{reviewId}")
+    public ResponseEntity<Object> deleteReviewById(@PathVariable Long reviewId, @RequestHeader("Authorization") String token){
+        token = token.replace("Bearer ", "");
+        String username = jtp.getUserNameFromJwtToken(token);
+        Long userId = userServiceImpl.getIdByUsername(username);
+
+        try {
+            reviewService.deleteReviewById(reviewId, userId);
+        }
+        catch (Exception ex){
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.EXPECTATION_FAILED);
+        }
+        return new ResponseEntity<>("Deleted",HttpStatus.OK);
     }
 
     @GetMapping("/getReviewById/{reviewId}")
