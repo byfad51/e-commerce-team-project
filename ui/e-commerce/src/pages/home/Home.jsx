@@ -1,60 +1,80 @@
-import { useNavigate } from 'react-router-dom';
 import { Container} from 'react-bootstrap';
 import Navbar from "../../components/Navbar";
 import React, {useEffect, useState} from "react";
 import '../../design/message/popup.css';
-import {Button, Icon, Message} from "semantic-ui-react";
-import Popup from "../../components/pop_message";
+
 import MyCarousel from "./home_products";
-import HomeProductCard from "./product_card";
-import ProductGrid from "./product_grid";
+
 import { Link } from 'react-router-dom';
 import  "./Home_design.css"
 
  function Home() {
-    const navigate = useNavigate();
 
-    const [data, setData] = useState([]);
 
-    const url = 'http://localhost:8080/products/getAllProducts';
+    const [data1, setData1] = useState([]);
+    const [data2, setData2] = useState([]);
+    const [data3, setData3] = useState([]);
+    const [data4, setData4] = useState([]);
+    const [data5, setData5] = useState([]);
+     const [data, setData] = useState([]);
 
-    useEffect(() => {
-        getAllProduct();
-        console.log("calisti set")
-    }, []);
-    const getAllProduct = async () => {
-        try {
-            const response = await fetch(url, {
-                headers: {
-                    "Content-Type": "application/json; charset=utf-8",
-                    'Authorization': localStorage.getItem("tokenKey")
-                },
-            })
-            const data = await response.json();
-            setData(data);
-        } catch (error) {
-            console.error(error);
-        }
-    };
-    console.log(data)
-     const kacUrun=15;
-     const data1 = [...data].sort((b, a) => a.createdAt - b.createdAt).slice(0,kacUrun);
-     const data2 = [...data].sort((b, a) => a.numberOfSales - b.numberOfSales).slice(0,kacUrun);
-     const data3 = [...data].sort((b, a) => a.averageRating - b.averageRating).slice(0,kacUrun);
-     const data4 = [...data].sort((b, a) => a.numberOfReviews - b.numberOfReviews).slice(0,kacUrun);
-     const data5 = [...data].sort((b, a) => a.numberOfSales - b.numberOfSales).slice(0,1);
+    const getData = async () => {
+        await getAllProduct("NEWEST").then(value =>  setData1(value))
 
-//
+        await getAllProduct("BEST_SELLING").then(value =>  setData2(value))
+
+        await getAllProduct("RATING_HIGH_TO_LOW").then(value =>  setData3(value))
+
+        await getAllProduct("REVIEW_HIGH_TO_LOW").then(value =>  setData4(value))
+
+        await getAllProduct("NEWLY_PUBLISHED_TO_OLDLY_PUBLISHED").then(value =>  setData5(value))
+
+
+    }
+
+     const getAllProduct = async (selectedSorting) => {
+         const url = 'http://localhost:8080/products/getProductsByParams?sortByParam=' + selectedSorting;
+
+        // console.log(url);
+
+         const response = await fetch(url, {
+             headers: {
+                 "Content-Type": "application/json; charset=utf-8",
+             },
+         });
+
+         const data = await response.json();
+         const v2 = await data.content;
+         //console.log(v2);
+         setData(v2);
+         return v2;
+     };
+
+
+     useEffect(() => {
+         getData()
+
+     }, []);
+    /* console.log("data1")
+     console.log(data1)
+     console.log("data2")
+     console.log(data2)
+     console.log("data3")
+     console.log(data3)
+     console.log("data4")
+     console.log(data4)
+     console.log("data5")
+     console.log(data5)*/
     return (
         <Container fluid style={{width:'70%'}}>
             <Navbar/>
             <br/>
             <div className="div-style-week" >
 
-                {data !== null && data5.length > 0 && (
+                { data2.length > 0 && (
                     <div style={{ marginLeft: '60px'}}>
-                        <Link to={`/detail?id= ${data5[0].id}`}>
-                            <img src={data5[0].imageUrl} alt={data5[0].productName} style={{ maxWidth: '200px' }} />
+                        <Link to={`/detail?id= ${data2[0].id}`}>
+                            <img src={data2[0].imageUrl} alt={data2[0].productName} style={{ maxWidth: '200px' }} />
                         </Link>
                     </div>
                 )}
@@ -69,8 +89,10 @@ import  "./Home_design.css"
             {data2.length > 0 ? <MyCarousel data={data2} /> : <p>Loading data...</p>}
             <br/><br/><h1 className='text-design-home'>Star-rated Books</h1>
             {data3.length > 0 ? <MyCarousel data={data3} /> : <p>Loading data...</p>}
-            <br/><br/><h1 className='text-design-home'>Highly-rated Books</h1>
+            <br/><br/><h1 className='text-design-home'>Highly-reviewed Books</h1>
             {data4.length > 0 ? <MyCarousel data={data4} /> : <p>Loading data...</p>}
+            <br/><br/><h1 className='text-design-home'>Newly Published Books</h1>
+            {data5.length > 0 ? <MyCarousel data={data5} /> : <p>Loading data...</p>}
         </Container>
 
 
