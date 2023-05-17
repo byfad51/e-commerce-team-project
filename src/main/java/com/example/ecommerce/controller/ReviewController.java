@@ -77,5 +77,14 @@ public class ReviewController {
         return new ResponseEntity<>(reviewService.getAverageRatingByProductId(productId),HttpStatus.OK);
 
     }
+    @PutMapping("/updateReview/{reviewId}")
+    public ResponseEntity<ReviewResponse> updateReview(@PathVariable Long reviewId, @RequestBody ReviewRequest reviewRequest) {
+        ReviewResponse response = reviewService.updateReview(reviewId, reviewRequest);
+        if (response != null) {
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
 }
