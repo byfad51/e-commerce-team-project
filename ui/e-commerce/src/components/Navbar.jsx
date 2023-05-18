@@ -141,10 +141,12 @@ function Navbar() {
             <button className="cart-button" onClick={() => navigate('/cart')}>
               <FontAwesomeIcon icon={faShoppingCart} className="cart-icon" />
             </button>
-            {authorized==="true" ? <button className="cart-button" onClick={() => navigate('/favorites')}>
-              <FontAwesomeIcon icon={faHeart} style={{color: "#ff0000",}}/>
-            </button>: null}
 
+            {localStorage.getItem("role")==="USER" ? <li key={2}>
+              <a className={"nav-links"} href={"./user"}>
+                {"Profile"}
+              </a>
+            </li>: null}
           </ul>
         </nav>
       </div>

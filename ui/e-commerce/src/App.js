@@ -10,20 +10,21 @@ import Dashboard from "./pages/admin/Dashboard";
 import ProductList from "./pages/product/ProductList";
 import ProductDetails from "./pages/product/ProductDetails";
 import ShoppingCard from "./pages/ShoppingCard";
-import ProductFavorite from "./pages/product/ProductFavorite";
-
+import MyFavorites from "./pages/user/my_favorites";
+import UserProfile from "./pages/user/user_main_profile";
 function App() {
   return (
     <Router>
       <Routes>
           <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/favorites" element={<ProductFavorite />} />
+        <Route path="/favorites" element={<MyFavorites />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/cart" element={<ShoppingCard />} />
           <Route path="/cart" element={<ShoppingCard />} />
           <Route path="/products" element={<ProductList />} />
           <Route path="/detail" element={<ProductDetails />} />
+          <Route path="/user" element={<UserProfile />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/passwordforgot" element={<PasswordForgot />} />
         <Route  path="/register" element={<Register />}>

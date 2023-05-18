@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react'
 import {Grid, Image, Icon, Container, Segment, Button, Card, Dropdown, Select} from 'semantic-ui-react'
 import Navbar from "../../components/Navbar";
-import ProductSearch from "./ProductSearch"
+import ProductSearch from "../product/ProductSearch"
 import {useNavigate} from "react-router-dom";
 import Popup from "../../components/pop_message";
 
-function ProductFavorite() {
+function MyFavorites() {
     const [favData, setFavData] = useState([]);
     const [kacTane, setKacTane] = useState(24);
     const [showClick, setShowClick] = useState(false);
@@ -181,7 +181,7 @@ function ProductFavorite() {
 
 
     return ( localStorage.getItem("authorized")==="true" ?
-    <Container style={{width: "75%"}}>
+    <>
         <>{showPopup1 && (
             <Popup
                 buttonText1={"Go to Login"}
@@ -232,7 +232,7 @@ function ProductFavorite() {
 
             />
         )}</>
-        <Navbar/>
+
         <Segment>
 
 
@@ -247,8 +247,8 @@ function ProductFavorite() {
                 navigate("/products")
             }
             }>"Show Products"</Button></center>
-        </Segment></Container>:<center><h1>404 error - you need to login</h1></center>
+        </Segment></>:<center><h1>404 error - you need to login</h1></center>
 );
 }
 
-export default ProductFavorite;
+export default MyFavorites;
