@@ -52,6 +52,16 @@ public class ReviewController {
         return new ResponseEntity<>("Deleted",HttpStatus.OK);
     }
 
+    @GetMapping("/getReviewByUserIdAndProcutId/{productId}")
+    public  ResponseEntity<ReviewResponse> getReviewByUserIdAndProcutId(@PathVariable Long productId, @RequestHeader("Authorization") String token){
+
+        token = token.replace("Bearer ", "");
+        String username = jtp.getUserNameFromJwtToken(token);
+        Long userId = userServiceImpl.getIdByUsername(username);
+        return new ResponseEntity<>(reviewService.getReviewByUserIdAndProcutId(userId,productId),HttpStatus.OK);
+
+    }
+
     @GetMapping("/getReviewById/{reviewId}")
     public ReviewResponse getReviewById(@PathVariable Long reviewId) {
 

@@ -16,4 +16,6 @@ public interface ReviewService {
     void deleteReviewById(Long reviewId, Long userId);
     ReviewResponse updateReview(Long reviewId, ReviewRequest reviewRequest);
 
+    ReviewResponse getReviewByUserIdAndProcutId(Long productId, Long userId);
+
 }

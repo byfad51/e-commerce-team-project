@@ -138,4 +138,13 @@ public class ReviewServiceImpl implements ReviewService {
         return mapToReviewResponse(updatedReview);
     }
 
+    @Override
+    public ReviewResponse getReviewByUserIdAndProcutId(Long userId,Long productId) {
+        if(reviewRepository.findByUserIdAndProductId(userId, productId).isPresent()) {
+            Review review = reviewRepository.findByUserIdAndProductId(userId, productId).orElseThrow(ReviewNotFoundException::new);
+            return mapToReviewResponse(review);
+        }
+        throw new ReviewNotFoundException();
+    }
+
 }
