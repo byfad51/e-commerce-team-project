@@ -1,5 +1,17 @@
 import React, {useEffect, useState} from 'react'
-import {Grid, Image, Icon, Container, Segment, Button, Card, Dropdown, Select, Pagination} from 'semantic-ui-react'
+import {
+    Grid,
+    Image,
+    Icon,
+    Container,
+    Segment,
+    Button,
+    Card,
+    Dropdown,
+    Select,
+    Pagination,
+    Rating
+} from 'semantic-ui-react'
 import Navbar from "../../components/Navbar";
 import ProductSearch from "./ProductSearch"
 import {useNavigate} from "react-router-dom";
@@ -71,7 +83,12 @@ function ProductList() {
         navigate("/products?page="+pageNumber)
     }
     const searchParams = new URLSearchParams(window.location.search);
-    pageNumber = parseInt(searchParams.get('page'));
+  if(parseInt(searchParams.get('page')) > 0){
+      pageNumber = parseInt(searchParams.get('page'));
+  }else{
+      pageNumber = 1;
+      navigate("/products?page=1")
+  }
     //setPageNumber(pageInUrl)
 
     const [getProductUrl, setGetProductUrl] = useState("http://localhost:8080/products/getProductsByParams?page="+(pageNumber-1)+"&sortByParam="+selectedSorting)
@@ -420,13 +437,24 @@ console.log("useeffect111111")
 
                             </Col>
                             <Col>
-                                <Form.Label>Min Average Star</Form.Label>
-                                <Form.Control type="number"  value={minAverageStar} onChange={(event) => handleMinAverageStar(event.target.value)} />
-
+                                <br/><Form.Label>Min Average Star</Form.Label><br/>
+                                <Rating icon='star' rating={minAverageStar} onRate={(event, data1) =>{
+                                    if(minAverageStar===data1.rating){
+                                        handleMinAverageStar(0)
+                                    }else{
+                                        handleMinAverageStar(data1.rating)
+                                    }}} maxRating={5} size={"huge"}/>
                             </Col>
                             <Col>
-                                <Form.Label>Max Average Star</Form.Label>
-                                <Form.Control type="number"  value={maxAverageStar} onChange={(event) => handleMaxAverageStar(event.target.value)} />
+                                <br/> <Form.Label>Max Average Star</Form.Label><br/>
+                                <Rating icon='star' rating={maxAverageStar} onRate={(event, data1) => {
+
+                                    if(maxAverageStar===data1.rating){
+                                        handleMaxAverageStar(  "")
+                                    }else{
+                                        handleMaxAverageStar(data1.rating)
+                                    }}}
+                                  maxRating={5} size={"huge"}/>
 
                             </Col>
 
