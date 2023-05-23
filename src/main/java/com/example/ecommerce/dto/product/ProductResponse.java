@@ -1,16 +1,18 @@
 package com.example.ecommerce.dto.product;
+import com.example.ecommerce.model.Category;
 import com.example.ecommerce.model.Product;
-import com.example.ecommerce.model.Review;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductResponse {
+
     private Long id;
     private String productName;
     private String authorName;
@@ -28,7 +30,8 @@ public class ProductResponse {
     private LocalDateTime createdAt;
     private int numberOfReviews;
     private Double averageRating;
-    private String category;
+    private List<Category> categories;
+
     public ProductResponse(Product product) {
         this.id = product.getId();
         this.productName = product.getProductName();
@@ -47,6 +50,7 @@ public class ProductResponse {
         this.createdAt = product.getCreatedAt();
         this.numberOfReviews = product.getReviews().size();
         this.averageRating = product.getAverageRating();
-        this.category = product.getCategory();
+        this.categories = product.getCategories();
     }
-    }
+
+}

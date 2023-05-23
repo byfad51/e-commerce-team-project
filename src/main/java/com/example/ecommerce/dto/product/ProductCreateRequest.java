@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class ProductCreateRequest {
     @NotNull
@@ -32,7 +34,7 @@ public class ProductCreateRequest {
     @NotNull
     private Integer numberOfPages;
 
-    private String category;
+    private List<Long> category;
 
     private String publisher;
     private String language;

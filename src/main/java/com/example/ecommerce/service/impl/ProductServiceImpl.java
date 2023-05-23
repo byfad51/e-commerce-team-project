@@ -2,9 +2,13 @@ package com.example.ecommerce.service.impl;
 
 import com.example.ecommerce.dto.product.ProductCreateRequest;
 import com.example.ecommerce.dto.product.ProductResponse;
+import com.example.ecommerce.exception.ProductNotFoundException;
+import com.example.ecommerce.model.Category;
 import com.example.ecommerce.model.Product;
+import com.example.ecommerce.repository.CategoryRepository;
 import com.example.ecommerce.repository.ProductRepository;
 import com.example.ecommerce.service.ProductService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,10 +23,12 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository) {
+    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository) {
         this.productRepository = productRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     public List<ProductResponse> getAllProducts() {
@@ -38,6 +44,7 @@ public class ProductServiceImpl implements ProductService {
     public Product getProductById(Long productId) {
         return productRepository.findById(productId).orElse(null);
     }
+
     public String addProduct(ProductCreateRequest request) {
         if(productRepository.findByProductNameAndAuthorName(request.getProductName(),
                 request.getAuthorName()).isEmpty()){
@@ -53,6 +60,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private void addProduct(ProductCreateRequest request, Product product) {
+
+        List<Category> categories = categoryRepository.findAllById(request.getCategory());
+        product.setCategories(categories);
+
         product.setProductName(request.getProductName());
         product.setAuthorName(request.getAuthorName());
         product.setDescription(request.getDescription());
@@ -65,7 +76,6 @@ public class ProductServiceImpl implements ProductService {
         product.setStock(request.getStock());
         product.setPublisher(request.getPublisher());
         product.setPublishedDate(request.getPublishedDate());
-        product.setCategory(request.getCategory());
     }
 
 
@@ -95,25 +105,31 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<ProductResponse> findBooksByFilters(String authorName, Integer startYear, Integer endYear,
-                                                    String publisherName, String language, Double minRating,
-                                                    Double maxRating, Double minPrice, Double maxPrice,
-                                                    String sortByParam, Pageable pageable) {
-        return productRepository.findBooksByFilters(
-                        authorName,
-                        startYear,
-                        endYear,
-                        publisherName,
-                        language,
-                        minRating,
-                        maxRating,
-                        minPrice,
-                        maxPrice,
-                        sortByParam,
-                        pageable)
+    public Page<ProductResponse> findBooksByFilters(
+            String authorName, Integer startYear, Integer endYear,
+            String publisherName, String language, Double minRating,
+            Double maxRating, Double minPrice, Double maxPrice,
+            Long categoryId, String sortByParam, Pageable pageable) {
+
+        return productRepository.findBooksByFilters(authorName, startYear, endYear, publisherName, language,
+                        minRating, maxRating, minPrice, maxPrice, categoryId, sortByParam, pageable)
                 .map(ProductResponse::new);
     }
 
+
+    @Override
+    @Transactional
+    public void addCategoriesToBook(Long productId, List<Long> categoryIds) {
+
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException("Book not found"));
+
+        List<Category> categories = categoryRepository.findAllById(categoryIds);
+
+        product.getCategories().addAll(categories);
+
+        productRepository.save(product);
+    }
 
 
 }

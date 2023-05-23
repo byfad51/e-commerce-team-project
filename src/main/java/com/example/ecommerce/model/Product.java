@@ -4,7 +4,6 @@ package com.example.ecommerce.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-import org.hibernate.annotations.Formula;
 import org.springframework.data.annotation.CreatedDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,6 +29,12 @@ public class Product {
     @Lob
     @Size(max = 5000)
     private String description;
+
+    @ManyToMany
+    @JoinTable(name = "product_category",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private List<Category> categories;
 
     @Column(name = "price")
     private double price;
@@ -69,7 +74,5 @@ public class Product {
     @Column(name="average_rating")
     private Double averageRating;
 
-    @Column(name = "category")
-    private String category;
 
 }

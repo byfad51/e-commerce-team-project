@@ -6,7 +6,6 @@ import com.example.ecommerce.model.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.awt.print.Book;
 import java.util.List;
 
 public interface ProductService {
@@ -18,8 +17,11 @@ public interface ProductService {
     String deleteProduct(Long productId);
 
     Page<ProductResponse> findBooksByFilters(String authorName, Integer startYear, Integer endYear,
-                                             String publisherName, String language, Double minRating,
-                                             Double maxRating, Double minPrice, Double maxPrice,
-                                             String sortByParam, Pageable pageable);
+                                                    String publisherName, String language, Double minRating,
+                                                    Double maxRating, Double minPrice, Double maxPrice,
+                                                    Long categoryIds,
+                                                    String sortByParam, Pageable pageable);
+
+    void addCategoriesToBook(Long bookId, List<Long> CategoryIds);
 }
 
