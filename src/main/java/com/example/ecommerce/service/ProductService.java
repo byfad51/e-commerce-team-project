@@ -23,5 +23,10 @@ public interface ProductService {
                                                     String sortByParam, Pageable pageable);
 
     void addCategoriesToBook(Long bookId, List<Long> CategoryIds);
+
+    List<String> getAutocompleteSuggestions(String keyword);
+
+    List<ProductResponse> getSearchResults(String keyword, int page, int size);
+
 }
 

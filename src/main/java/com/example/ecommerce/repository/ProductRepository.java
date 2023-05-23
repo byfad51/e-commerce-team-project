@@ -18,6 +18,17 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
    // @Query("SELECT p FROM Product p WHERE p.name LIKE %:keyword%")
    // List<Product> searchProducts(@Param("keyword") String keyword);
 
+   @Query("SELECT p FROM Product p WHERE p.productName LIKE %:keyword% OR p.authorName LIKE %:keyword% OR p.publisher LIKE %:keyword%")
+   Page<Product> searchProducts(@Param("keyword") String keyword, Pageable pageable);
+
+   @Query("SELECT p.productName FROM Product p WHERE p.productName LIKE %:keyword% " +
+           "UNION " +
+           "SELECT p.authorName FROM Product p WHERE p.authorName LIKE %:keyword% " +
+           "UNION " +
+           "SELECT p.publisher FROM Product p WHERE p.publisher LIKE %:keyword%")
+   List<String> autocomplete(@Param("keyword") String keyword, Pageable pageable);
+
+
    @Query("SELECT b FROM Product b " +
            "JOIN b.categories c " +
            "WHERE (:authorName IS NULL OR b.authorName LIKE %:authorName%) " +

@@ -9,6 +9,8 @@ import com.example.ecommerce.service.impl.ProductServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -110,5 +112,21 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/autocomplete")
+    public ResponseEntity<List<String>> getAutocompleteSuggestions(@RequestParam String keyword) {
+        List<String> suggestions = productService.getAutocompleteSuggestions(keyword);
+        return new ResponseEntity<>(suggestions, HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Page<ProductResponse>> getSearchResults(
+            @RequestParam String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        List<ProductResponse> searchResults = productService.getSearchResults(keyword, page, size);
+        Page<ProductResponse> responsePage = new PageImpl<>(searchResults, PageRequest.of(page, size),
+                searchResults.size());
+        return new ResponseEntity<>(responsePage, HttpStatus.OK);
+    }
 
 }

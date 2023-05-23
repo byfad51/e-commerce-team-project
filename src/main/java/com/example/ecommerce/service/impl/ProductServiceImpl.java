@@ -11,6 +11,7 @@ import com.example.ecommerce.service.ProductService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -131,6 +132,21 @@ public class ProductServiceImpl implements ProductService {
         productRepository.save(product);
     }
 
+    @Override
+    public List<String> getAutocompleteSuggestions(String keyword) {
+        Pageable pageable = PageRequest.of(0, 10);
+        return productRepository.autocomplete(keyword, pageable);
+    }
+
+
+    @Override
+    public List<ProductResponse> getSearchResults(String keyword, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Product> productsPage = productRepository.searchProducts(keyword, pageable);
+        return productsPage.getContent().stream()
+                .map(ProductResponse::new)
+                .collect(Collectors.toList());
+    }
 
 }
 
