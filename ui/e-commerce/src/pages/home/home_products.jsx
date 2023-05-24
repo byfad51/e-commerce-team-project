@@ -26,6 +26,7 @@ import ProductGrid from "./product_grid";
 
                 {data !== null? <ProductGrid data={data.slice(5,10)}/>: null}
             </Carousel.Item>
+
             <Carousel.Item>
 
                 {data !== null? <ProductGrid data={data.slice(10,15)}/>: null}

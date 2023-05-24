@@ -12,6 +12,7 @@ import ProductDetails from "./pages/product/ProductDetails";
 import ShoppingCard from "./pages/ShoppingCard";
 import MyFavorites from "./pages/user/my_favorites";
 import UserProfile from "./pages/user/user_main_profile";
+import Categories from "./pages/product/categories";
 function App() {
   return (
     <Router>
@@ -19,6 +20,7 @@ function App() {
           <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/favorites" element={<MyFavorites />} />
+        <Route path="/categories" element={<Categories />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/cart" element={<ShoppingCard />} />
           <Route path="/cart" element={<ShoppingCard />} />

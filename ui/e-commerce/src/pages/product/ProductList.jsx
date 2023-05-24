@@ -14,11 +14,12 @@ import {
 } from 'semantic-ui-react'
 import Navbar from "../../components/Navbar";
 import ProductSearch from "./ProductSearch"
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useLocation} from "react-router-dom";
 import Popup from "../../components/pop_message";
 import {Col, Form, Row} from "react-bootstrap";
 
 function ProductList() {
+    const location = useLocation();
     const [data, setData] = useState([]);
     const [favData, setFavData] = useState([]);
     const [kacTane, setKacTane] = useState(24);
@@ -69,9 +70,13 @@ function ProductList() {
     const handleMinAverageStar = (value) => {
         setMinAverageStar(value)
         pageNumber=1
-        navigate("/products?page="+pageNumber)
+     //   navigate("/products?page="+pageNumber)
+        searchParams.set('page', pageNumber.toString()); // Yeni kategori değeri
+        const newSearch = searchParams.toString();
+        const newUrl = `${location.pathname}?${newSearch}`;
+        window.history.replaceState(null, '', newUrl);
     }
-
+let category = ""
     const handleMaxAverageStar = (value) => {setMaxAverageStar(value) }
 
     const [maxPageNumber, setMaxPageNumber] = useState(1)
@@ -80,18 +85,32 @@ function ProductList() {
 
     const handlePaginationChange = (e, { activePage }) => {
         pageNumber = activePage;
-        navigate("/products?page="+pageNumber)
+        setPageNumber(activePage)
+       // navigate("/products?page="+pageNumber)
+        searchParams.set('page', pageNumber.toString()); // Yeni kategori değeri
+        const newSearch = searchParams.toString();
+        const newUrl = `${location.pathname}?${newSearch}`;
+        window.history.replaceState(null, '', newUrl);
+
     }
     const searchParams = new URLSearchParams(window.location.search);
   if(parseInt(searchParams.get('page')) > 0){
       pageNumber = parseInt(searchParams.get('page'));
+      category = parseInt(searchParams.get('category'));
+
+
   }else{
       pageNumber = 1;
-      navigate("/products?page=1")
+      setPageNumber(1)
+   //   navigate("/products?page=1")
+      searchParams.set('page', pageNumber.toString()); // Yeni kategori değeri
+      const newSearch = searchParams.toString();
+      const newUrl = `${location.pathname}?${newSearch}`;
+      window.history.replaceState(null, '', newUrl);
   }
     //setPageNumber(pageInUrl)
 
-    const [getProductUrl, setGetProductUrl] = useState("http://localhost:8080/products/getProductsByParams?page="+(pageNumber-1)+"&sortByParam="+selectedSorting)
+    const [getProductUrl, setGetProductUrl] = useState("http://localhost:8080/products/getProductsByParams?page="+(pageNumber-1)+"&sortByParam="+selectedSorting + "&categoryId="+category)
 
 
     const handleFilterButton = () => {
@@ -125,28 +144,46 @@ function ProductList() {
         }
         if(!(pageNumber>0)){
             pageNumber = 1;
+            setPageNumber(1)
+
         }
-        setGetProductUrl( `http://localhost:8080/products/getProductsByParams?page=${pageNumber-1}&sortByParam=${selectedSorting}&authorName=${authorName}&publisherName=${publisherName}&language=${language}&startYear=${minPublishedYear}&endYear=${maxPublishedYear}&minPrice=${minPrice}&maxPrice=${maxPrice}&minRating=${minAverageStar}&maxRating=${maxAverageStar}`);
+        setGetProductUrl( `http://localhost:8080/products/getProductsByParams?page=${pageNumber-1}&sortByParam=${selectedSorting}&authorName=${authorName}&publisherName=${publisherName}&language=${language}&startYear=${minPublishedYear}&endYear=${maxPublishedYear}&minPrice=${minPrice}&maxPrice=${maxPrice}&minRating=${minAverageStar}&maxRating=${maxAverageStar}&categoryId=${category}`);
 
     }
     useEffect(() => {
 
-        setGetProductUrl( `http://localhost:8080/products/getProductsByParams?page=${pageNumber-1}&sortByParam=${selectedSorting}&authorName=${authorName}&publisherName=${publisherName}&language=${language}&startYear=${minPublishedYear}&endYear=${maxPublishedYear}&minPrice=${minPrice}&maxPrice=${maxPrice}&minRating=${minAverageStar}&maxRating=${maxAverageStar}`);
+        setGetProductUrl( `http://localhost:8080/products/getProductsByParams?page=${pageNumber-1}&sortByParam=${selectedSorting}&authorName=${authorName}&publisherName=${publisherName}&language=${language}&startYear=${minPublishedYear}&endYear=${maxPublishedYear}&minPrice=${minPrice}&maxPrice=${maxPrice}&minRating=${minAverageStar}&maxRating=${maxAverageStar}&categoryId=${category}`);
 
         if(!(pageNumber > 0) || pageNumber === "" || pageNumber===null|| pageNumber.isNaN){
             pageNumber=1
+            setPageNumber(1)
+
         }
 console.log("useeffect111111")
     }, [handleFilterButton]);
 
 
     useEffect(() => {
+        category = searchParams.get('category');
+        if(category===null || category ===""){
+            navigate("/categories")
+        }else{
+            setGetProductUrl( `http://localhost:8080/products/getProductsByParams?categoryId=${category}&?page=${pageNumber-1}&sortByParam=${selectedSorting}&authorName=${authorName}&publisherName=${publisherName}&language=${language}&startYear=${minPublishedYear}&endYear=${maxPublishedYear}&minPrice=${minPrice}&maxPrice=${maxPrice}&minRating=${minAverageStar}&maxRating=${maxAverageStar}&categoryId=${category}`);
+        }
        if(pageNumber < 1 || pageNumber === "" || pageNumber===null){
             pageNumber=1
-           navigate("/products?page="+pageNumber)
+           setPageNumber(1)
+
+           // navigate("/products?page="+pageNumber)
+           searchParams.set('page', pageNumber.toString()); // Yeni kategori değeri
+           const newSearch = searchParams.toString();
+           const newUrl = `${location.pathname}?${newSearch}`;
+           window.history.replaceState(null, '', newUrl);
         }
         getFavData();
-        getAllProduct();
+        getAllProduct().then(value => {
+
+        });
         console.log("useeffect222222")
 
     }, []);
