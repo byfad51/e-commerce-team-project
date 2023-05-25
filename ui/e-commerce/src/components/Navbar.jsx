@@ -3,8 +3,12 @@ import "../design/Navbar.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faBars, faTimes,faShoppingCart  } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from "react-router-dom";
+import Popup from "./pop_message";
+import {faHeart} from "@fortawesome/free-solid-svg-icons/faHeart";
 
 function Navbar() {
+  const [showPopup, setShowPopup] = useState(false);
+
   const [isSeller, setIsSeller] = useState(false);
   const [isCustomer, setIsCustomer] = useState(false);
   const navigate = useNavigate();
@@ -15,6 +19,37 @@ function Navbar() {
     } else if (role === 'customer') {
       setIsCustomer(true);
       setIsSeller(false);
+    }
+  }
+  useEffect(() => {
+    checkAuth();
+    console.log("calisti auth");
+  }, []);
+
+  const checkAuth = async () => {
+    const url = 'http://localhost:8080/users/check';
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          'Authorization': localStorage.getItem("tokenKey")
+        },
+      });
+        console.log(response.status)
+      if (!response.ok) {
+        console.log(response.status)
+        if(response.status === 401 && localStorage.getItem("authorized") ==="true"){
+          localStorage.setItem("authorized", "false")
+          console.log("you go to logout")
+          setShowPopup(true)
+        }
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      console.log(response.json())
+    } catch (error) {
+      console.log("401 - unauthorized")
+      //  console.error(`Error: ${error.message}`);
     }
   }
 
@@ -42,8 +77,29 @@ function Navbar() {
   return (
       <div className="navbar-container">
         <nav className="NavbarItems">
-          <div>
-            <h1 className="navbar-logo">EE</h1>
+
+
+          <div>{showPopup && (
+              <Popup
+                  buttonText1={"Go to Login"}
+                  buttonColor1={"green"}
+                  buttonText2={"Go without Login"}
+                  buttonColor2={"yellow"}
+                  errorMessageTitle={"Expired Session"}
+                  errorMessage={"Your session has expired, you need to login again."}
+                  icon={'warning circle'}
+                  onClose1={()=> {
+                navigate("/login")
+                setShowPopup(false)
+              }}
+                  onClose2={()=> {
+                    setShowPopup(false)
+                  }}
+              />
+          )}
+
+
+            <h1 className="navbar-logo"><a href={"/"}><font color={"black"} >E</font><font color={"black"} >E</font></a></h1>
             <div className="menu-icon" onClick={handleClick}>
               <FontAwesomeIcon icon={clicked ? faTimes : faBars} className="menu-icon" />
             </div>
@@ -81,10 +137,13 @@ function Navbar() {
               </a>
             </li>
 
-
             <button className="cart-button" onClick={() => navigate('/cart')}>
               <FontAwesomeIcon icon={faShoppingCart} className="cart-icon" />
             </button>
+            {authorized==="true" ? <button className="cart-button" onClick={() => navigate('/favorites')}>
+              <FontAwesomeIcon icon={faHeart} style={{color: "#ff0000",}}/>
+            </button>: null}
+
           </ul>
         </nav>
       </div>

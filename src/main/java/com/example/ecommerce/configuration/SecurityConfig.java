@@ -45,6 +45,7 @@ public class SecurityConfig{
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/users/getAllUsers").hasRole("ADMIN")
+                .requestMatchers("/users/deleteUserById/{userId}").hasRole("ADMIN")
                 .requestMatchers("/users/getUserByUsername").permitAll()
                 .requestMatchers("/users/getUserByEmail").permitAll()
                 .requestMatchers("/users/**").hasAnyRole("ADMIN","USER")
@@ -55,7 +56,7 @@ public class SecurityConfig{
                 .requestMatchers("/cart/**").hasAnyRole("ADMIN","USER")
                 .requestMatchers("/reviews/createReview").hasAnyRole("ADMIN","USER")
                 .requestMatchers("/reviews/getAllReviews").hasRole("ADMIN")
-                .requestMatchers("/reviews/getUserReviews/{userId}").hasRole("ADMIN")
+                .requestMatchers("/reviews/getUserReviews/{userId}").hasAnyRole("ADMIN", "USER")
                 .requestMatchers("/reviews/**").permitAll()
                 .anyRequest().authenticated();
 

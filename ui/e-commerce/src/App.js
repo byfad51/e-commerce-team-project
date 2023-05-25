@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
+import Home from "./pages/home/Home";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import Logout from "./pages/auth/Logout";
@@ -7,9 +7,10 @@ import PasswordForgot from "./pages/auth/PasswordForgot";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'semantic-ui-css/semantic.min.css';
 import Dashboard from "./pages/admin/Dashboard";
-import ProductList from "./pages/ProductList";
-import ProductDetails from "./pages/ProductDetails";
+import ProductList from "./pages/product/ProductList";
+import ProductDetails from "./pages/product/ProductDetails";
 import ShoppingCard from "./pages/ShoppingCard";
+import ProductFavorite from "./pages/product/ProductFavorite";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Routes>
           <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/favorites" element={<ProductFavorite />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/cart" element={<ShoppingCard />} />
           <Route path="/cart" element={<ShoppingCard />} />

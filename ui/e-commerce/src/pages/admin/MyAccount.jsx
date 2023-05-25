@@ -4,6 +4,7 @@ import AddProduct from './AddProduct';
 import DeleteProduct from './DeleteProduct';
 import UpdateProduct from './UpdateProduct';
 import '../../design/MyAccount.css';
+import ListUsers from './ListUsers';
 
 const MyAccount= () => {
   const [activeOption, setActiveOption] = useState('Add Product');
@@ -20,6 +21,8 @@ const MyAccount= () => {
         return <DeleteProduct />;
       case 'Update Product':
         return <UpdateProduct />;
+      case 'List Users':
+        return <ListUsers />;
       default:
         return null;
     }
@@ -47,6 +50,11 @@ const MyAccount= () => {
           <li>
             <button onClick={() => handleOptionClick('Update Product')}>
               Update Product
+            </button>
+          </li>
+          <li>
+            <button onClick={() => handleOptionClick('List Users')}>
+              List All Users
             </button>
           </li>
         </ul>

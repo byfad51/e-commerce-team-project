@@ -66,8 +66,10 @@ public class Product {
     private long stock;
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews;
-  //@Formula("(SELECT AVG(r.rating) FROM reviews r WHERE r.product_id = id)")
     @Column(name="average_rating")
     private Double averageRating;
+
+    @Column(name = "category")
+    private String category;
 
 }
