@@ -26,7 +26,7 @@ public interface ProductService {
 
     List<String> getAutocompleteSuggestions(String keyword);
 
-    List<ProductResponse> getSearchResults(String keyword, int page, int size);
+    Page<ProductResponse> getSearchResults(String keyword, Pageable pageable, int size);
 
 }
 
