@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { Search } from 'semantic-ui-react'
 import _ from 'lodash'
 import "../../design/design.css"
@@ -27,21 +27,34 @@ function exampleReducer(state, action) {
 
 function ProductSearch(props) {
     const [source, setSource] = React.useState([])
+    const [autoData, setAutoData] = React.useState([])
 
     React.useEffect(() => {
-        const newSource = props.dataa.map((item) => ({
-            title: item.productName,
-            description: item.authorName,
-            image: item.imageUrl,
-            price: item.price,
-            productId : item.id
+        const newSource = autoData.map((item) => ({
+            title: item,
+
         }))
         setSource(newSource)
-    }, [props.dataa])
+    }, [autoData])
+
+
 
     const [state, dispatch] = React.useReducer(exampleReducer, initialState)
     const { loading, results, value } = state
+    useEffect(()=>{
+        fetch(`http://localhost:8080/products/autocomplete?keyword=${value}`)
+            .then(response => response.json())
+            .then(data => {
+                // Gelen String listesini burada kullanabilirsiniz
+                setAutoData(data)
+                // veya state'e atayabilirsiniz:
+                // this.setState({ productList: data });
+            })
+            .catch(error => {
+                console.error('İstek sırasında bir hata oluştu:', error);
+            });
 
+    }, [value])
     const timeoutRef = React.useRef()
     const handleSearchChange = React.useCallback((e, data) => {
         clearTimeout(timeoutRef.current)
@@ -71,18 +84,21 @@ function ProductSearch(props) {
     const navigate = useNavigate();
 
     const handleRegister = (id) => {
-        navigate("/detail?id="+id)
+        navigate("/mysearch?w="+id)
     }
     return (
 
-       <Search size={"big"}
+       <Search size={"small"}
             loading={loading}
             placeholder="Search..."
             onResultSelect={(e, data) =>
-                dispatch({ type: 'UPDATE_SELECTION', selection: handleRegister(data.result.productId) })
+                dispatch({ type: 'UPDATE_SELECTION', selection: handleRegister(data.result.title) })
 
             }
-            onSearchChange={handleSearchChange}
+            onSearchChange={(event, data) => {
+                handleSearchChange(event,data)
+            }
+            }
             results={results}
             value={value}
        />

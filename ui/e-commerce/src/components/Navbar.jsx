@@ -5,6 +5,7 @@ import {faBars, faTimes,faShoppingCart  } from '@fortawesome/free-solid-svg-icon
 import { useNavigate } from "react-router-dom";
 import Popup from "./pop_message";
 import {faHeart} from "@fortawesome/free-solid-svg-icons/faHeart";
+import ProductSearch from "../pages/product/ProductSearch";
 
 function Navbar() {
   const [showPopup, setShowPopup] = useState(false);
@@ -100,7 +101,17 @@ function Navbar() {
           )}
 
 
-            <h1 className="navbar-logo"><a href={"/"}><font color={"black"} >E</font><font color={"black"} >E</font></a></h1>
+            <div className="navbar-logo">
+             <h1> <a href={"/"}>
+                <font color={"black"} >E</font>
+                <font color={"black"} >E</font>
+              </a></h1>
+
+
+            </div>
+            <ul>
+              <ProductSearch/>
+            </ul>
             <div className="menu-icon" onClick={handleClick}>
               <FontAwesomeIcon icon={clicked ? faTimes : faBars} className="menu-icon" />
             </div>
@@ -148,6 +159,7 @@ function Navbar() {
               </a>
             </li>: null}
           </ul>
+
         </nav>
       </div>
   )

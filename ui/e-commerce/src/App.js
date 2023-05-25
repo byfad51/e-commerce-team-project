@@ -13,6 +13,7 @@ import ShoppingCard from "./pages/ShoppingCard";
 import MyFavorites from "./pages/user/my_favorites";
 import UserProfile from "./pages/user/user_main_profile";
 import Categories from "./pages/product/categories";
+import MySearch from "./pages/product/search";
 function App() {
   return (
     <Router>
@@ -20,6 +21,7 @@ function App() {
           <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/favorites" element={<MyFavorites />} />
+        <Route path="/mysearch" element={<MySearch />} />
         <Route path="/categories" element={<Categories />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/cart" element={<ShoppingCard />} />

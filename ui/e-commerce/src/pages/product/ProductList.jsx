@@ -32,6 +32,7 @@ function ProductList() {
     const [showPopup2, setShowPopup2] = useState(false);
     const [showPopup3, setShowPopup3] = useState(false);
     const [showFilters, setShowFilters] = useState(false);
+    const [categories, setCategories] = useState([]);
 
     const [selectedSorting, setSelectedSorting] = useState("NEWEST");
 
@@ -59,6 +60,8 @@ function ProductList() {
     const [maxPrice, setMaxPrice] = useState("")
     const [minAverageStar, setMinAverageStar] = useState("")
     const [maxAverageStar, setMaxAverageStar] = useState("")
+
+    const [showCategories, setShowCategories] = useState(false)
 
     const handleAuthorName= (value) => {setAuthorName(value) }
     const handlePublisherName= (value) => {setPublisherName(value) }
@@ -152,7 +155,7 @@ let category = ""
     }
     useEffect(() => {
 
-        setGetProductUrl( `http://localhost:8080/products/getProductsByParams?page=${pageNumber-1}&sortByParam=${selectedSorting}&authorName=${authorName}&publisherName=${publisherName}&language=${language}&startYear=${minPublishedYear}&endYear=${maxPublishedYear}&minPrice=${minPrice}&maxPrice=${maxPrice}&minRating=${minAverageStar}&maxRating=${maxAverageStar}&categoryId=${category}`);
+        setGetProductUrl(`http://localhost:8080/products/getProductsByParams?page=${pageNumber-1}&sortByParam=${selectedSorting}&authorName=${authorName}&publisherName=${publisherName}&language=${language}&startYear=${minPublishedYear}&endYear=${maxPublishedYear}&minPrice=${minPrice}&maxPrice=${maxPrice}&minRating=${minAverageStar}&maxRating=${maxAverageStar}&categoryId=${category}`);
 
         if(!(pageNumber > 0) || pageNumber === "" || pageNumber===null|| pageNumber.isNaN){
             pageNumber=1
@@ -180,10 +183,22 @@ console.log("useeffect111111")
            const newUrl = `${location.pathname}?${newSearch}`;
            window.history.replaceState(null, '', newUrl);
         }
+        const fetchData = async () => {
+            try {
+                const response = await fetch('http://localhost:8080/category/getAllCategories', {
+                    headers: {
+                        Authorization: localStorage.getItem("tokenKey")
+                    }
+                });
+                const data = await response.json();
+                setCategories(data);
+            } catch (error) {
+                console.log(error);
+            }
+        };
         getFavData();
-        getAllProduct().then(value => {
-
-        });
+        getAllProduct();
+        fetchData();
         console.log("useeffect222222")
 
     }, []);
@@ -418,17 +433,36 @@ console.log("useeffect111111")
             <Grid >
                 <Grid.Row columns={3}>
                     <Grid.Column >
-                        <ProductSearch style={{width: "100%"}} dataa={data} />
+                        <center> <Button style={{width:"100%"}}inverted color="yellow" onClick={()=>{
+
+                            setShowCategories(!showCategories)
+                            if(showFilters){
+                                setShowFilters(false)
+                            }
+                        }
+                        } disabled={showClick}>Categories</Button></center>
                     </Grid.Column>
                     <Grid.Column>
-                        <center> <Button style={{width:"100%"}}inverted color="green" onClick={()=>setShowFilters(!showFilters)} disabled={showClick}>FILTERS</Button></center>
+                        <center> <Button style={{width:"100%"}}inverted color="green" onClick={()=>{
+                            setShowFilters(!showFilters)
+                            if(showCategories){
+                                setShowCategories(false)
+                            }
+                        }
+                        } disabled={showClick}>FILTERS</Button></center>
                     </Grid.Column>
 
                     <Grid.Column>
                         <Dropdown style={{width: "100%"}}  value={selectedSorting}  onChange={handleSelectionSorting} clearable options={sortingOptions} selection />
                     </Grid.Column>
-
-                    {showFilters ? <> <Form>
+                    <br/>  <br/>{
+                        showCategories ? <center> {categories.map(category => (
+                            <Button basic color='green'>
+                                { <a href={"/products?category="+category.id}>{category.name}</a> }
+                            </Button>
+                        ))}</center>:null
+                    }
+                    {showFilters  ?  <> <Form>
 
                         <Row>
                             <Col>

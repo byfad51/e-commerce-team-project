@@ -101,9 +101,9 @@ const Categories = () => {
             <center><h2>Our Categories</h2></center>
             <div>
                <center> {categories.map(category => (
-                    <div key={category.id} style={{ display: 'inline-block', margin: '5px', borderRadius: '50%', padding: '10px', backgroundColor: 'greenyellow' }}>
-                        {<a href={"/products?category="+category.id}>{category.name}</a>}
-                    </div>
+                   <Button basic color='green'>
+                        { <a href={"/products?category="+category.id}>{category.name}</a> }
+                   </Button>
                 ))}</center>
 
             </div>
