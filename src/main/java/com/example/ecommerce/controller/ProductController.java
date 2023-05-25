@@ -119,14 +119,12 @@ public class ProductController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Page<ProductResponse>> getSearchResults(
+    public Page<ProductResponse> getSearchResults(
             @RequestParam String keyword,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        List<ProductResponse> searchResults = productService.getSearchResults(keyword, page, size);
-        Page<ProductResponse> responsePage = new PageImpl<>(searchResults, PageRequest.of(page, size),
-                searchResults.size());
-        return new ResponseEntity<>(responsePage, HttpStatus.OK);
+            @RequestParam(defaultValue = "10") int size,
+            Pageable page) {
+
+        return productService.getSearchResults(keyword, page, size);
     }
 
 }

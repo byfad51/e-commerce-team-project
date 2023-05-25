@@ -140,12 +140,9 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public List<ProductResponse> getSearchResults(String keyword, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+    public Page<ProductResponse> getSearchResults(String keyword, Pageable pageable, int size) {
         Page<Product> productsPage = productRepository.searchProducts(keyword, pageable);
-        return productsPage.getContent().stream()
-                .map(ProductResponse::new)
-                .collect(Collectors.toList());
+        return productsPage.map(ProductResponse::new);
     }
 
 }
