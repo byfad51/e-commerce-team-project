@@ -107,4 +107,20 @@ public class ReviewServiceImpl implements ReviewService {
         }
         return (double) sum / product.getReviews().size();
     }
+    @Override
+    public ReviewResponse updateReview(Long reviewId, ReviewRequest reviewRequest) {
+        Review existingReview = reviewRepository.findById(reviewId).orElseThrow(ReviewNotFoundException::new);
+
+        if (!existingReview.getUser().getId().equals(reviewRequest.getUserId())) {
+            throw new RuntimeException("You are not authorized to update this review");
+        }
+
+        existingReview.setContent(reviewRequest.getContent());
+        existingReview.setRating(reviewRequest.getRating());
+
+        Review updatedReview = reviewRepository.save(existingReview);
+
+        return mapToReviewResponse(updatedReview);
+    }
+
 }
