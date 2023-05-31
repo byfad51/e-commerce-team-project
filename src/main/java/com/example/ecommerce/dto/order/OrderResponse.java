@@ -1,5 +1,6 @@
 package com.example.ecommerce.dto.order;
 
+import com.example.ecommerce.model.User;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -11,13 +12,7 @@ public class OrderResponse {
     private Long id;
     private Double totalPrice;
     private LocalDate date;
-    private String firstName;
-    private String lastName;
-    private String city;
-    private String address;
-    private String email;
-    private String phoneNumber;
-    private Integer postIndex;
+    private User user;
     private List<OrderItemResponse> orderItems;
 
 }
