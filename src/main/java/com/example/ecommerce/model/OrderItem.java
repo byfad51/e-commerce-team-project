@@ -20,7 +20,7 @@ public class OrderItem {
 
     @ManyToOne
     @JoinColumn(name = "order_id")
-    @JsonIgnore//why ask muh
+    @JsonIgnore
     private Order order;
 
     @ManyToOne
@@ -29,17 +29,5 @@ public class OrderItem {
 
     @Column(name = "quantity")
     private Integer quantity;
-    // şu aşağıdaki metodları mı yapıyoruz @jsonıgnore dediğimizde
-  @Override
-  public boolean equals(Object o) {
-      if (this == o) return true;
-      if (o == null || getClass() != o.getClass()) return false;
-      OrderItem orderItem = (OrderItem) o;
-      return Objects.equals(id, orderItem.id);
-  }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }
