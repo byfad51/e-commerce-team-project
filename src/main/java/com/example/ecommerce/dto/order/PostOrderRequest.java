@@ -16,6 +16,12 @@ import java.util.List;
 public class PostOrderRequest {
 
     @NotNull
+    private String firstname;
+
+    @NotNull
+    private String lastname;
+
+    @NotNull
     private Double totalOrderPrice;
 
     @NotNull
