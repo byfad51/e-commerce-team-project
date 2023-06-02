@@ -63,7 +63,8 @@ public class OrderServiceImpl implements OrderService {
         saveOrder.setEmail(postOrderRequest.getEmail());
         saveOrder.setPhoneNumber(postOrderRequest.getPhoneNumber());
         saveOrder.setPostIndex(postOrderRequest.getPostIndex());
-
+        saveOrder.setFirstname(postOrderRequest.getFirstname());
+        saveOrder.setLastname(postOrderRequest.getLastname());
 
         saveOrder.setOrderItems(new ArrayList<>());
 
