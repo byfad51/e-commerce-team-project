@@ -1,12 +1,25 @@
 import React, {useEffect, useState} from 'react'
-import {Grid, Image, Icon, Container, Segment, Button, Card, Dropdown, Select, Pagination} from 'semantic-ui-react'
+import {
+    Grid,
+    Image,
+    Icon,
+    Container,
+    Segment,
+    Button,
+    Card,
+    Dropdown,
+    Select,
+    Pagination,
+    Rating
+} from 'semantic-ui-react'
 import Navbar from "../../components/Navbar";
 import ProductSearch from "./ProductSearch"
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useLocation} from "react-router-dom";
 import Popup from "../../components/pop_message";
 import {Col, Form, Row} from "react-bootstrap";
 
 function ProductList() {
+    const location = useLocation();
     const [data, setData] = useState([]);
     const [favData, setFavData] = useState([]);
     const [kacTane, setKacTane] = useState(24);
@@ -19,6 +32,7 @@ function ProductList() {
     const [showPopup2, setShowPopup2] = useState(false);
     const [showPopup3, setShowPopup3] = useState(false);
     const [showFilters, setShowFilters] = useState(false);
+    const [categories, setCategories] = useState([]);
 
     const [selectedSorting, setSelectedSorting] = useState("NEWEST");
 
@@ -47,6 +61,8 @@ function ProductList() {
     const [minAverageStar, setMinAverageStar] = useState("")
     const [maxAverageStar, setMaxAverageStar] = useState("")
 
+    const [showCategories, setShowCategories] = useState(false)
+
     const handleAuthorName= (value) => {setAuthorName(value) }
     const handlePublisherName= (value) => {setPublisherName(value) }
     const handleLanguage= (value) => {setLanguage(value) }
@@ -57,9 +73,13 @@ function ProductList() {
     const handleMinAverageStar = (value) => {
         setMinAverageStar(value)
         pageNumber=1
-        navigate("/products?page="+pageNumber)
+     //   navigate("/products?page="+pageNumber)
+        searchParams.set('page', pageNumber.toString()); // Yeni kategori değeri
+        const newSearch = searchParams.toString();
+        const newUrl = `${location.pathname}?${newSearch}`;
+        window.history.replaceState(null, '', newUrl);
     }
-
+let category = ""
     const handleMaxAverageStar = (value) => {setMaxAverageStar(value) }
 
     const [maxPageNumber, setMaxPageNumber] = useState(1)
@@ -68,13 +88,32 @@ function ProductList() {
 
     const handlePaginationChange = (e, { activePage }) => {
         pageNumber = activePage;
-        navigate("/products?page="+pageNumber)
+        setPageNumber(activePage)
+       // navigate("/products?page="+pageNumber)
+        searchParams.set('page', pageNumber.toString()); // Yeni kategori değeri
+        const newSearch = searchParams.toString();
+        const newUrl = `${location.pathname}?${newSearch}`;
+        window.history.replaceState(null, '', newUrl);
+
     }
     const searchParams = new URLSearchParams(window.location.search);
-    pageNumber = parseInt(searchParams.get('page'));
+  if(parseInt(searchParams.get('page')) > 0){
+      pageNumber = parseInt(searchParams.get('page'));
+      category = parseInt(searchParams.get('category'));
+
+
+  }else{
+      pageNumber = 1;
+      setPageNumber(1)
+   //   navigate("/products?page=1")
+      searchParams.set('page', pageNumber.toString()); // Yeni kategori değeri
+      const newSearch = searchParams.toString();
+      const newUrl = `${location.pathname}?${newSearch}`;
+      window.history.replaceState(null, '', newUrl);
+  }
     //setPageNumber(pageInUrl)
 
-    const [getProductUrl, setGetProductUrl] = useState("http://localhost:8080/products/getProductsByParams?page="+(pageNumber-1)+"&sortByParam="+selectedSorting)
+    const [getProductUrl, setGetProductUrl] = useState("http://localhost:8080/products/getProductsByParams?page="+(pageNumber-1)+"&sortByParam="+selectedSorting + "&categoryId="+category)
 
 
     const handleFilterButton = () => {
@@ -108,28 +147,58 @@ function ProductList() {
         }
         if(!(pageNumber>0)){
             pageNumber = 1;
+            setPageNumber(1)
+
         }
-        setGetProductUrl( `http://localhost:8080/products/getProductsByParams?page=${pageNumber-1}&sortByParam=${selectedSorting}&authorName=${authorName}&publisherName=${publisherName}&language=${language}&startYear=${minPublishedYear}&endYear=${maxPublishedYear}&minPrice=${minPrice}&maxPrice=${maxPrice}&minRating=${minAverageStar}&maxRating=${maxAverageStar}`);
+        setGetProductUrl( `http://localhost:8080/products/getProductsByParams?page=${pageNumber-1}&sortByParam=${selectedSorting}&authorName=${authorName}&publisherName=${publisherName}&language=${language}&startYear=${minPublishedYear}&endYear=${maxPublishedYear}&minPrice=${minPrice}&maxPrice=${maxPrice}&minRating=${minAverageStar}&maxRating=${maxAverageStar}&categoryId=${category}`);
 
     }
     useEffect(() => {
 
-        setGetProductUrl( `http://localhost:8080/products/getProductsByParams?page=${pageNumber-1}&sortByParam=${selectedSorting}&authorName=${authorName}&publisherName=${publisherName}&language=${language}&startYear=${minPublishedYear}&endYear=${maxPublishedYear}&minPrice=${minPrice}&maxPrice=${maxPrice}&minRating=${minAverageStar}&maxRating=${maxAverageStar}`);
+        setGetProductUrl(`http://localhost:8080/products/getProductsByParams?page=${pageNumber-1}&sortByParam=${selectedSorting}&authorName=${authorName}&publisherName=${publisherName}&language=${language}&startYear=${minPublishedYear}&endYear=${maxPublishedYear}&minPrice=${minPrice}&maxPrice=${maxPrice}&minRating=${minAverageStar}&maxRating=${maxAverageStar}&categoryId=${category}`);
 
         if(!(pageNumber > 0) || pageNumber === "" || pageNumber===null|| pageNumber.isNaN){
             pageNumber=1
+            setPageNumber(1)
+
         }
 console.log("useeffect111111")
     }, [handleFilterButton]);
 
 
     useEffect(() => {
+        category = searchParams.get('category');
+        if(category===null || category ===""){
+            navigate("/categories")
+        }else{
+            setGetProductUrl( `http://localhost:8080/products/getProductsByParams?categoryId=${category}&?page=${pageNumber-1}&sortByParam=${selectedSorting}&authorName=${authorName}&publisherName=${publisherName}&language=${language}&startYear=${minPublishedYear}&endYear=${maxPublishedYear}&minPrice=${minPrice}&maxPrice=${maxPrice}&minRating=${minAverageStar}&maxRating=${maxAverageStar}&categoryId=${category}`);
+        }
        if(pageNumber < 1 || pageNumber === "" || pageNumber===null){
             pageNumber=1
-           navigate("/products?page="+pageNumber)
+           setPageNumber(1)
+
+           // navigate("/products?page="+pageNumber)
+           searchParams.set('page', pageNumber.toString()); // Yeni kategori değeri
+           const newSearch = searchParams.toString();
+           const newUrl = `${location.pathname}?${newSearch}`;
+           window.history.replaceState(null, '', newUrl);
         }
+        const fetchData = async () => {
+            try {
+                const response = await fetch('http://localhost:8080/category/getAllCategories', {
+                    headers: {
+                        Authorization: localStorage.getItem("tokenKey")
+                    }
+                });
+                const data = await response.json();
+                setCategories(data);
+            } catch (error) {
+                console.log(error);
+            }
+        };
         getFavData();
         getAllProduct();
+        fetchData();
         console.log("useeffect222222")
 
     }, []);
@@ -364,17 +433,36 @@ console.log("useeffect111111")
             <Grid >
                 <Grid.Row columns={3}>
                     <Grid.Column >
-                        <ProductSearch style={{width: "100%"}} dataa={data} />
+                        <center> <Button style={{width:"100%"}}inverted color="yellow" onClick={()=>{
+
+                            setShowCategories(!showCategories)
+                            if(showFilters){
+                                setShowFilters(false)
+                            }
+                        }
+                        } disabled={showClick}>Categories</Button></center>
                     </Grid.Column>
                     <Grid.Column>
-                        <center> <Button style={{width:"100%"}}inverted color="green" onClick={()=>setShowFilters(!showFilters)} disabled={showClick}>FILTERS</Button></center>
+                        <center> <Button style={{width:"100%"}}inverted color="green" onClick={()=>{
+                            setShowFilters(!showFilters)
+                            if(showCategories){
+                                setShowCategories(false)
+                            }
+                        }
+                        } disabled={showClick}>FILTERS</Button></center>
                     </Grid.Column>
 
                     <Grid.Column>
                         <Dropdown style={{width: "100%"}}  value={selectedSorting}  onChange={handleSelectionSorting} clearable options={sortingOptions} selection />
                     </Grid.Column>
-
-                    {showFilters ? <> <Form>
+                    <br/>  <br/>{
+                        showCategories ? <center> {categories.map(category => (
+                            <Button basic color='green'>
+                                { <a href={"/products?category="+category.id}>{category.name}</a> }
+                            </Button>
+                        ))}</center>:null
+                    }
+                    {showFilters  ?  <> <Form>
 
                         <Row>
                             <Col>
@@ -420,13 +508,24 @@ console.log("useeffect111111")
 
                             </Col>
                             <Col>
-                                <Form.Label>Min Average Star</Form.Label>
-                                <Form.Control type="number"  value={minAverageStar} onChange={(event) => handleMinAverageStar(event.target.value)} />
-
+                                <br/><Form.Label>Min Average Star</Form.Label><br/>
+                                <Rating icon='star' rating={minAverageStar} onRate={(event, data1) =>{
+                                    if(minAverageStar===data1.rating){
+                                        handleMinAverageStar(0)
+                                    }else{
+                                        handleMinAverageStar(data1.rating)
+                                    }}} maxRating={5} size={"huge"}/>
                             </Col>
                             <Col>
-                                <Form.Label>Max Average Star</Form.Label>
-                                <Form.Control type="number"  value={maxAverageStar} onChange={(event) => handleMaxAverageStar(event.target.value)} />
+                                <br/> <Form.Label>Max Average Star</Form.Label><br/>
+                                <Rating icon='star' rating={maxAverageStar} onRate={(event, data1) => {
+
+                                    if(maxAverageStar===data1.rating){
+                                        handleMaxAverageStar(  "")
+                                    }else{
+                                        handleMaxAverageStar(data1.rating)
+                                    }}}
+                                  maxRating={5} size={"huge"}/>
 
                             </Col>
 

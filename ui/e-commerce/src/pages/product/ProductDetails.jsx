@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import Navbar from "../../components/Navbar";
 import {Button, Container, Icon, Label, Segment, Comment, Form, Header, Rating, Grid, Message} from "semantic-ui-react";
 import {useNavigate} from "react-router-dom";
+import Popup from "../../components/pop_message";
 
 function ProductDetails() {
     const [productData, setProductData] = useState("");
@@ -17,8 +18,16 @@ function ProductDetails() {
     const [addCommentRating, setAddCommentRating] = useState(0);
     const [messageColor, setMessageColor] = useState("red");
 
-    const addCart = (productId) =>
-    {
+    const [deletePopup, setDeletePopup] = useState(false);
+    const [reviewForDeleting, setReviewForDeleting] = useState();
+    const [whatUserHasReview, setWhatUserHasReview] = useState();
+    const [hasUserReviewHere, setHasUserReviewHere] = useState(false);
+
+    const [showEditComment, setShowEditComment] = useState(false);
+
+
+
+    const addCart = (productId) => {
         console.log(productId)
 
         if (localStorage.getItem("authorized") === "true") {
@@ -43,9 +52,6 @@ function ProductDetails() {
         }else{
             navigate("/login")
         }
-
-
-
     }
     const getAverageRating = async (productId) => {
          fetch(`http://localhost:8080/reviews/getAverageRatingByProductId/${productId}`)
@@ -66,6 +72,35 @@ function ProductDetails() {
                 throw error;
             });
     }
+
+    const hasReviewHere = async () => {
+
+        await fetch('http://localhost:8080/reviews/getReviewByUserIdAndProcutId/' + productId, {
+            headers: {
+                "Content-Type": "application/json; charset=utf-8",
+                'Authorization': localStorage.getItem("tokenKey")
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    setHasUserReviewHere(false)
+                    throw new Error('İstek başarısız: ' + response.status);
+                }
+                setHasUserReviewHere(true)
+                return response.json();
+            })
+            .then(data => {
+                setWhatUserHasReview(data)
+                console.log(data)
+                // Gelen sonucu burada kullanabilirsiniz
+            })
+            .catch(error => {
+                console.error('Hata:', error);
+            });
+
+    }
+
+
     useEffect(() => {
 
         const url = 'http://localhost:8080/reviews/getProductReviews/'+productId;
@@ -86,6 +121,9 @@ function ProductDetails() {
         };
 
         postData();
+        console.log("hasReviewHere()")
+        hasReviewHere()
+
     }, []);
 
 
@@ -160,6 +198,7 @@ function ProductDetails() {
                 .then(data1 => {
                     data.push(data1)
                     console.log(data1);
+                   window.location.reload()
                 })
                 .catch(error => {
                     console.error('There was an error:', error);
@@ -167,17 +206,125 @@ function ProductDetails() {
                 {
                     setAddCommentText("");
                     setAddCommentRating(0);
-                    window.location.reload()
+
                 });
         }
     }
+    const handleEditClick = () => {
+        setAddCommentText(whatUserHasReview.content)
+        setAddCommentRating(whatUserHasReview.rating)
+        window.scrollTo({
+            top: document.documentElement.scrollHeight,
+            behavior: 'smooth'
+        });
+            setShowEditComment(!showEditComment)
+    };
+
+    const updateComment = async () => {
+        console.log(whatUserHasReview)
+        console.log(whatUserHasReview.id)
+      if(hasUserReviewHere)  {
+            if (addCommentRating === 0) {
+                setMessageColor("red")
+                setCommentMessage("Please give a few stars")
+            } else if (addCommentText === "") {
+                setMessageColor("red")
+                setCommentMessage("Please add comment text")
+            } else {
+                setMessageColor("green")
+                setCommentMessage("")
+                await fetch('http://localhost:8080/reviews/updateReview/' + whatUserHasReview.id, {
+
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': localStorage.getItem("tokenKey")
+                    },
+                    body: JSON.stringify({
+                        "userId": localStorage.getItem("currentUser"),
+                        "productId": productId,
+                        "content": addCommentText,
+                        "rating": addCommentRating
+                    })
+
+                })
+                    .then(response => {
+                        console.log(whatUserHasReview.id)
+                        if (!response.ok) {
+                            throw new Error('HTTP error ' + response.status);
+                        }
+
+                        return response.json();
+                    })
+                    .then(data1 => {
+                        console.log(data1);
+                        window.location.reload()
+                    })
+                    .catch(error => {
+                        console.error('There was an error:', error);
+                    }).then(() => {
+                        setAddCommentText("");
+                        setAddCommentRating(0);
+                    });
+            }
+        }else{
+          console.log("Bir şeyler ters abi")
+      }
+    }
+    const handleDeleteClick = (review) => {
+        // Edit ikonuna tıklandığında gerçekleşecek işlemleri burada tanımlayabilirsiniz
+        setReviewForDeleting(review)
+        setDeletePopup(true)
+        console.log("Delete ikonuna tıklandı");
+    };
+
+    const deleteReview = async () => {
+
+
+        try {
+            const response = await fetch(`http://localhost:8080/reviews/deleteReviewById/${reviewForDeleting.id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem("tokenKey")
+                }
+            });
+
+            if (response.ok) {
+                console.log('Deleting is successfull.');
+                window.location.reload()
+            } else {
+                console.log('There is an error in deleting');
+            }
+        } catch (error) {
+            console.error('There is an error in fetch:', error);
+        }
+    };
 
 
 
-   // console.log(productData)
+
+    // console.log(productData)
     const productFound =() => (
 
-<div>
+<div>{deletePopup && (
+    <Popup
+        errorMessageTitle={"Delete Comment"}
+        errorMessage={"Are you sure about deleting your comment."}
+        buttonText1={"Yes, delete!"}
+        buttonColor1={"red"}
+        buttonText2={"No, cancel!"}
+        buttonColor2={"green"}
+        icon={'trash alternate outline'}
+        onClose1={()=> {
+            deleteReview();
+            setDeletePopup(false)
+        }}
+        onClose2={()=> {
+            setDeletePopup(false)
+        }}
+    />
+)}
 
             <Grid celled>
                 <Grid.Row>
@@ -230,7 +377,7 @@ function ProductDetails() {
                                         <br/><Button  circular color='instagram'  onClick={() => addCart(productData.id)}>
                                             <Icon  circular fitted  color='white'  name='cart arrow down'  /> Add To Cart
                                         </Button>                <br/><br/>
-                                        Stock: {productData.stock}
+                                        Stock: {productData.stock > 10 ?<font color={"green"}><b>10+</b></font>:productData.stock}
                                         <br/>
                                     </div>
                                 </Grid.Column>
@@ -251,7 +398,7 @@ function ProductDetails() {
                 Comments
             </Header>
 
-                            {data.map.length > 0 ?data.map(item => (
+                            {data.map.length > 0 ?data.map(item =>(
                                 <Comment  style={({ textAlign: "left" })}>
 
                                     <Comment.Content >
@@ -262,20 +409,34 @@ function ProductDetails() {
                                         <Comment.Metadata>
                                             <Rating icon='star' defaultRating={item.rating} maxRating={5} disabled />
                                         </Comment.Metadata>
+                                        {localStorage.getItem("username") === item.username ? <>
+                                            <Icon onClick={handleEditClick} link={true} style={{float:"right"}} name="edit outline" color="green" size={"big"}></Icon>
+                                            <Icon onClick={()=>handleDeleteClick(item)} link={true} style={{float:"right"}} name="trash alternate outline" color="yellow" size={"big"}></Icon></>:null}
+
                                         <Comment.Text>{item.content}</Comment.Text>
 
                                     </Comment.Content>
+
                                 </Comment>
-                            )) :"Yorum Yapılmamış"}<br/><br/>
+                            )):"Yorum Yapılmamış"}<br/><br/>
 
 
-            {localStorage.getItem("authorized") ==="true"?
-                <Form reply>
+            {localStorage.getItem("authorized") ==="true" ?
+                <> { !hasUserReviewHere ? <><Form reply>
                 <Form.TextArea value={addCommentText} onChange={(event) => setAddCommentText(event.target.value)}/>
                  <Rating icon='star' rating={addCommentRating} onRate={(event, data1) => setAddCommentRating(data1.rating)}  maxRating={5} size={"huge"}/><br/><br/>
                     {commentMessage!==""? <>{<Message color={messageColor}>{commentMessage}</Message>}</>:null}<br/><br/>
                 <Button circular content='Add Comment' onClick={addComment} labelPosition='left' icon='edit' color='instagram'/>
-            </Form>:"Yorum yapmak için giriş yapınız"}
+            </Form></>:<>{showEditComment ? <>
+
+                    <Form reply>
+                        <Form.TextArea value={addCommentText} onChange={(event) => setAddCommentText(event.target.value)}/>
+                        <Rating icon='star' rating={addCommentRating} onRate={(event, data1) => setAddCommentRating(data1.rating)}  maxRating={5} size={"huge"}/><br/><br/>
+                        {commentMessage!==""? <>{<Message color={messageColor}>{commentMessage}</Message>}</>:null}<br/><br/>
+                        <Button circular content='Update Comment' onClick={updateComment} labelPosition='left' icon='edit' color='instagram'/>
+                    </Form>
+
+                </>:<>You have comment here, you can just edit your old comment. <a onClick={handleEditClick} href={"#"}>Edit</a></>}</>}</>:"Login please to comment"}
         </Comment.Group>
         </div>
     )

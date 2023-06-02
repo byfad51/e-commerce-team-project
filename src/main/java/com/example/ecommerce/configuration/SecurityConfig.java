@@ -58,7 +58,7 @@ public class SecurityConfig{
                 .requestMatchers("/reviews/getAllReviews").hasRole("ADMIN")
                 .requestMatchers("/reviews/getUserReviews/{userId}").hasAnyRole("ADMIN", "USER")
                 .requestMatchers("/reviews/**").permitAll()
-                .requestMatchers("/order/**").hasAnyRole("ADMIN", "USER")
+                .requestMatchers("/category/**").permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

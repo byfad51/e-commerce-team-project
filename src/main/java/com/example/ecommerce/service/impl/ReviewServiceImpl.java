@@ -41,6 +41,21 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    public void deleteReviewById(Long reviewId, Long userId){
+        Review review = reviewRepository.findById(reviewId).orElse(null);
+
+
+        if (review == null)
+            throw new ReviewNotFoundException();
+        if(!review.getUser().getId().equals(userId)){
+            throw new RuntimeException("It is not your review, so you can not delete it.");
+        }
+        reviewRepository.deleteById(reviewId);
+        review.getProduct().setAverageRating(getAverageRating(review.getProduct()));
+        productRepository.save(review.getProduct());
+    }
+
+    @Override
     public List<ReviewResponse> getAllReviews() {
         List<Review> reviews = reviewRepository.findAll();
         return mapToReviewResponses(reviews);
@@ -121,6 +136,15 @@ public class ReviewServiceImpl implements ReviewService {
         Review updatedReview = reviewRepository.save(existingReview);
 
         return mapToReviewResponse(updatedReview);
+    }
+
+    @Override
+    public ReviewResponse getReviewByUserIdAndProcutId(Long userId,Long productId) {
+        if(reviewRepository.findByUserIdAndProductId(userId, productId).isPresent()) {
+            Review review = reviewRepository.findByUserIdAndProductId(userId, productId).orElseThrow(ReviewNotFoundException::new);
+            return mapToReviewResponse(review);
+        }
+        throw new ReviewNotFoundException();
     }
 
 }

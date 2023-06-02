@@ -5,6 +5,7 @@ import {faBars, faTimes,faShoppingCart  } from '@fortawesome/free-solid-svg-icon
 import { useNavigate } from "react-router-dom";
 import Popup from "./pop_message";
 import {faHeart} from "@fortawesome/free-solid-svg-icons/faHeart";
+import ProductSearch from "../pages/product/ProductSearch";
 
 function Navbar() {
   const [showPopup, setShowPopup] = useState(false);
@@ -40,6 +41,7 @@ function Navbar() {
       if (!response.ok) {
         console.log(response.status)
         if(response.status === 401 && localStorage.getItem("authorized") ==="true"){
+          localStorage.clear()
           localStorage.setItem("authorized", "false")
           console.log("you go to logout")
           setShowPopup(true)
@@ -99,7 +101,17 @@ function Navbar() {
           )}
 
 
-            <h1 className="navbar-logo"><a href={"/"}><font color={"black"} >E</font><font color={"black"} >E</font></a></h1>
+            <div className="navbar-logo">
+             <h1> <a href={"/"}>
+                <font color={"black"} >E</font>
+                <font color={"black"} >E</font>
+              </a></h1>
+
+
+            </div>
+            <ul>
+              <ProductSearch/>
+            </ul>
             <div className="menu-icon" onClick={handleClick}>
               <FontAwesomeIcon icon={clicked ? faTimes : faBars} className="menu-icon" />
             </div>
@@ -140,11 +152,14 @@ function Navbar() {
             <button className="cart-button" onClick={() => navigate('/cart')}>
               <FontAwesomeIcon icon={faShoppingCart} className="cart-icon" />
             </button>
-            {authorized==="true" ? <button className="cart-button" onClick={() => navigate('/favorites')}>
-              <FontAwesomeIcon icon={faHeart} style={{color: "#ff0000",}}/>
-            </button>: null}
 
+            {localStorage.getItem("role")==="USER" ? <li key={2}>
+              <a className={"nav-links"} href={"./user"}>
+                {"Profile"}
+              </a>
+            </li>: null}
           </ul>
+
         </nav>
       </div>
   )

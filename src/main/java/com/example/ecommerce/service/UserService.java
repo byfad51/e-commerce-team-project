@@ -29,4 +29,6 @@ public interface UserService {
 
     List<ProductResponse> getFavProducts(Long userId);
 
+    Long getIdByUsername(String username);
+
 }

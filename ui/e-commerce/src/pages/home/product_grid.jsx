@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
-import {Button, Icon, Card} from "semantic-ui-react";
-import {Carousel} from "react-bootstrap";
+import {Card} from "semantic-ui-react";
 import HomeProductCard from "./product_card";
 
 function ProductGrid(props) {
@@ -12,7 +11,7 @@ function ProductGrid(props) {
 
     }, [props.data])
 
-    console.log(data)
+   // console.log(data)
 
     return (
         <Card.Group doubling itemsPerRow={5} stackable>
