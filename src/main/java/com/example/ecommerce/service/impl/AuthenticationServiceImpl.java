@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -52,7 +53,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             user.setPhone(request.getPhone());
             user.setQuestion(request.getQuestion());
             user.setAnswer(request.getAnswer());
-            user.setAddress(request.getAddress());
+            if (user.getAddresses().isEmpty())
+                user.setAddresses(List.of(request.getAddress()));
+            else
+                user.getAddresses().add(request.getAddress());
             user.setRegistrationDate(LocalDateTime.now());
             AuthResponse response = new AuthResponse();
             userRepository.save(user);

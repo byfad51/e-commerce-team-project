@@ -1,7 +1,6 @@
 package com.example.ecommerce.dto.user;
 import com.example.ecommerce.enums.Role;
-import com.example.ecommerce.model.Product;
-import com.example.ecommerce.model.Review;
+import com.example.ecommerce.model.Address;
 import com.example.ecommerce.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,7 +20,7 @@ public class UserResponse {
     private String username;
     private String email;
     private boolean active;
-    private String address;
+    private List<Address> addresses;
     private String question;
     private String phone;
     private Role role;
@@ -36,7 +35,7 @@ public class UserResponse {
         this.username = user.getUsername();
         this.email = user.getEmail();
         this.active = user.isActive();
-        this.address = user.getAddress();
+        this.addresses = user.getAddresses();
         this.question = user.getQuestion();
         this.phone = user.getPhone();
         this.role = user.getRole();

@@ -1,6 +1,6 @@
 package com.example.ecommerce.dto.order;
 
-import jakarta.persistence.Column;
+import com.example.ecommerce.model.Address;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,30 +16,12 @@ import java.util.List;
 public class PostOrderRequest {
 
     @NotNull
-    private String firstname;
-
-    @NotNull
-    private String lastname;
+    private Address address;
 
     @NotNull
     private Double totalOrderPrice;
 
     @NotNull
     private List<OrderItemRequest> orderItems;
-
-    @NotNull
-    private String city;
-
-    @NotNull
-    private String address;
-
-    @NotNull
-    private String email;
-
-    @NotNull
-    private String phoneNumber;
-
-    @NotNull
-    private Integer postIndex;
 
 }

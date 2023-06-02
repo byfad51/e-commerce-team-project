@@ -58,13 +58,7 @@ public class OrderServiceImpl implements OrderService {
         saveOrder.setUser(user);
         saveOrder.setTotalOrderPrice(postOrderRequest.getTotalOrderPrice());
         saveOrder.setDate(LocalDateTime.now());
-        saveOrder.setCity(postOrderRequest.getCity());
         saveOrder.setAddress(postOrderRequest.getAddress());
-        saveOrder.setEmail(postOrderRequest.getEmail());
-        saveOrder.setPhoneNumber(postOrderRequest.getPhoneNumber());
-        saveOrder.setPostIndex(postOrderRequest.getPostIndex());
-        saveOrder.setFirstname(postOrderRequest.getFirstname());
-        saveOrder.setLastname(postOrderRequest.getLastname());
 
         saveOrder.setOrderItems(new ArrayList<>());
 

@@ -3,6 +3,7 @@ package com.example.ecommerce.service;
 import com.example.ecommerce.dto.product.ProductResponse;
 import com.example.ecommerce.dto.user.UserCreateRequest;
 import com.example.ecommerce.dto.user.UserResponse;
+import com.example.ecommerce.model.Address;
 import com.example.ecommerce.model.User;
 
 import java.util.List;
@@ -30,5 +31,7 @@ public interface UserService {
     List<ProductResponse> getFavProducts(Long userId);
 
     Long getIdByUsername(String username);
+
+    List<Address> getUserAddresses(Long userId);
 
 }
