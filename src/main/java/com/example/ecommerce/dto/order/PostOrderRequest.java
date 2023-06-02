@@ -1,5 +1,6 @@
 package com.example.ecommerce.dto.order;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,5 +21,19 @@ public class PostOrderRequest {
     @NotNull
     private List<OrderItemRequest> orderItems;
 
+    @NotNull
+    private String city;
+
+    @NotNull
+    private String address;
+
+    @NotNull
+    private String email;
+
+    @NotNull
+    private String phoneNumber;
+
+    @NotNull
+    private Integer postIndex;
 
 }
