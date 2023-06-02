@@ -45,6 +45,7 @@ public class OrderServiceImpl implements OrderService {
     public OrderResponse postOrder(PostOrderRequest postOrderRequest) {
         User user = userService.getUser();
         Cart cart = user.getCart();
+
         if (Objects.isNull(cart) || Objects.isNull(cart.getCartItemList())) {
             throw new InvalidArgumentException("Cart is not valid");
         }
@@ -57,6 +58,11 @@ public class OrderServiceImpl implements OrderService {
         saveOrder.setUser(user);
         saveOrder.setTotalOrderPrice(postOrderRequest.getTotalOrderPrice());
         saveOrder.setDate(LocalDateTime.now());
+        saveOrder.setCity(postOrderRequest.getCity());
+        saveOrder.setAddress(postOrderRequest.getAddress());
+        saveOrder.setEmail(postOrderRequest.getEmail());
+        saveOrder.setPhoneNumber(postOrderRequest.getPhoneNumber());
+        saveOrder.setPostIndex(postOrderRequest.getPostIndex());
 
 
         saveOrder.setOrderItems(new ArrayList<>());

@@ -33,6 +33,21 @@ public class Order {
     @JsonIgnore
     private User user;
 
+    @Column(name = "city")
+    private String city;
+
+    @Column(name = "address")
+    private String address;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
+    @Column(name = "post_index")
+    private Integer postIndex;
+
     @OneToMany(mappedBy = "order",cascade = CascadeType.ALL,fetch = FetchType.EAGER,orphanRemoval = true)
     @JsonIgnore
     private List<OrderItem> orderItems;
