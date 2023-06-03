@@ -5,6 +5,7 @@ import com.example.ecommerce.dto.user.UserCreateRequest;
 import com.example.ecommerce.dto.user.UserResponse;
 import com.example.ecommerce.exception.InvalidArgumentException;
 import com.example.ecommerce.exception.UserNotFoundException;
+import com.example.ecommerce.model.Address;
 import com.example.ecommerce.model.Product;
 import com.example.ecommerce.model.User;
 import com.example.ecommerce.repository.ProductRepository;
@@ -94,7 +95,10 @@ public class UserServiceImpl implements UserService {
             user.setPhone(request.getPhone());
             user.setQuestion(request.getQuestion());
             user.setAnswer(request.getAnswer());
-            user.setAddress(request.getAddress());
+            if (user.getAddresses().isEmpty())
+                user.setAddresses(List.of(request.getAddress()));
+            else
+                user.getAddresses().add(request.getAddress());
             userRepository.save(user);
             return new UserResponse(user);
 
@@ -158,5 +162,13 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public List<Address> getUserAddresses(Long userId) {
+
+        User user = userRepository.findById(userId).orElseThrow(() ->
+                new UserNotFoundException("User not found with following id: " + userId));
+
+        return user.getAddresses();
+    }
 
 }

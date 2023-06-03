@@ -2,7 +2,6 @@ package com.example.ecommerce.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,11 +21,9 @@ public class Order {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "first_name")
-    private String firstname;
-
-    @Column(name = "last_name")
-    private String lastname;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id")
+    private Address address;
 
     @Column(name = "total_order_price")
     private Double totalOrderPrice;
@@ -38,21 +35,6 @@ public class Order {
     @JoinColumn(name = "user_id")
     @JsonIgnore
     private User user;
-
-    @Column(name = "city")
-    private String city;
-
-    @Column(name = "address")
-    private String address;
-
-    @Column(name = "email")
-    private String email;
-
-    @Column(name = "phone_number")
-    private String phoneNumber;
-
-    @Column(name = "post_index")
-    private Integer postIndex;
 
     @OneToMany(mappedBy = "order",cascade = CascadeType.ALL,fetch = FetchType.EAGER,orphanRemoval = true)
     @JsonIgnore

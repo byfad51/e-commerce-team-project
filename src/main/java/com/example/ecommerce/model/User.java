@@ -42,8 +42,9 @@ public class User {
     @Column(name = "active")
     private boolean active;
 
-    @Column(name = "address")
-    private String address;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "user_id")
+    private List<Address> addresses;
 
     @Column(name = "question")
     private String question;

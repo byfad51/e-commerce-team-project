@@ -5,6 +5,7 @@ import com.example.ecommerce.dto.user.UserCreateRequest;
 import com.example.ecommerce.dto.user.UserResponse;
 import com.example.ecommerce.exception.InvalidArgumentException;
 import com.example.ecommerce.exception.UserNotFoundException;
+import com.example.ecommerce.model.Address;
 import com.example.ecommerce.model.User;
 import com.example.ecommerce.service.impl.UserServiceImpl;
 import jakarta.validation.Valid;
@@ -81,6 +82,19 @@ public class UserController {
         }
         catch (InvalidArgumentException ex){
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+        }
+
+    }
+
+    @GetMapping("/getUserAddresses/{userId}")
+    public ResponseEntity<List<Address>> getUserAddresses(@PathVariable Long userId){
+
+        try{
+            List<Address> addresses = userService.getUserAddresses(userId);
+            return new ResponseEntity<>(addresses, HttpStatus.OK);
+        }
+        catch (UserNotFoundException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
     }

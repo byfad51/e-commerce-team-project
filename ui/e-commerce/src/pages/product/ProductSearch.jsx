@@ -18,7 +18,7 @@ function exampleReducer(state, action) {
         case 'FINISH_SEARCH':
             return { ...state, loading: false, results: action.results }
         case 'UPDATE_SELECTION':
-        //    console.log(action.selection)
+            //    console.log(action.selection)
             return { ...state, value: action.selection}
         default:
             throw new Error()
@@ -69,12 +69,16 @@ function ProductSearch(props) {
             const re = new RegExp(_.escapeRegExp(data.value), 'i')
             const isMatch = (result) => re.test(result.title)
 
+            // Include the custom word entered by the user
+            const customResult = { title: data.value }
+
             dispatch({
                 type: 'FINISH_SEARCH',
-                results: source.filter(isMatch),
+                results: [customResult, ...source.filter(isMatch)],
             })
         }, 300)
     }, [source])
+
 
     React.useEffect(() => {
         return () => {
@@ -88,20 +92,20 @@ function ProductSearch(props) {
     }
     return (
 
-       <Search size={"small"}
-            loading={loading}
-            placeholder="Search..."
-            onResultSelect={(e, data) =>
-                dispatch({ type: 'UPDATE_SELECTION', selection: handleRegister(data.result.title) })
+        <Search size={"small"}
+                loading={loading}
+                placeholder="Search..."
+                onResultSelect={(e, data) =>
+                    dispatch({ type: 'UPDATE_SELECTION', selection: handleRegister(data.result.title) })
 
-            }
-            onSearchChange={(event, data) => {
-                handleSearchChange(event,data)
-            }
-            }
-            results={results}
-            value={value}
-       />
+                }
+                onSearchChange={(event, data) => {
+                    handleSearchChange(event,data)
+                }
+                }
+                results={results}
+                value={value}
+        />
     )
 }
 

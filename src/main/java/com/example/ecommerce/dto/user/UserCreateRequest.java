@@ -1,5 +1,6 @@
 package com.example.ecommerce.dto.user;
 
+import com.example.ecommerce.model.Address;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -40,6 +41,6 @@ public class UserCreateRequest {
 
     private String phone;
 
-    private String address;
+    private Address address;
 
 }
