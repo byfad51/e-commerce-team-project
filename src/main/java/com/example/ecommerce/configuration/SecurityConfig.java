@@ -59,6 +59,7 @@ public class SecurityConfig{
                 .requestMatchers("/reviews/getUserReviews/{userId}").hasAnyRole("ADMIN", "USER")
                 .requestMatchers("/reviews/**").permitAll()
                 .requestMatchers("/category/**").permitAll()
+                .requestMatchers("/address/**").hasAnyRole("ADMIN", "USER")
                 .requestMatchers("/order/**").hasAnyRole("ADMIN", "USER")
                 .anyRequest().authenticated();
 
