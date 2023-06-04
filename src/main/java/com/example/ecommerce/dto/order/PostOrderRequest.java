@@ -1,13 +1,10 @@
 package com.example.ecommerce.dto.order;
 
-import com.example.ecommerce.model.Address;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -16,12 +13,25 @@ import java.util.List;
 public class PostOrderRequest {
 
     @NotNull
-    private Address address;
+    private String firstname;
 
     @NotNull
-    private Double totalOrderPrice;
+    private String lastname;
 
     @NotNull
-    private List<OrderItemRequest> orderItems;
+    private String city;
+
+    @NotNull
+    private String district;
+
+    private String neighbourhood;
+
+    @NotNull
+    private String fullAddress;
+
+    private String postalCode;
+
+    @NotNull
+    private String phoneNumber;
 
 }

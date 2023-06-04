@@ -1,5 +1,6 @@
 package com.example.ecommerce.model;
 
+import com.example.ecommerce.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -21,9 +22,29 @@ public class Order {
     @Column(name = "id")
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id")
-    private Address address;
+    @Column(name = "first_name")
+    private String firstname;
+
+    @Column(name = "last_name")
+    private String lastname;
+
+    @Column(name = "city")
+    private String city;
+
+    @Column(name = "district")
+    private String district;
+
+    @Column(name = "neighbourhood")
+    private String neighbourhood;
+
+    @Column(name = "full_address")
+    private String fullAddress;
+
+    @Column(name = "postal_code")
+    private String postalCode;
+
+    @Column(name = "phone_number")
+    private String phoneNumber;
 
     @Column(name = "total_order_price")
     private Double totalOrderPrice;
@@ -39,5 +60,13 @@ public class Order {
     @OneToMany(mappedBy = "order",cascade = CascadeType.ALL,fetch = FetchType.EAGER,orphanRemoval = true)
     @JsonIgnore
     private List<OrderItem> orderItems;
+
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
+
+
+    // shows the status of order to user (Pending order, Canceled order, ...)
+    @Column(name = "status_message")
+    private String statusMessage;
 
 }

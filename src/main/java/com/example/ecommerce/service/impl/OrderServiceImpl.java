@@ -2,13 +2,14 @@ package com.example.ecommerce.service.impl;
 
 import com.example.ecommerce.dto.order.OrderResponse;
 import com.example.ecommerce.dto.order.PostOrderRequest;
+import com.example.ecommerce.dto.order.RejectOrderRequest;
+import com.example.ecommerce.enums.OrderStatus;
 import com.example.ecommerce.exception.InvalidArgumentException;
+import com.example.ecommerce.exception.OrderNotFoundException;
 import com.example.ecommerce.exception.ResourceNotFoundException;
-import com.example.ecommerce.model.Cart;
-import com.example.ecommerce.model.Order;
-import com.example.ecommerce.model.OrderItem;
-import com.example.ecommerce.model.User;
+import com.example.ecommerce.model.*;
 import com.example.ecommerce.repository.OrderRepository;
+import com.example.ecommerce.repository.ProductRepository;
 import com.example.ecommerce.service.CartService;
 import com.example.ecommerce.service.OrderService;
 import com.example.ecommerce.service.UserService;
@@ -25,13 +26,15 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final UserService userService;
     private final CartService cartService;
+    private final ProductRepository productRepository;
 
     public OrderServiceImpl(OrderRepository orderRepository,
                             UserService userService,
-                            CartService cartService) {
+                            CartService cartService, ProductRepository productRepository) {
         this.orderRepository = orderRepository;
         this.userService = userService;
         this.cartService = cartService;
+        this.productRepository = productRepository;
     }
 
     @Override
@@ -56,9 +59,17 @@ public class OrderServiceImpl implements OrderService {
 
         Order saveOrder = new Order();
         saveOrder.setUser(user);
-        saveOrder.setTotalOrderPrice(postOrderRequest.getTotalOrderPrice());
         saveOrder.setDate(LocalDateTime.now());
-        saveOrder.setAddress(postOrderRequest.getAddress());
+        saveOrder.setFirstname(postOrderRequest.getFirstname());
+        saveOrder.setLastname(postOrderRequest.getLastname());
+        saveOrder.setCity(postOrderRequest.getCity());
+        saveOrder.setDistrict(postOrderRequest.getDistrict());
+        saveOrder.setNeighbourhood(postOrderRequest.getNeighbourhood());
+        saveOrder.setFullAddress(postOrderRequest.getFullAddress());
+        saveOrder.setPostalCode(postOrderRequest.getPostalCode());
+        saveOrder.setPhoneNumber(postOrderRequest.getPhoneNumber());
+        saveOrder.setStatus(OrderStatus.PENDING);
+        saveOrder.setStatusMessage(OrderStatus.PENDING.getStatusMessage());
 
         saveOrder.setOrderItems(new ArrayList<>());
 
@@ -90,12 +101,65 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public OrderResponse getOrderById(Long orderId) {
+        Order order = orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
+        return new OrderResponse(order);
+    }
+
+    @Override
+    public void rejectOrder(RejectOrderRequest request) {
+        Order order = orderRepository.findById(request.getOrderId()).orElseThrow(OrderNotFoundException::new);
+        order.setStatus(OrderStatus.REJECTED);
+        order.setStatusMessage(request.getRejectMessage());
+        rollbackOrder(order);
+        orderRepository.save(order);
+    }
+
+    @Override
+    public void updateOrderStatusToCompleted(Long orderId){
+        Order order = orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
+        order.setStatus(OrderStatus.COMPLETED);
+        order.setStatusMessage(OrderStatus.COMPLETED.getStatusMessage());
+        orderRepository.save(order);
+    }
+
+    @Override
+    public void updateOrderStatusToApproved(Long orderId){
+        Order order = orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
+        order.setStatus(OrderStatus.APPROVED);
+        order.setStatusMessage(OrderStatus.APPROVED.getStatusMessage());
+        orderRepository.save(order);
+    }
+
+    @Override
+    public void updateOrderStatusToCancelled(Long orderId){
+        Order order = orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
+        order.setStatus(OrderStatus.CANCELLED);
+        order.setStatusMessage(OrderStatus.CANCELLED.getStatusMessage());
+        rollbackOrder(order);
+        orderRepository.save(order);
+    }
+
+    @Override
     public List<OrderResponse> getAllOrders(Integer page, Integer pageSize) {
         List<Order> orders = orderRepository.findAll();
         return orders
                 .stream()
                 .map(OrderResponse::new)
                 .collect(Collectors.toList());
+    }
+
+    private void rollbackOrder(Order order) {
+
+        order.getOrderItems().forEach(orderItem -> {
+
+            int amount = orderItem.getQuantity();
+            Product product = orderItem.getProduct();
+            product.setNumberOfSales(product.getNumberOfSales() - amount);
+
+            productRepository.save(product);
+        });
+
     }
 
 
