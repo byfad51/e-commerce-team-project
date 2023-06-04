@@ -60,6 +60,10 @@ public class SecurityConfig{
                 .requestMatchers("/reviews/**").permitAll()
                 .requestMatchers("/category/**").permitAll()
                 .requestMatchers("/address/**").hasAnyRole("ADMIN", "USER")
+                .requestMatchers("/order/rejectOrder").hasRole("ADMIN")
+                .requestMatchers("/order/getAllOrders").hasRole("ADMIN")
+                .requestMatchers("/order/updateOrderStatusToApproved/{orderId}").hasRole("ADMIN")
+                .requestMatchers("/order/**").hasAnyRole("USER", "ADMIN")
                 .anyRequest().authenticated();
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
