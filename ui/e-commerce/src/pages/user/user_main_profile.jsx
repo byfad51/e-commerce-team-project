@@ -53,7 +53,7 @@ function UserProfile() {
     return (
 
         <Container style={{width:"75%"}}><Navbar/>
-            <Segment>
+
         <div className="sidebar">
             <ul>
                 <li >
@@ -93,7 +93,7 @@ function UserProfile() {
             </ul>
             <div className="content">{renderOption()}</div>
         </div>
-        </Segment></Container>
+        </Container>
     );
 }
 export default UserProfile;

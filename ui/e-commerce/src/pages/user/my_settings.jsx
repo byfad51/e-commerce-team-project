@@ -1,4 +1,4 @@
-import {Grid, Message} from "semantic-ui-react";
+import {Grid, Message, Segment} from "semantic-ui-react";
 import {Button, Col, Form, Row} from "react-bootstrap";
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
@@ -211,7 +211,7 @@ console.log(id)
         }
 
     }
-    return (
+    return (<Segment>
             <Form>
                 <Row>
                     <Col>
@@ -273,7 +273,7 @@ console.log(id)
                 {message !=="" ? <Message color={messageColor}>{message}</Message> : null}
 
             </Form>
-
+        </Segment>
     )
 
 }

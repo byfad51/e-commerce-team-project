@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {Button, Form, Input, TextArea, Select, Card} from "semantic-ui-react";
+import {Button, Form, Input, TextArea, Select, Card, Segment} from "semantic-ui-react";
 
 function MyAddresses() {
     const [isClicked, setIsClicked] = useState(false);
@@ -195,13 +195,13 @@ function MyAddresses() {
             </Card>
         </Card.Group>
     </>)
-    return (<>
+    return (<><Segment>
         {addNewAddress()}
         <>{allAddresses.map(value =>
             allAdresses(value)
         )}</>
 
-    </>);
+    </Segment></>);
 }
 
 export default MyAddresses;

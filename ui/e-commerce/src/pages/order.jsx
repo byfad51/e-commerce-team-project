@@ -179,7 +179,6 @@ const addresses = () =>(
                 "phoneNumber": allAddresses[parseInt(selectedAddress)].phoneNumber*/
     const complete = async () => {
         const myGiveOrderData = {
-                "address": {
                 "firstname": allAddresses[parseInt(selectedAddress)].firstname,
                 "lastname": allAddresses[parseInt(selectedAddress)].lastname,
                 "city": allAddresses[parseInt(selectedAddress)].city,
@@ -188,9 +187,6 @@ const addresses = () =>(
                 "fullAddress": allAddresses[parseInt(selectedAddress)].fullAddress,
                 "postalCode": allAddresses[parseInt(selectedAddress)].postalCode,
                 "phoneNumber": allAddresses[parseInt(selectedAddress)].phoneNumber
-            } ,
-            "totalOrderPrice":cartTotal,
-            "orderItems":orderItems
         }
 console.log(myGiveOrderData)
         const url = `http://localhost:8080/order/postOrder`;
