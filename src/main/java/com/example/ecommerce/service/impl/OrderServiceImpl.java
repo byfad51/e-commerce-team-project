@@ -144,12 +144,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderResponse> getAllOrders(Integer page, Integer pageSize) {
-        List<Order> orders = orderRepository.findAll();
-        return orders
-                .stream()
-                .map(OrderResponse::new)
-                .collect(Collectors.toList());
+    public Page<OrderResponse> getAllOrders(Integer page, Integer pageSize) {
+        Page<Order> orderPage = orderRepository.findAllByOrderByDateDesc(PageRequest.of(page, pageSize));
+
+        return orderPage.map(OrderResponse::new);
     }
 
     private void rollbackOrder(Order order) {

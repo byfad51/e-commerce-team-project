@@ -12,8 +12,7 @@ public interface OrderService {
     Integer getAllOrdersCount();
     OrderResponse postOrder(PostOrderRequest postOrderRequest);
 
-    List<OrderResponse> getAllOrders(Integer page, Integer pageSize);
-
+    Page<OrderResponse> getAllOrders(Integer page, Integer pageSize);
     Page<OrderResponse> getUserOrders(Long userId, Integer page, Integer pageSize);
     OrderResponse getOrderById(Long orderId);
 

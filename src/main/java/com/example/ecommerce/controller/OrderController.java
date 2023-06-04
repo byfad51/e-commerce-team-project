@@ -35,16 +35,18 @@ public class OrderController {
     }
 
     @GetMapping(value = "/getAllOrders")
-    public ResponseEntity<List<OrderResponse>> getAllOrders(@RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+    public ResponseEntity<Page<OrderResponse>> getAllOrders(@RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
                                                             @RequestParam(value = "size", required = false, defaultValue = "10") Integer pageSize) {
-        if (Objects.isNull(page) || page < 0) {
+        if (Objects.isNull(page) || page < 1) {
             throw new InvalidArgumentException("Invalid page");
         }
         if (Objects.isNull(pageSize) || pageSize < 0) {
             throw new InvalidArgumentException("Invalid pageSize");
         }
-        List<OrderResponse> orders = orderService.getAllOrders(page, pageSize);
-        return new ResponseEntity<>(orders, HttpStatus.OK);
+
+        Page<OrderResponse> orderPage = orderService.getAllOrders(page - 1, pageSize);
+
+        return new ResponseEntity<>(orderPage, HttpStatus.OK);
     }
 
     @PostMapping(value = "/postOrder")
