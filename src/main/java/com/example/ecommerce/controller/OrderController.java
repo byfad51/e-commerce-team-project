@@ -54,7 +54,7 @@ public class OrderController {
 
     @GetMapping(value = "/getUserOrders/{userId}")
     public ResponseEntity<List<OrderResponse>> getUserOrders(@PathVariable Long userId ,
-                                                             @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+                                                             @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
                                                              @RequestParam(value = "size", required = false, defaultValue = "10") Integer pageSize) {
         if (Objects.isNull(page) || page < 0) {
             throw new InvalidArgumentException("Invalid page");
