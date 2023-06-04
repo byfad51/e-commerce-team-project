@@ -45,10 +45,6 @@ return (   <Table color={"teal"} key={"teal"} style={{borderWidth: 0}}>
             <Table.Cell>{user.email}</Table.Cell>
         </Table.Row>
         <Table.Row>
-            <Table.Cell>Address</Table.Cell>
-            <Table.Cell>{user.address}</Table.Cell>
-        </Table.Row>
-        <Table.Row>
             <Table.Cell>Number of Reviews</Table.Cell>
             <Table.Cell>{user.numberOfReviews}</Table.Cell>
         </Table.Row>

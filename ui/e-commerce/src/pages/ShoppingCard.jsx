@@ -1,16 +1,21 @@
 import { useState, useEffect } from 'react';
 import './ShoppingCard.css';
 import Navbar from "../components/Navbar";
-import {Container} from "semantic-ui-react";
+import {Container, Segment} from "semantic-ui-react";
+import {useNavigate} from "react-router-dom";
 function ShoppingCard() {
   const [cartItems, setCartItems] = useState([]);
   const [cartPrice, setCartPrice] = useState();
   const [cargoPrice, setCargoPrice] = useState([]);
   const [cartTotal, setCartTotal] = useState([]);
+  const navigate = useNavigate();
 
 
 
   useEffect(() => {
+    if(localStorage.getItem("authorized")==="false") {
+      navigate('/login');
+    }
     // Fetch cart items from API with headers
     fetch('http://localhost:8080/cart/getCart', {
       headers: {
@@ -42,7 +47,13 @@ function ShoppingCard() {
         } else {
           throw new Error('Network response was not ok');
         }
-      })
+      }).catch(e =>{
+      setCartItems([]);
+      setCartPrice(0);
+      // setCargoPrice(data.totalCargoPrice);
+      setCartTotal(0);
+      console.log("last element error")
+    })
       .then(data => {
         // Refresh cart items from API
         fetch('http://localhost:8080/cart/getCart', {
@@ -179,8 +190,8 @@ function ShoppingCard() {
   };
 
   return (
-<Container>
-  <div><Navbar/></div>
+<Container> <Navbar/><Segment>
+  {cartItems.length > 0?
     <div className="shopping-cart">
       <h1 className="title">Shopping Cart</h1>
       <table className="cart-table">
@@ -218,8 +229,8 @@ function ShoppingCard() {
         </tbody>
       </table>
       <button className="clear-cart-button" onClick={() => handleEmpty()}>Clear the cart</button>
-      <div className="total-price">Total: {formatPrice(totalPrice)}</div>
-    </div>
+      <div className="total-price"><a href={"/order"} ><font color={"white"}><>Complete The Order {formatPrice(totalPrice)}</></font></a></div>
+    </div>:<center><h2>You need to add some books to cart.</h2></center>}</Segment>
 </Container>
   );
 }

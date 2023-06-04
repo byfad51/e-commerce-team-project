@@ -14,11 +14,13 @@ import MyFavorites from "./pages/user/my_favorites";
 import UserProfile from "./pages/user/user_main_profile";
 import Categories from "./pages/product/categories";
 import MySearch from "./pages/product/search";
+import MyOrder from "./pages/order";
 function App() {
   return (
     <Router>
       <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/order" element={<MyOrder />} />
         <Route path="/login" element={<Login />} />
         <Route path="/favorites" element={<MyFavorites />} />
         <Route path="/mysearch" element={<MySearch />} />
