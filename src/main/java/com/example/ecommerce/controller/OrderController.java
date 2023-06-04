@@ -9,6 +9,7 @@ import com.example.ecommerce.exception.OrderNotFoundException;
 import com.example.ecommerce.service.OrderService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -53,7 +54,7 @@ public class OrderController {
     }
 
     @GetMapping(value = "/getUserOrders/{userId}")
-    public ResponseEntity<List<OrderResponse>> getUserOrders(@PathVariable Long userId ,
+    public ResponseEntity<Page<OrderResponse>> getUserOrders(@PathVariable Long userId,
                                                              @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
                                                              @RequestParam(value = "size", required = false, defaultValue = "10") Integer pageSize) {
         if (Objects.isNull(page) || page < 0) {
@@ -62,9 +63,11 @@ public class OrderController {
         if (Objects.isNull(pageSize) || pageSize < 0) {
             throw new InvalidArgumentException("Invalid pageSize");
         }
-        List<OrderResponse> orders = orderService.getUserOrders(userId,page, pageSize);
-        return new ResponseEntity<>(orders, HttpStatus.OK);
+        Page<OrderResponse> orderPage = orderService.getUserOrders(userId, page, pageSize);
+
+        return new ResponseEntity<>(orderPage, HttpStatus.OK);
     }
+
 
     @GetMapping("/getOrderById/{orderId}")
     public ResponseEntity<OrderResponse> getOrderById(@PathVariable Long orderId){
