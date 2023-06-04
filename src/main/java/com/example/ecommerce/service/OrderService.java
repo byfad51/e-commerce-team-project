@@ -13,7 +13,7 @@ public interface OrderService {
 
     List<OrderResponse> getAllOrders(Integer page, Integer pageSize);
 
-    List<OrderResponse> getUserOrders(Integer page, Integer pageSize);
+    List<OrderResponse> getUserOrders(Long userId, Integer page, Integer pageSize);
 
     OrderResponse getOrderById(Long orderId);
 

@@ -7,9 +7,11 @@ import com.example.ecommerce.enums.OrderStatus;
 import com.example.ecommerce.exception.InvalidArgumentException;
 import com.example.ecommerce.exception.OrderNotFoundException;
 import com.example.ecommerce.exception.ResourceNotFoundException;
+import com.example.ecommerce.exception.UserNotFoundException;
 import com.example.ecommerce.model.*;
 import com.example.ecommerce.repository.OrderRepository;
 import com.example.ecommerce.repository.ProductRepository;
+import com.example.ecommerce.repository.UserRepository;
 import com.example.ecommerce.service.CartService;
 import com.example.ecommerce.service.OrderService;
 import com.example.ecommerce.service.UserService;
@@ -27,14 +29,16 @@ public class OrderServiceImpl implements OrderService {
     private final UserService userService;
     private final CartService cartService;
     private final ProductRepository productRepository;
+    private final UserRepository userRepository;
 
     public OrderServiceImpl(OrderRepository orderRepository,
                             UserService userService,
-                            CartService cartService, ProductRepository productRepository) {
+                            CartService cartService, ProductRepository productRepository, UserRepository userRepository) {
         this.orderRepository = orderRepository;
         this.userService = userService;
         this.cartService = cartService;
         this.productRepository = productRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -91,8 +95,8 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
-    public List<OrderResponse> getUserOrders(Integer page, Integer pageSize) {
-        User user = userService.getUser();
+    public List<OrderResponse> getUserOrders(Long userId, Integer page, Integer pageSize) {
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         List<Order> orders = orderRepository.findAllByUserOrderByDateDesc(user, PageRequest.of(page, pageSize));
         return orders
                 .stream()
