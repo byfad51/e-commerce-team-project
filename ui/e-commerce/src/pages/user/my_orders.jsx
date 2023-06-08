@@ -5,17 +5,21 @@ import {useAsyncValue} from "react-router-dom";
 function MyOrders() {
 
     const [orders, setOrders] = useState([])
+    const [page, setPage] = useState(0)
+    const [totalPage, setTotalPage] = useState(0)
 
  useEffect(() => {
      const getUserOrders = async () => {
-         await fetch('http://localhost:8080/order/getUserOrders/' + localStorage.getItem("currentUser"), {
+         await fetch(`http://localhost:8080/order/getUserOrders/${localStorage.getItem("currentUser")}?page=${page}`, {
              headers: {
                  Authorization: localStorage.getItem("tokenKey"),
              },
          })
              .then(response => response.json())
              .then(data => {
-                 setOrders(data);
+                // setOrders(data.content);
+                 setOrders(orders.concat(data.content))
+                 setTotalPage(data.totalPages)
                  console.log(data);
              })
              .catch(error => console.error(error));
@@ -23,7 +27,11 @@ function MyOrders() {
      getUserOrders()
 
 
-    }, []);
+    }, [page]);
+
+    const handleShowMore = () => {
+            setPage(page + 1)
+    }
     const orderCard = (item) => (<>
         <Card.Group>
             <Card style={{width:"100%"}}>
@@ -46,7 +54,9 @@ function MyOrders() {
     return (<>
         <><Segment>{orders.map(value =>
             orderCard(value)
-        )}</Segment></>
+        )}
+          <center> {totalPage > page+1 ? <Button basic color='green' onClick={handleShowMore} content='SHOW MORE ORDER'/>:null}</center>
+        </Segment></>
 
     </>);
 }
