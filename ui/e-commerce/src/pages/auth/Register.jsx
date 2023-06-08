@@ -27,7 +27,6 @@ function Register () {
     const [question, setQuestion] = useState("");
     const [answer, setAnswer] = useState("");
     const [phone, setPhone] = useState("");
-    const [address, setAddress] = useState("");
     const [buttonBlockUsername, setButtonBlockUsername] = useState(false);
     const [buttonBlockEmail, setButtonBlockEmail] = useState(false);
 
@@ -82,7 +81,6 @@ function Register () {
     const handlePassword = (value) => {setPassword(value)}
     const handleEmail = (value) => {setEmail(value) }
     const handlePhone = (value) => {setPhone(value) }
-    const handleAddress = (value) => {setAddress(value)} 
     const handleQuestion = (value) => {setQuestion(value)}
     const handleAnswer = (value) => {setAnswer(value)}
 
@@ -98,7 +96,6 @@ function Register () {
             firstname: firstname,
             lastname: lastname,
             phone: phone,
-            address: address,
             question: question,
             answer: answer
           };
@@ -116,7 +113,7 @@ function Register () {
             firstname: firstname,
             lastname: lastname,
             phone: phone,
-            address: address,
+
             question: question,
             answer: answer
           }),
@@ -205,10 +202,7 @@ function Register () {
         <Form.Label>Phone</Form.Label>
         <Form.Control type="number" placeholder="Ex: 05559990011" onChange={(event) => handlePhone(event.target.value)} />
       </Form.Group>
-      <Form.Group className="mb-3">
-        <Form.Label>Address</Form.Label>
-        <Form.Control type="text" placeholder="Address" onChange={(event) => handleAddress(event.target.value)} />
-      </Form.Group>
+
       <Form.Group className="mb-3">
       <Form.Label>Question (*)</Form.Label>
       <Form.Select onChange={(event) => handleQuestion(event.target.value)}>

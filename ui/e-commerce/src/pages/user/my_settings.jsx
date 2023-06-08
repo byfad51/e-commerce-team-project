@@ -1,4 +1,4 @@
-import {Grid, Message} from "semantic-ui-react";
+import {Grid, Message, Segment} from "semantic-ui-react";
 import {Button, Col, Form, Row} from "react-bootstrap";
 import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
@@ -17,7 +17,6 @@ function MySettings() {
     const [answer, setAnswer] = useState("");
     const [phone, setPhone] = useState("");
     const [id, setId] = useState(-1);
-    const [address, setAddress] = useState("");
     const [buttonBlockUsername, setButtonBlockUsername] = useState(false);
     const [buttonBlockEmail, setButtonBlockEmail] = useState(false);
 
@@ -29,7 +28,6 @@ function MySettings() {
     const handlePassword = (value) => {setPassword(value)}
     const handleEmail = (value) => {setEmail(value) }
     const handlePhone = (value) => {setPhone(value) }
-    const handleAddress = (value) => {setAddress(value)}
     const handleQuestion = (value) => {setQuestion(value)}
     const handleAnswer = (value) => {setAnswer(value)}
     const handleId = (value) => {setId(value)}
@@ -51,7 +49,6 @@ function MySettings() {
                     handleUsername(data.username)
                     handleEmail(data.email)
                     handlePhone(data.phone)
-                    handleAddress(data.address)
                     handleQuestion(data.question)
                     handleId(data.id)
                 })
@@ -69,7 +66,6 @@ function MySettings() {
             firstname: firstname,
             lastname: lastname,
             phone: phone,
-            address: address,
             question: question,
             answer: answer
         };
@@ -88,7 +84,6 @@ console.log(id)
                 firstname: firstname,
                 lastname: lastname,
                 phone: phone,
-                address: address,
                 question: question,
                 answer: answer
             }),
@@ -216,7 +211,7 @@ console.log(id)
         }
 
     }
-    return (
+    return (<Segment>
             <Form>
                 <Row>
                     <Col>
@@ -249,10 +244,7 @@ console.log(id)
                     <Form.Label>Phone</Form.Label>
                     <Form.Control type="number" value={phone} placeholder="Ex: 05559990011" onChange={(event) => handlePhone(event.target.value)} />
                 </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Label>Address</Form.Label>
-                    <Form.Control type="text" value={address} placeholder="Address" onChange={(event) => handleAddress(event.target.value)} />
-                </Form.Group>
+
                 <Form.Group className="mb-3">
                     <Form.Label>Question (*)</Form.Label>
                     <Form.Select value={question} onChange={(event) => handleQuestion(event.target.value)}>
@@ -281,7 +273,7 @@ console.log(id)
                 {message !=="" ? <Message color={messageColor}>{message}</Message> : null}
 
             </Form>
-
+        </Segment>
     )
 
 }

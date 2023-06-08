@@ -1,4 +1,4 @@
-import { Table } from 'semantic-ui-react'
+import {Segment, Table} from 'semantic-ui-react'
 import {useEffect, useState} from "react";
 
 function MyInformation() {
@@ -20,7 +20,7 @@ function MyInformation() {
     }, []);
    console.log(user)
 
-return (   <Table color={"teal"} key={"teal"} style={{borderWidth: 0}}>
+return (  <Segment> <Table color={"teal"} key={"teal"} style={{borderWidth: 0}}>
 
 
     <Table.Body>
@@ -45,10 +45,6 @@ return (   <Table color={"teal"} key={"teal"} style={{borderWidth: 0}}>
             <Table.Cell>{user.email}</Table.Cell>
         </Table.Row>
         <Table.Row>
-            <Table.Cell>Address</Table.Cell>
-            <Table.Cell>{user.address}</Table.Cell>
-        </Table.Row>
-        <Table.Row>
             <Table.Cell>Number of Reviews</Table.Cell>
             <Table.Cell>{user.numberOfReviews}</Table.Cell>
         </Table.Row>
@@ -71,7 +67,7 @@ return (   <Table color={"teal"} key={"teal"} style={{borderWidth: 0}}>
         </Table.Row>
     </Table.Body>
     <label><h3>You are our number {user.id} member on our website. Thank you to you are with us.</h3></label>
-</Table>);
+</Table></Segment>);
 }
 export default MyInformation
 

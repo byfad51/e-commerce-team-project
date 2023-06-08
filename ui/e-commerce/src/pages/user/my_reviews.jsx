@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {Button, List} from "semantic-ui-react";
+import {Button, List, Segment} from "semantic-ui-react";
 
 function MyReviews() {
     const [userReviews, setUserReviews] = useState([])
@@ -29,10 +29,10 @@ const listItem = (item) => {
        </List.Content>
    </List.Item>)
 }
-return (<List divided relaxed>
+return (<Segment><List divided relaxed>
     <>{userReviews.slice(0,showHowManyReview).map((item)=> (
         listItem(item)
     ))}<>{showHowManyReview < userReviews.length ? <Button onClick={()=>setShowHowManyReview(showHowManyReview+5)}>Show More</Button>:null}</></>
-</List>);
+</List></Segment>);
 }
 export default MyReviews;

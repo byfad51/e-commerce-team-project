@@ -10,6 +10,7 @@ import MyFavorites from "./my_favorites";
 import MySettings from "./my_settings";
 import MyOrders from "./my_orders";
 import MyReviews from "./my_reviews";
+import MyAddresses from "./my_addresses";
 function UserProfile() {
     const navigate = useNavigate();
     useEffect(() => {
@@ -40,6 +41,8 @@ function UserProfile() {
                 return <MyOrders />;
             case 'myreviews':
                 return <MyReviews />;
+            case 'myaddresses':
+                return <MyAddresses />;
             default:
                 return <MyInformation />;
         }
@@ -50,7 +53,7 @@ function UserProfile() {
     return (
 
         <Container style={{width:"75%"}}><Navbar/>
-            <Segment>
+
         <div className="sidebar">
             <ul>
                 <li >
@@ -73,6 +76,11 @@ function UserProfile() {
                     </button></Label>
                 </li>
                 <li><Label style={{width:"130px"}}>
+                    <button onClick={() => handleOptionClick('myaddresses')}>
+                        My Addresses
+                    </button></Label>
+                </li>
+                <li><Label style={{width:"130px"}}>
                     <button onClick={() => handleOptionClick('myorders')}>
                          Orders
                     </button></Label>
@@ -85,7 +93,7 @@ function UserProfile() {
             </ul>
             <div className="content">{renderOption()}</div>
         </div>
-        </Segment></Container>
+        </Container>
     );
 }
 export default UserProfile;
