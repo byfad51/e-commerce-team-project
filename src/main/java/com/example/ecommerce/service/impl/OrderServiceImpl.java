@@ -15,6 +15,7 @@ import com.example.ecommerce.repository.UserRepository;
 import com.example.ecommerce.service.CartService;
 import com.example.ecommerce.service.OrderService;
 import com.example.ecommerce.service.UserService;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -95,14 +96,12 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
-    public List<OrderResponse> getUserOrders(Long userId, Integer page, Integer pageSize) {
+    public Page<OrderResponse> getUserOrders(Long userId, Integer page, Integer pageSize) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        List<Order> orders = orderRepository.findAllByUserOrderByDateDesc(user, PageRequest.of(page, pageSize));
-        return orders
-                .stream()
-                .map(OrderResponse::new)
-                .collect(Collectors.toList());
+        return orderRepository.findAllByUserOrderByDateDesc(user, PageRequest.of(page, pageSize))
+                .map(OrderResponse::new);
     }
+
 
     @Override
     public OrderResponse getOrderById(Long orderId) {
@@ -145,12 +144,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderResponse> getAllOrders(Integer page, Integer pageSize) {
-        List<Order> orders = orderRepository.findAll();
-        return orders
-                .stream()
-                .map(OrderResponse::new)
-                .collect(Collectors.toList());
+    public Page<OrderResponse> getAllOrders(Integer page, Integer pageSize) {
+        Page<Order> orderPage = orderRepository.findAllByOrderByDateDesc(PageRequest.of(page, pageSize));
+
+        return orderPage.map(OrderResponse::new);
     }
 
     private void rollbackOrder(Order order) {
