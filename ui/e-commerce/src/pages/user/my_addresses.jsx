@@ -67,6 +67,7 @@ function MyAddresses() {
 
             if (response.ok) {
                 console.log('İstek başarıyla tamamlandı');
+              await  getAllAddress()
                 console.log(response.statusText);
             } else {
                 console.log(response.statusText);
@@ -76,7 +77,19 @@ function MyAddresses() {
             console.error('İstek hatası:', error);
         }
     }
+const deleteById = async (id) => {
+    const url = `http://localhost:8080/address/deleteAddressById/${id}`;
 
+    await fetch(url, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': localStorage.getItem("tokenKey")
+        },
+
+    });
+    await getAllAddress()
+}
     const getAllAddress = async () => {
         const url = `http://localhost:8080/address/getUserAddresses/${localStorage.getItem("currentUser")}`;
 
@@ -102,7 +115,7 @@ function MyAddresses() {
     useEffect(() => {
         getAllAddress()
 
-    }, [clickAddNewAddress]);
+    }, []);
     const addNewAddress = () => (
         <>{!isClicked?<Button color='grey' onClick={event => setIsClicked(true)} style={{width: "100%"}}>ADD A NEW ADDRESS</Button>:
 
@@ -187,7 +200,7 @@ function MyAddresses() {
                         <Button basic color='green'>
                             Update
                         </Button>
-                        <Button basic color='red'>
+                        <Button onClick={event => deleteById(item.id)} basic color='red'>
                             Delete
                         </Button>
                     </div>

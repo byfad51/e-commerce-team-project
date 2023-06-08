@@ -227,10 +227,10 @@ return <><Container><Navbar/><Segment>
                 )):null}
             </Grid.Column>
             <Grid.Column>
-                {!isSelectedAddress?<>{addresses()}
-                    <center> <Button onClick={selectAddress} inverted color='green'>
+                {!isSelectedAddress?<>{allAddresses.length > 0 ?<>{addresses()}
+                                          <center> <Button onClick={selectAddress} inverted color='green'>
                 Select The Address
-            </Button></center></>:null}
+                </Button></center></>:<center>You need to add address firstly.</center>}</>:null}
 
                 {isSelectedAddress && !isClickedPay?<>
                     <Card fluid color='green'
