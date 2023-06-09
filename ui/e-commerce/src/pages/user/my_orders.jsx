@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {Button, Card, Segment} from "semantic-ui-react";
+import {Button, Card, Label, Segment} from "semantic-ui-react";
 import {useAsyncValue} from "react-router-dom";
 
 function MyOrders() {
@@ -35,10 +35,33 @@ function MyOrders() {
     const orderCard = (item) => (<>
         <Card.Group>
             <Card style={{width:"100%"}}>
-                <Card.Content>
+                <Card.Content><div style={{ display: "flex", justifyContent: "space-between" }}>
                     <Card.Header>{`${item.city} adress`}</Card.Header>
+                    <div>{item.status==="PENDING"?
+                        <Label  color='olive'>
+                            {item.statusMessage}
+                        </Label>:null
+                    }{item.status==="APPROVED"?
+                        <Label inverted color='yellow' >
+                            {item.statusMessage}
+                        </Label>:null
+                    }{item.status==="CANCELLED"?
+                        <Label inverted color='red'>
+                            {item.statusMessage}
+                        </Label>:null
+                    }{item.status==="REJECTED"?
+                        <Label inverted color='red'>
+                            {item.statusMessage}
+                        </Label>:null
+                    }{item.status==="COMPLETED"?
+                        <Label inverted color='green'>
+                            {item.statusMessage}
+                        </Label>:null
+                    }</div>
+                </div>
+
                     <Card.Meta> {`${item.firstname} - ${item.lastname} - ${item.phoneNumber} `}</Card.Meta>
-                    <Card.Description>
+                    <Card.Description>statusMessage
                         {`${item.fullAddress} ${item.postalCode} ${item.neighbourhood} ${item.district} ${item.city}`}
                         <br/><b>{item.totalPrice.toFixed(2)}₺ - {item.date}</b>
                     </Card.Description>
