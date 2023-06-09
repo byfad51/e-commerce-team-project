@@ -1,7 +1,7 @@
 import React, { useState, useEffect  } from 'react';
 import "../design/Navbar.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faBars, faTimes,faShoppingCart  } from '@fortawesome/free-solid-svg-icons';
+import {faBars, faTimes,faShoppingCart,faUser  } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from "react-router-dom";
 import Popup from "./pop_message";
 import {faHeart} from "@fortawesome/free-solid-svg-icons/faHeart";
@@ -101,17 +101,20 @@ function Navbar() {
           )}
 
 
-            <div className="navbar-logo">
-             <h1> <a href={"/"}>
-                <font color={"black"} >E</font>
-                <font color={"black"} >E</font>
-              </a></h1>
-
-
+            <div style={{ display: 'flex' }}>
+              <div className="navbar-logo" style={{marginRight:'30px'}}>
+                <h1>
+                  <a href={"/"}>
+                    <font color={"black"}>E</font>
+                    <font color={"black"}>E</font>
+                  </a>
+                </h1>
+              </div>
+              <ul >
+                <ProductSearch/>
+              </ul>
             </div>
-            <ul>
-              <ProductSearch/>
-            </ul>
+
             <div className="menu-icon" onClick={handleClick}>
               <FontAwesomeIcon icon={clicked ? faTimes : faBars} className="menu-icon" />
             </div>
@@ -155,7 +158,7 @@ function Navbar() {
 
             {localStorage.getItem("role")==="USER" ? <li key={2}>
               <a className={"nav-links"} href={"./user"}>
-                {"Profile"}
+                {<FontAwesomeIcon icon={faUser} className="cart-icon" />}
               </a>
             </li>: null}
           </ul>

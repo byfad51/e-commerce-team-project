@@ -207,7 +207,7 @@ function Register () {
       <Form.Label>Question (*)</Form.Label>
       <Form.Select onChange={(event) => handleQuestion(event.target.value)}>
         <option value="">Choose a question...</option>
-        <option value="What's you favourite color?">What's you favourite color?</option>
+        <option value="What's you favourite color?">What's your favourite color?</option>
         <option value="What was your best teacher's name at high school?">What was your best teacher's name at high school?</option>
         <option value="What's the meaning of live?">What's the meaning of live?</option>
       </Form.Select>

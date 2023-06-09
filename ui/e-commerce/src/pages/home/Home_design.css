@@ -1,20 +1,60 @@
-.div-style-week{
-    display: flex;
-    align-items: center;
-    padding: 25px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    background: linear-gradient(to bottom, #000000 0%, #575757 100%);
-}
+
 .div-style-week1{
     margin-left: 40px;
-    font-size: 3rem;
+    font-size: 50px;
     font-weight: bold;
     text-align: center;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: #ffffff;
-    text-shadow: 2px 2px #a6a6a6;
+    text-shadow: 2px 2px #666666;
+
 }
 .text-design-home{
     text-align: left;
 }
+.App {
+    position: relative;
+}
+
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 en/boy oranı için varsayılan bir değer */
+    width: 100%;
+    max-width: 100%;
+}
+
+.video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.full-screen-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+.div-style-week img {
+    max-width: 200px;
+    transition: opacity 0.5s ease;
+}
+
+.div-style-week img:hover {
+    opacity: 0.8;
+}
+.text-design-home{
+    background: rgba(63, 114, 155, 0.8);
+    padding: 5px;
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+    text-shadow: 2px 2px #1b1c21;
+}
+
+

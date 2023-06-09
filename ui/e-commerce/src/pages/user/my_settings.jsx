@@ -233,7 +233,7 @@ console.log(id)
                     <Form.Control type="text" value={username} placeholder="Enter your username" onChange={(event) => handleUsername(event.target.value)} />
                 </Form.Group>
                 <Form.Group className="mb-3">
-                    <Form.Label>New Password <font color={"red"}>Don't enter if you dont want to change this.</font></Form.Label>
+                    <Form.Label>New Password <font color={"red"}> Don't enter if you dont want to change this.</font></Form.Label>
                     <Form.Control type="password"   onChange={(event) => handlePassword(event.target.value)} />
                 </Form.Group>
                 <Form.Group className="mb-3">
@@ -255,12 +255,12 @@ console.log(id)
                     </Form.Select>
                 </Form.Group>
                 <Form.Group className="mb-3">
-                    <Form.Label>Answer <font color={"red"}>Don't enter if you dont want to change this.</font></Form.Label>
+                    <Form.Label>Answer <font color={"red"}> Don't enter if you dont want to change this.</font></Form.Label>
                     <Form.Control type="text" placeholder="Answer" onChange={(event) => handleAnswer(event.target.value)} />
                 </Form.Group>
 
                 <Form.Group className="mb-3">
-                    <Form.Label>Password (*) <font color={"red"}>You need to enter your now password.</font></Form.Label>
+                    <Form.Label>Password (*) <font color={"red"}> You need to enter your now password.</font></Form.Label>
                     <Form.Control type="password"   onChange={(event) => handlePasswordForCheck(event.target.value)} />
                 </Form.Group>
 

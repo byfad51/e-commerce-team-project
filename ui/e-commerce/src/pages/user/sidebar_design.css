@@ -1,0 +1,15 @@
+.sidebar ul {
+    background-color: white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    margin-top: 17px;
+    margin-bottom: -22px;
+}
+.sidebar ul li:hover{
+    background-color: #e5e5e5;
+}
+.sidebar ul li div button{
+    font-size: 13px;
+}
+
+
+

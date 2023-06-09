@@ -104,7 +104,7 @@ function MyAddresses() {
 
     }, [clickAddNewAddress]);
     const addNewAddress = () => (
-        <>{!isClicked?<Button color='grey' onClick={event => setIsClicked(true)} style={{width: "100%"}}>ADD A NEW ADDRESS</Button>:
+        <>{!isClicked?<Button onClick={event => setIsClicked(true)} style={{width: "100%",backgroundColor:'#a9a9a9', color:'black'}}>ADD A NEW ADDRESS</Button>:
 
             <><Form >
                 <Form.Group widths={"equal"}>
@@ -167,7 +167,7 @@ function MyAddresses() {
                     setIsClicked(false)
 
                 }
-                } color='grey'>ADD NEW ADDRESS</Button></center>
+                } color='facebook'>ADD NEW ADDRESS</Button></center>
             </Form></>
 
         }</>
@@ -184,7 +184,7 @@ function MyAddresses() {
                 </Card.Content>
                 <Card.Content extra>
                     <div className='ui two buttons'>
-                        <Button basic color='green'>
+                        <Button basic color='teal'>
                             Update
                         </Button>
                         <Button basic color='red'>
@@ -195,11 +195,13 @@ function MyAddresses() {
             </Card>
         </Card.Group>
     </>)
-    return (<><Segment>
-        {addNewAddress()}
+    return (
+        <><Segment>
+            <center><h3 style={{ color:'black', borderRadius:'5px'}}>Addresses</h3></center>
+            <br/>
         <>{allAddresses.map(value =>
             allAdresses(value)
-        )}</>
+        )}</><br/>{addNewAddress()}
 
     </Segment></>);
 }

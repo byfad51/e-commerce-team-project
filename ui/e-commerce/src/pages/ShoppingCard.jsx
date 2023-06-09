@@ -194,6 +194,7 @@ function ShoppingCard() {
   {cartItems.length > 0?
     <div className="shopping-cart">
       <h1 className="title">Shopping Cart</h1>
+      <br/>
       <table className="cart-table">
         <thead>
           <tr>
@@ -228,6 +229,7 @@ function ShoppingCard() {
           ))}
         </tbody>
       </table>
+      <br/>
       <button className="clear-cart-button" onClick={() => handleEmpty()}>Clear the cart</button>
       <div className="total-price"><a href={"/order"} ><font color={"white"}><>Complete The Order {formatPrice(totalPrice)}</></font></a></div>
     </div>:<center><h2>You need to add some books to cart.</h2></center>}</Segment>

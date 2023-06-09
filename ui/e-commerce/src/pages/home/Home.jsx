@@ -2,6 +2,7 @@ import { Container} from 'react-bootstrap';
 import Navbar from "../../components/Navbar";
 import React, {useEffect, useState} from "react";
 import '../../design/message/popup.css';
+import video4 from './video4.mp4'
 
 import MyCarousel from "./home_products";
 
@@ -66,23 +67,32 @@ import  "./Home_design.css"
      console.log("data5")
      console.log(data5)*/
     return (
-        <Container fluid style={{width:'70%'}}>
+        <div>
+
+
+
+
+            <Container fluid style={{width:'70%'}}>
             <Navbar/>
-            <br/>
-            <div className="div-style-week" >
-
-                { data2.length > 0 && (
-                    <div style={{ marginLeft: '60px'}}>
-                        <Link to={`/detail?id= ${data2[0].id}`}>
-                            <img src={data2[0].imageUrl} alt={data2[0].productName} style={{ maxWidth: '200px' }} />
-                        </Link>
+<br/>
+                <div style={{ backgroundColor: 'transparent', position: 'relative', zIndex: '1' }}>
+                    <div className="div-style-week" style={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
+                        <video src={video4} autoPlay loop muted style={{ width: '100%', height: '400px', zIndex: 0 }} />
+                        {data2.length > 0 && (
+                            <div style={{ display: 'flex', alignItems: 'center', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 1 }}>
+                                <Link to={`/detail?id=${data2[0].id}`}>
+                                    <img src={data2[0].imageUrl} alt={data2[0].productName} style={{ maxWidth: '170px', marginRight: '20px' }} />
+                                </Link>
+                                <h1 className='div-style-week1'>Best Seller of the Week</h1>
+                            </div>
+                        )}
                     </div>
-                )}
-                <h1 className='div-style-week1' >Best Seller of the Week</h1>
-            </div>
 
 
-            <br/>
+
+
+
+                    <br/>
             <br/>   <h1 className='text-design-home'>New Releases</h1>
             {data1.length > 0 ? <MyCarousel data={data1} /> : <p>Loading data...</p>}
             <br/><br/><h1 className='text-design-home'>Best Sellers</h1>
@@ -93,10 +103,13 @@ import  "./Home_design.css"
             {data4.length > 0 ? <MyCarousel data={data4} /> : <p>Loading data...</p>}
             <br/><br/><h1 className='text-design-home'>Newly Published Books</h1>
             {data5.length > 0 ? <MyCarousel data={data5} /> : <p>Loading data...</p>}
+
+            </div>
+
         </Container>
+ </div>
 
-
-    );
+ );
 }
 
 export default Home;
