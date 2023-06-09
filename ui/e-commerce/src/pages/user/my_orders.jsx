@@ -40,7 +40,7 @@ function MyOrders() {
                     <Card.Meta> {`${item.firstname} - ${item.lastname} - ${item.phoneNumber} `}</Card.Meta>
                     <Card.Description>
                         {`${item.fullAddress} ${item.postalCode} ${item.neighbourhood} ${item.district} ${item.city}`}
-                        <br/><b>{item.totalPrice}₺ - {item.date}</b>
+                        <br/><b>{item.totalPrice.toFixed(2)}₺ - {item.date}</b>
                     </Card.Description>
                 </Card.Content>
                 <Card.Content extra>
