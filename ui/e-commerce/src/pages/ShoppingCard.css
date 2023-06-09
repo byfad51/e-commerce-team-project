@@ -6,8 +6,9 @@
   }
   
   .title {
-    font-size: 2rem;
+    font-size: 35px;
     margin-bottom: 20px;
+    color: darkslateblue;
   }
   
   .cart-table {
@@ -17,9 +18,11 @@
   
   .cart-table__header {
     font-weight: bold;
-    text-align: left;
+    text-align: center;
     padding: 10px 0;
     border-bottom: 1px solid #ccc;
+    margin: 100px;
+
   }
   
   .cart-item {
@@ -49,13 +52,17 @@
   .cart-item__price {
     font-weight: bold;
     font-size: 1.2rem;
+    align-items: center;
+    padding-left: 20px;
     padding-right: 20px;
   }
   
   .cart-item__quantity {
     align-items: center;
     text-align: center;
+    padding-left: 20px;
     padding-right: 20px;
+    width: 150px;
   }
   
   .cart-item__quantity-value {
@@ -93,6 +100,8 @@
   .cart-item__subtotal {
     font-weight: bold;
     font-size: 1.2rem;
+    padding-left: 20px;
+    padding-right: 20px;
   }
 
   .total-price {
@@ -101,12 +110,12 @@
     font-size: 18px;
     font-weight: bold;
     border-radius: 5px;
-    background-color: #3f729b;
+    background-color: darkslateblue;
     color:white;
   }
 
   .clear-cart-button {
-    background-color: #3f729b;
+    background-color: darkslateblue;
     color: white;
     border: none;
     border-radius: 5px;

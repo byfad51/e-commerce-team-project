@@ -431,9 +431,9 @@ console.log("useeffect111111")
         <Segment>
 
             <Grid >
-                <Grid.Row columns={3}>
+                <Grid.Row columns={3} style={{marginLeft:'10px',marginTop:'10px', marginRight:'10px'}}>
                     <Grid.Column >
-                        <center> <Button style={{width:"100%"}}inverted color="yellow" onClick={()=>{
+                        <center> <Button style={{width:"100%"}}inverted color="blue" onClick={()=>{
 
                             setShowCategories(!showCategories)
                             if(showFilters){
@@ -455,13 +455,17 @@ console.log("useeffect111111")
                     <Grid.Column>
                         <Dropdown style={{width: "100%"}}  value={selectedSorting}  onChange={handleSelectionSorting} clearable options={sortingOptions} selection />
                     </Grid.Column>
-                    <br/>  <br/>{
-                        showCategories ? <center> {categories.map(category => (
-                            <Button basic color='green'>
-                                { <a href={"/products?category="+category.id}>{category.name}</a> }
+                    <br/><br/>  <br/>{showCategories && (
+                    <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center' }}>
+                        {categories.map((category) => (
+                            <Button key={category.id} basic color='blue' style={{ marginRight: '10px', marginBottom: '10px' }}>
+                                <a href={"/products?category=" + category.id}>{category.name}</a>
                             </Button>
-                        ))}</center>:null
-                    }
+                        ))}
+                    </div>
+                )}
+
+
                     {showFilters  ?  <> <Form>
 
                         <Row>

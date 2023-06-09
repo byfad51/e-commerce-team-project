@@ -1,6 +1,6 @@
 import {Container, Icon, Label, Segment} from "semantic-ui-react";
 import Navbar from "../../components/Navbar";
-
+import './sidebar_design.css';
 import React, {useEffect, useState} from "react";
 
 import {FiUser} from "react-icons/fi";
@@ -58,34 +58,34 @@ function UserProfile() {
             <ul>
                 <li >
                     <h3 >
-                        <FiUser   className="outlined-user-icon" />{authorized!=="true" ? "Hi, non role": <a href ='#'>{username}</a>}
+                        <FiUser   className="outlined-user-icon" />{authorized!=="true" ? "Hi, non role": <a href ='#'><font color={"black"} > {username}</font></a>}
                     </h3> </li>
-                <li><Label style={{width:"130px"}}>
+                <li><Label style={{width:"130px", backgroundColor:'white'}}>
                     <button onClick={() => handleOptionClick('myinformation')}>
                         Information
                     </button></Label>
                 </li>
-                <li><Label style={{width:"130px"}}>
+                <li><Label style={{width:"130px", backgroundColor:'white'}}>
                     <button onClick={() => handleOptionClick('myfavorites')}>
-                        Favorites<Icon name={"heart"} color={"red"} size={"large"}/>
+                        Favorites
                     </button></Label>
                 </li>
-                <li><Label style={{width:"130px"}}>
+                <li><Label style={{width:"130px", backgroundColor:'white'}}>
                     <button onClick={() => handleOptionClick('mysettings')}>
                         Settings
                     </button></Label>
                 </li>
-                <li><Label style={{width:"130px"}}>
+                <li><Label style={{width:"130px", backgroundColor:'white'}}>
                     <button onClick={() => handleOptionClick('myaddresses')}>
                         My Addresses
                     </button></Label>
                 </li>
-                <li><Label style={{width:"130px"}}>
+                <li><Label style={{width:"130px", backgroundColor:'white'}}>
                     <button onClick={() => handleOptionClick('myorders')}>
                          Orders
                     </button></Label>
                 </li>
-                <li><Label style={{width:"130px"}}>
+                <li><Label style={{width:"130px", backgroundColor:'white'}}>
                     <button onClick={() => handleOptionClick('myreviews')}>
                         Reviews
                     </button></Label>

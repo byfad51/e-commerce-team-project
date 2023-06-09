@@ -98,13 +98,17 @@ const Categories = () => {
         <Container style={{width:"75%"}}><Navbar/><Segment>
 
 
-            <center><h2>Our Categories</h2></center>
+            <center><h2>Our Categories</h2></center><br/>
             <div>
-               <center> {categories.map(category => (
-                   <Button basic color='green'>
-                        { <a href={"/products?category="+category.id}>{category.name}</a> }
-                   </Button>
-                ))}</center>
+               <center><div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', height: '20vh' }}>
+                   {categories.map((category) => (
+                       <Button key={category.id} basic color='blue' style={{ marginRight: '10px', marginBottom: '10px' }}>
+                           <a href={"/products?category=" + category.id}>{category.name}</a>
+                       </Button>
+                   ))}
+               </div>
+
+               </center>
 
             </div>
             <><h2><center>You can want to look these books</center></h2></>

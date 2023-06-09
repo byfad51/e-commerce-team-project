@@ -22,7 +22,7 @@ function MyReviews() {
 console.log(userReviews)
 const listItem = (item) => {
    return ( <List.Item>
-       <List.Icon name='github' size='large' verticalAlign='middle' />
+       <List.Icon name='comment alternate' size='large' verticalAlign='middle' />
        <List.Content>
            <List.Header as='a'><a href={"detail?id="+item.productId}>{item.content}</a></List.Header>
            <List.Description as='a'><a href={"detail?id="+item.productId}>{item.createdDate}</a></List.Description>
