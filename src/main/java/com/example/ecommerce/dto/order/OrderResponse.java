@@ -22,6 +22,8 @@ public class OrderResponse {
     private String fullAddress;
     private String postalCode;
     private String phoneNumber;
+    private String status;
+    private String statusMessage;
 
     public OrderResponse(Order order){
         this.id = order.getId();
@@ -37,6 +39,8 @@ public class OrderResponse {
         this.fullAddress = order.getFullAddress();
         this.postalCode = order.getPostalCode();
         this.phoneNumber = order.getPhoneNumber();
+        this.status = order.getStatus().name();
+        this.statusMessage = order.getStatusMessage();
     }
 
 }

@@ -53,10 +53,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             user.setPhone(request.getPhone());
             user.setQuestion(request.getQuestion());
             user.setAnswer(request.getAnswer());
-            if (user.getAddresses().isEmpty())
-                user.setAddresses(List.of(request.getAddress()));
-            else
-                user.getAddresses().add(request.getAddress());
             user.setRegistrationDate(LocalDateTime.now());
             AuthResponse response = new AuthResponse();
             userRepository.save(user);
