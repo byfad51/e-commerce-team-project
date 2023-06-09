@@ -153,7 +153,7 @@ function Navbar() {
               <FontAwesomeIcon icon={faShoppingCart} className="cart-icon" />
             </button>
 
-            {localStorage.getItem("role")==="USER" ? <li key={2}>
+            {localStorage.getItem("authorized")==="true" ? <li key={2}>
               <a className={"nav-links"} href={"./user"}>
                 {"Profile"}
               </a>
