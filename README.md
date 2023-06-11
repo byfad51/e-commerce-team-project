@@ -37,15 +37,7 @@ You can look at the pictures.
 
 ### Our products part.
 
-![product](https://github.com/byfad51/e-commerce-team-project/raw/main/Screenshots/product/1.png)
-
-![product](https://github.com/byfad51/e-commerce-team-project/raw/main/Screenshots/product/2.png)
-
-![product](https://github.com/byfad51/e-commerce-team-project/raw/main/Screenshots/product/3.png)
-
-![product](https://github.com/byfad51/e-commerce-team-project/raw/main/Screenshots/product/4.png)
-
-![product](https://github.com/byfad51/e-commerce-team-project/raw/main/Screenshots/product/5.png)
+will be added
 
 ### Our product detail part.
 
